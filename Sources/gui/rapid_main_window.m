@@ -84,7 +84,7 @@ guidata(hObject, handles);
 setappdata(0,'HandleMainGUI',hObject);
 try
     path2rapid=getPathToRapid();
-    load(fullfile(path2rapid,'core\data.mat'),'RaPIdObject');%load standard settings...
+    load(fullfile(path2rapid,'core\init\data.mat'),'RaPIdObject');%load standard settings...
     setappdata(handles.MainRaPiDWindow,'RaPIdObject',RaPIdObject);
 catch err
     disp err;

@@ -97,11 +97,9 @@ if ~isempty(RaPIdObject.fmuInputNames)
 else
     tmp1=dummy;
 end
-if ~isfield(RaPIdObject.experimentSettings,'objective') || isfield(RaPIdObject.experimentSettings.objective,'vect')
-    tmp7=num2cell(RaPIdObject.experimentSettings.objective.vect);
-else
-    tmp7=[];
-end
+
+tmp7=num2cell(RaPIdObject.experimentSettings.objective_weights);
+
 maxAlloc=max([length(tmp1),length(RaPIdObject.fmuOutputNames),length(RaPIdObject.parameterNames)])+1; %allocate space for the longest vector and and an extra editable field
 dataAlloc=cell(7,maxAlloc);
 dataAlloc(1,1:length(tmp1))=tmp1;
@@ -617,7 +615,7 @@ RaPIdObject.parameterNames = tmp(3,~cellfun(@isempty,tmp(3,:)));
 settings2.p_min = cell2mat(tmp(4,~cellfun(@isempty,tmp(4,:)))); 
 settings2.p_max = cell2mat(tmp(5,~cellfun(@isempty,tmp(5,:))));
 settings2.p_0 =   cell2mat(tmp(6,~cellfun(@isempty,tmp(6,:))));
-settings2.objective.vect = cell2mat(tmp(7,~cellfun(@isempty,tmp(7,:))));
+settings2.objective_weights = cell2mat(tmp(7,~cellfun(@isempty,tmp(7,:))));
 RaPIdObject.experimentSettings = setstructfields(RaPIdObject.experimentSettings,settings2);
 close(handles.figure1)
 
