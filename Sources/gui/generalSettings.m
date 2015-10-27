@@ -134,9 +134,7 @@ end
 try
     set(handles.edit16,'String',int2str(RaPIdObject.experimentSettings.maxIterations))
 end
-try
-    set(handles.edit14,'String',mat2str(RaPIdObject.experimentSettings.objective.vect));
-end
+
 try
     set(handles.edit15,'String',num2str(RaPIdObject.experimentSettings.t_fitness_start));
 end

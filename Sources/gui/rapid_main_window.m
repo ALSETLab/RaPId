@@ -402,19 +402,20 @@ if any(strcmp(contentOfContainer,'mySettings'))
 end
 if exist('RaPIdObject','var') && isa(RaPIdObject,'RaPIdClass')
     setappdata(handles.MainRaPiDWindow,'RaPIdObject',RaPIdObject);
-    tmp=find(strcmp(cellstr(get(handles.OptimMethodSelect_popupmenu,'String')),RaPIdObject.experimentSettings.optimizationAlgorithm));
-    set(handles.OptimMethodSelect_popupmenu,'Value',tmp);
+    if ~isfield(RaPIdObject.experimentSettings,'optimizationAlgorithm') % if no algorithm set
+        RaPIdObject.experimentSettings.optimizationAlgorithm='pso';%default to pso
+    end
+    tmp=find(strcmp(cellstr(get(handles.OptimMethodSelect_popupmenu,'String')),RaPIdObject.experimentSettings.optimizationAlgorithm)); % find which one in the list it is
+    set(handles.OptimMethodSelect_popupmenu,'Value',tmp); %set selected item in list to reflect choice of algorithm
     
-    if strcmp(RaPIdObject.experimentSettings.solverMode,'Simulink')
+    if strcmp(RaPIdObject.experimentSettings.solverMode,'Simulink') % initialize radio buttons here
         tmp1=1;
-        tmp2=0;
     else
         tmp1=0;
-        tmp2=1;
     end
     set(handles.simulinkselector,'Value',tmp1);
-    set(handles.odeselector,'Value',tmp2);
-    if isprop(RaPIdObject,'experimentData') && isfield(RaPIdObject.experimentData, 'pathToReferenceData')
+    set(handles.odeselector,'Value',~tmp1);
+    if isprop(RaPIdObject,'experimentData') && isfield(RaPIdObject.experimentData, 'pathToReferenceData')  %we take care of Data settings pane in the next few lines
         set(handles.MeasuredOutputPath_EditableTextfield,'String',RaPIdObject.experimentData.pathToReferenceData);
         set(handles.OutputTimeVectorExpression_EditableTextfield,'String',RaPIdObject.experimentData.expressionReferenceTime);
         set(handles.OutputArrayExpression_EditableTextfield,'String',RaPIdObject.experimentData.expressionReferenceData);
