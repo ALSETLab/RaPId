@@ -31,5 +31,7 @@ savepath
 if isempty(ver('FMItoolbox'))
     warning('FMI toolbox does not seem to be installed! Keep this in mind if you receive error-messages while using RaPId.')
 end
- 
+
+check_installed
+
 run_rapid_gui
