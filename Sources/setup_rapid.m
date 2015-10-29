@@ -30,7 +30,7 @@ addpath(genpath(fullfile(fileparts(mfilename('fullpath')), 'core')));
 savepath
 
 % Check of RaPId dependencies
-check_installed
+run('.\install\check_installed')
 
 % En of setup, run the GUI
 run_rapid_gui
