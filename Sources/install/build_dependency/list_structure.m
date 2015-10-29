@@ -21,16 +21,26 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-%% Script For Initializing the Toolbox for the first time on a Computer
-% Make sure this file is in the RaPId Toolbox folder
-%
-addpath(fullfile(fileparts(mfilename('fullpath'))));
-addpath(fullfile(fileparts(mfilename('fullpath')), 'gui'));
-addpath(genpath(fullfile(fileparts(mfilename('fullpath')), 'core')));
-savepath
+function [flist]=list_structure(directory)
+flist = {};
+files_folders = dir(directory);
 
-% Check of RaPId dependencies
-check_installed
-
-% En of setup, run the GUI
-run_rapid_gui
+%Go to subfolders
+for (i=1:length(files_folders))
+if isdir(files_folders(i).name) &&   ~strcmp(files_folders(i).name,'.')...
+        && ~strcmp(files_folders(i).name,'..')
+     bottom_list = list_structure(strcat(directory,'\',files_folders(i).name));
+     if ~isempty(bottom_list)
+      flist = [flist bottom_list ];
+     end
+end
+%Add files in a folder to the list
+if strcmp(files_folders(i).name(find(files_folders(i).name=='.',1,'last'):end),'.m')
+   if exist('flist')
+    flist(end+1) = cellstr(strcat(directory,'\',files_folders(i).name)); 
+   else
+    flist(1) = cellstr(strcat(directory,'\',files_folders(i).name));
+   end
+end
+end
+end

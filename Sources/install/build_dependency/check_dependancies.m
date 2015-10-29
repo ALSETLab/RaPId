@@ -21,16 +21,27 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-%% Script For Initializing the Toolbox for the first time on a Computer
-% Make sure this file is in the RaPId Toolbox folder
-%
-addpath(fullfile(fileparts(mfilename('fullpath'))));
-addpath(fullfile(fileparts(mfilename('fullpath')), 'gui'));
-addpath(genpath(fullfile(fileparts(mfilename('fullpath')), 'core')));
-savepath
+function [dep_list] = check_dependancies
+curr = pwd;
+flist = list_structure(curr); 
+dep_list(1) = {'MATLAB'};
+dep_inst = ver;
+dep_inst = struct2cell(dep_inst); 
+for (i=1:length(flist))
+   dep_temp = dependencies.toolboxDependencyAnalysis(flist(i));
+for (k=1:length(dep_temp)) 
+  if cellfun(@isempty,strfind(dep_list,dep_temp{k}))
+    dep_list(end+1) = dep_temp(k); 
+  end
+end
+end
+%%
+disp('RaPId Toolbox dependancies are: ');
+for (i=1:length(dep_list))
+    disp(dep_list{i});
+    if  ~sum(ismember(dep_inst(1,1,:),dep_list(i)))
+        warning(strcat(dep_list{i},' -- not installed!'));
+    end
+end
 
-% Check of RaPId dependencies
-check_installed
-
-% En of setup, run the GUI
-run_rapid_gui
+end
