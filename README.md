@@ -58,7 +58,7 @@ The initial development of iTesla RaPId was possible through the [iTesla](http:/
 The original development team at KTH SmarTS Lab was also supported by [Statnett SF](http://www.statnett.no/) (the Norwegian power grid operator), the NER-funded project [STRONgrid](http://www.nordicenergy.org/project/smart-transmission-grid-operation-and-control/), and the [STandUP for Energy collaboration initiative](http://www.standupforenergy.se/).
 
 ## Dedication of this OSS Release (by Luigi Vanfretti - RaPId's Original Dev. Team Leader)
-See [[Wiki Home Page|Home]] for full statement
+See [Full Statement on the Wiki.](https://github.com/SmarTS-Lab/iTesla_RaPId/wiki#dedication-of-this-oss-release-by-luigi-vanfretti---rapids-original-dev-team-leader)
 
 ## No Warranty
 <Rapid Parameter Identification is a toolbox for automated parameter identification>
