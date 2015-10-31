@@ -25,7 +25,7 @@ function pathstring = getPathToRapid()
 %getPathToRapid returns the path to the root of the RaPId folder
 %   Detailed explanation goes here
 try
-    pathstring=fileparts(mfilename('fullpath'));
+    pathstring=fileparts(fileparts(mfilename('fullpath')));
 catch err
     disp(err.message);
     error('Check that RaPiD is installed correctly!');
