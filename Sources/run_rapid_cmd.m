@@ -34,7 +34,7 @@
 % manual.
 
 %% Print out the copyright statement on launch
-type('copyright_statement.txt')
+type('copyright_statement')
 %% Global Settings (independant of the method chosen)
 containerFile='C:\Users\janlav\Documents\rapid_release\source\RaPId\examples\myTestIO64bit\variableIO64PSOtestContainer.mat';
 contentOfContainer=who('-file',containerFile);

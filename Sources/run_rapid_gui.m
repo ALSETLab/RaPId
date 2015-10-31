@@ -22,7 +22,7 @@
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
 %% Print out the copyright statement on launch
-type('copyright_statement.txt')
+type('copyright_statement')
 
 %% Main script for GUI assisted use of the toolbox
 % Run
