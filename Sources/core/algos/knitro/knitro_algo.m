@@ -54,13 +54,13 @@ if RaPIdObject.experimentSettings.verbose
     part.p = RaPIdObject.experimentSettings.p_0;
     [simuRes] = rapid_simuSystem( part,RaPIdObject);
     for k=1:size(simuRes,2)
-        fitness=fitness+rapid_objectiveFunction2(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
+        fitness=fitness+rapid_objectiveFunction(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
     end
     other.beginning =fitness;
     part.p = sol;
     [simuRes] = rapid_simuSystem( part,RaPIdObject);
     for k=1:size(simuRes,2)
-        fitness=fitness+rapid_objectiveFunction2(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
+        fitness=fitness+rapid_objectiveFunction(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
     end
     other.end = fitness;
 end

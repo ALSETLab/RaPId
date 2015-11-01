@@ -21,32 +21,34 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-function [ sol, other] = psoExt_algo(RaPIdObject)
-%PSOEXT_ALGO applies PSO from the toolbox "psopt" to compute the minimum of
-%the objective function defined by the parameter identification problem
-%   settings contains the fields:
-%       - p0, initial guess for the vector of parameters
-%       - psoExtOptions, a string which, when evaluated, gives the optimset
-%       to be provided to the PSO function. Check the documentation of the
-%       function PSO
-%       - verbose, can be anything else than 0 if debugging information is
-%       needed
+function [ sol, other] = gaExt_algo(RaPIdObject)
+%GAEXT_ALGO applying matlab ga function to compute the minimum of the 
+% objective function defined by the parameter identification problem
+% settings must contain:
+%     - p0, initial guess for the value of the parameter vector
+%     - p_min, vector containing the minimal values of all parameters
+%     - p_max, vector containing the maximal values of all parameters
+%     - gaExtOptions, string containing a command providing an optimset for
+%       the matlab ga function, see the doc for the ga function
 
-options = eval(RaPIdObject.psoExtSettings);
-% pso(fitnessfcn,nvars,Aineq,bineq,Aeq,beq,LB,UB,nonlcon,options)
-sol = pso(@func,length(RaPIdObject.experimentSettings.p_0),[],[],[],[],RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,[],options);
+
+%     options = psooptimset();
+%        ga(@rastr,2,                  [],[],[],[],[],            [],[],options)
+%     sol = ga(@func,length(settings.p0),[],[],[],[],settings.p_min,settings.p_max);
+options = eval(RaPIdObject.gaExtOptions);
+sol = ga(@func,length(RaPIdObject.experimentSettings.p_0),[],[],[],[],RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,[],options);
 other = [];
 if RaPIdObject.experimentSettings.verbose
     part.p = RaPIdObject.experimentSettings.p_0;
     [simuRes] = rapid_simuSystem( part,RaPIdObject);
     for k=1:size(simuRes,2)
-        fitness=fitness+rapid_objectiveFunction2(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
+        fitness=fitness+rapid_objectiveFunction(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
     end
     other.beginning =fitness;
     part.p = sol;
     [simuRes] = rapid_simuSystem( part,RaPIdObject);
     for k=1:size(simuRes,2)
-        fitness=fitness+rapid_objectiveFunction2(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
+        fitness=fitness+rapid_objectiveFunction(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
     end
     other.end = fitness;
 end

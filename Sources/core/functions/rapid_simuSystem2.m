@@ -122,7 +122,7 @@ for i=1:size(simuRes,1)
 %       disp(['size of simu data ', num2str(size(simuRes(i,:)))])
     intpl8res = rapid_interpolate(simuTime,simuRes(i,:),realTime);
 %     disp(['size of interpolated data ', num2str(size(intpl8res))])
-    fitness=fitness+rapid_objectiveFunction2(realRes(i,:),intpl8res,settings,i);
+    fitness=fitness+rapid_objectiveFunction(realRes(i,:),intpl8res,settings,i);
 end
 %disp(['Parameter vector ' num2str(part.p) ' gives fitness = ' num2str(fitness)])
 

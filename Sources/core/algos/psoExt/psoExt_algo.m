@@ -21,34 +21,32 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-function [ sol, other] = nm_algo(RaPIdObject)
-%NM_ALGO applies the FMINSEARCH matlab function to compute the minimum of
-%the objective function defined by the parameter identification problem.
-%   settings contain the fields:
-%   	- p0, vector representing the initial guess for the vector of
-%   	parameters
-%       - nmOptions, a string which, when evaluated, provides an optimset
-%       to be provided to FMINSEARCH, see the documentation for the
-%       aforementioned function.
-%       - verbose, verbose can be anything other than 0 if debuf info is
-%       needed in console
+function [ sol, other] = psoExt_algo(RaPIdObject)
+%PSOEXT_ALGO applies PSO from the toolbox "psopt" to compute the minimum of
+%the objective function defined by the parameter identification problem
+%   settings contains the fields:
+%       - p0, initial guess for the vector of parameters
+%       - psoExtOptions, a string which, when evaluated, gives the optimset
+%       to be provided to the PSO function. Check the documentation of the
+%       function PSO
+%       - verbose, can be anything else than 0 if debugging information is
+%       needed
 
-options = eval(RaPIdObject.nmSettings);
-options.MaxFunEvals=RaPIdObject.experimentSettings.nbMaxIterations;
-
-[sol, other] = fminsearch(@func,RaPIdObject.experimentSettings.p_0,options);
-%other = [];
+options = eval(RaPIdObject.psoExtSettings);
+% pso(fitnessfcn,nvars,Aineq,bineq,Aeq,beq,LB,UB,nonlcon,options)
+sol = pso(@func,length(RaPIdObject.experimentSettings.p_0),[],[],[],[],RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,[],options);
+other = [];
 if RaPIdObject.experimentSettings.verbose
     part.p = RaPIdObject.experimentSettings.p_0;
     [simuRes] = rapid_simuSystem( part,RaPIdObject);
     for k=1:size(simuRes,2)
-        fitness=fitness+rapid_objectiveFunction2(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
+        fitness=fitness+rapid_objectiveFunction(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
     end
     other.beginning =fitness;
     part.p = sol;
     [simuRes] = rapid_simuSystem( part,RaPIdObject);
     for k=1:size(simuRes,2)
-        fitness=fitness+rapid_objectiveFunction2(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
+        fitness=fitness+rapid_objectiveFunction(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
     end
     other.end = fitness;
 end
