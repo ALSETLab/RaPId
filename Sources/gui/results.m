@@ -81,13 +81,16 @@ handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
-load('core\data.mat');
+
+handle2main=getappdata(0,'HandleMainGUI');
+RaPIdObject=getappdata(handle2main,'RaPIdObject');
+
 str = [];
-for i = sol
+for i = evalin('base' , 'sol')
     str = strcat(str,', ',num2str(i));
 end
 set(handles.edit1,'String',str(2:end))
-set(handles.text6,'String',mySettings.methodName)
+set(handles.text6,'String',RaPIdObject.experimentSettings.optimizationAlgorithm)
 % UIWAIT makes results wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
