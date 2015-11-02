@@ -204,12 +204,12 @@ function OpenPlot_pushbutton_Callback(hObject, eventdata, handles)
 RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
 try
     sol=evalin('base','sol');
-    figure
     part.p = sol(1,:);
     [res] = rapid_simuSystem( part,RaPIdObject);
     identifiedSysData = mySettings.lastSimu.res;
     idTime = mySettings.lastSimu.time;
     resInterpo = rapid_interpolate(mySettings.realTime,idTime,identifiedSysData);
+    figure
     for i = 1:length(mySettings.fmuOutData);
         subplot(100*ceil(length(mySettings.fmuOutData)/2)+20+i)
         plot(mySettings.realTime,mySettings.realData(i,:))
@@ -222,7 +222,7 @@ try
         legend('real sys', 'identified sys', 'interpolated data')
     end
 catch
-    warning('No Data to plot...')
+    warning('Functionality not yet implemented / No Data to plot...')
 end
 
 % --- Executes on button press in GAAlgoSettings_pushbutton.
