@@ -36,10 +36,10 @@
 %% Print out the copyright statement on launch
 type('copyright_statement')
 %% Global Settings (independant of the method chosen)
-containerFile='C:\Users\janlav\Documents\rapid_release\source\RaPId\examples\myTestIO64bit\variableIO64PSOtestContainer.mat';
-contentOfContainer=who('-file',containerFile);
-load(containerFile);
-oldFolder = cd(fileparts(containerFile));
+[containerFile, pathname] = uigetfile('*.mat','Choose your container file');
+load(strcat(pathname,containerFile));
+oldFolder = cd(pathname);
+contentOfContainer=who('-file',strcat(pathname,containerFile));
 if any(strcmp(contentOfContainer,'mySettings'))
         try
             RaPIdObject=RaPIdClass(mySettings);
