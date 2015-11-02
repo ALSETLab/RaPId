@@ -202,8 +202,8 @@ function OpenPlot_pushbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
-
-if exist('sol','var')
+try
+    sol=evalin('base','sol');
     figure
     part.p = sol(1,:);
     [res] = rapid_simuSystem( part,RaPIdObject);
@@ -221,10 +221,9 @@ if exist('sol','var')
         title(mySettings.fmuOutData{i})
         legend('real sys', 'identified sys', 'interpolated data')
     end
-else
+catch
     warning('No Data to plot...')
 end
-
 
 % --- Executes on button press in GAAlgoSettings_pushbutton.
 function GAAlgoSettings_pushbutton_Callback(hObject, eventdata, handles)
@@ -436,9 +435,10 @@ function LastResult_pushbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-if exist('sol','var')  %To be fixed
-    results;  
-else
+try
+    sol=evalin('base','sol');
+    results; 
+catch
     warning('No data to look at...')
 end
 
