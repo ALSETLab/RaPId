@@ -1,0 +1,28 @@
+# All folders modified at each simulations
+Sources/gui/dataFmu.mat
+Sources/core/data.mat
+Sources/core/dataMeasuredS.mat
+Sources/core/err.mat
+Sources/core/inputSignalS.mat
+Sources/core/sol.mat
+
+# Folder for FMU generation output
+Sources/modelica/*
+!source/modelica/info.txt
+
+# Working Directory
+Examples/work_dir/*
+!Examples/work_dir/info.txt
+
+# Windows default autosave extension
+*.asv
+*.autosave
+
+# OSX / *nix default autosave extension
+*.m~
+
+# Compiled MEX binaries (all platforms)
+*.mex*
+
+# Simulink Code Generation
+slprj/
