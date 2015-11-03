@@ -104,7 +104,7 @@ try %needs fixes!
     [time,res,yname]=fmu.simulate([0 RaPIdObject.experimentSettings.tf],'Output',outconf,'Input',inputconf,'Options',options,'Solver',RaPIdObject.experimentSettings.integrationMethod);
     fmu=[];
     if ~isempty(res)
-        res=RaPIdObject.experimentSettings.postProcessing(res); % this is a user-defined function
+        res=RaPIdObject.experimentSettings.outputPostProcessing(res); % this is a user-defined function
     end
     if isempty(time)
         error('please make sure the To Workspace component in the simulink model outputs a struct with time')
