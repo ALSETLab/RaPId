@@ -46,7 +46,7 @@ function varargout = generalSettings(varargin)
 
 % Edit the above text to modify the response to help generalSettings
 
-% Last Modified by GUIDE v2.5 09-Sep-2015 21:22:00
+% Last Modified by GUIDE v2.5 02-Nov-2015 22:45:12
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -88,6 +88,7 @@ handle2main=getappdata(0,'HandleMainGUI');
 RaPIdObject=getappdata(handle2main,'RaPIdObject');
 set(handles.edit1,'String',RaPIdObject.experimentSettings.ts);
 set(handles.edit2,'String',RaPIdObject.experimentSettings.tf);
+set(handles.timeout_value,'String',RaPIdObject.experimentSettings.timeOut);
 set(handles.edit11,'String',RaPIdObject.experimentSettings.integrationMethod);
 set(handles.togglebutton1,'Value',RaPIdObject.experimentSettings.saveHist);
 set(handles.edit9,'String',num2str(RaPIdObject.experimentSettings.cost_type));
@@ -605,6 +606,7 @@ settings2.cost_type = str2num(get(handles.edit9,'String'));
 settings2.integrationMethod = get(handles.edit11,'String');
 settings2.maxIterations = str2double(get(handles.edit16,'String'));
 settings2.t_fitness_start = (get(handles.edit15,'String'));
+settings2.timeOut = (get(handles.timeout_value,'String'));
 settings2.saveHist=get(handles.togglebutton1,'Value');
 tmp=get(handles.InputNames,'Data');
 RaPIdObject.fmuInputNames = tmp(1,~cellfun(@isempty,tmp(1,:)));
@@ -759,25 +761,28 @@ if ~isempty(eventdata.EditData)
     % if the line is  supposed to be text
     if any([1,2,3]==indices(1))
         theData(indices(1),indices(2))={eventdata.EditData};
-        %expand table
-        if size(theData,2)==indices(2)
+        if size(theData,2)==indices(2)%expand table
             set(hObject,'ColumnEditable',true(ones(1,indices(2)+1))); 
             set(hObject,'Data',[theData {'';'';'';[];[];[];[]}]);
             set(handles.InputNames,'ColumnFormat',[get(handles.InputNames,'ColumnFormat') 'char']);
         else
             set(hObject,'Data',theData);
+                theColumnWidthInfo=get(hObject,'ColumnWidth');
+                theColumnWidthInfo{indices(2)}=10*max(cellfun(@(x)length(x),theData(:,indices(2))))+1;
+                set(hObject,'ColumnWidth',theColumnWidthInfo);
         end
     else
-        if size(theData,2)==indices(2)
+        if size(theData,2)==indices(2) % expand table
             set(hObject,'ColumnEditable',true(ones(1,indices(2)+1)));
             set(hObject,'Data',[theData {'';'';'';[];[];[];[]}]);
             set(handles.InputNames,'ColumnFormat',[get(handles.InputNames,'ColumnFormat') 'char']);
         end
     end
-else
+
+else %delete data
     if size(theData,2)==indices(2) 
         theData{indices(1),indices(2)}=[];
-        if all(cellfun(@isempty,theData(indices(1),:)))
+        if all(cellfun(@isempty,theData(indices(1),:))) %resize table
             theData(:,indices(2))=[];
         end
         set(hObject,'ColumnEditable',true(ones(1,length(theData))));
@@ -785,4 +790,48 @@ else
         theData{indices(1),indices(2)}=[];
     end
     set(hObject,'Data',theData);
+end
+
+
+% --- Executes when selected cell(s) is changed in InputNames.
+function InputNames_CellSelectionCallback(hObject, eventdata, handles)
+% hObject    handle to InputNames (see GCBO)
+% eventdata  structure with the following fields (see UITABLE)
+%	Indices: row and column indices of the cell(s) currently selecteds
+% handles    structure with handles and user data (see GUIDATA)
+indices=eventdata.Indices;
+theColumnWidthInfo=get(hObject,'ColumnWidth');
+theData=get(hObject,'Data');
+theColumnWidthInfo=cellfun(@(x)('auto'),theColumnWidthInfo,'UniformOutput', false); %reset to auto
+theColumnWidthInfo{indices(2)}=10*max(cellfun(@(x)length(x),theData(:,indices(2))))+1;
+set(hObject,'ColumnWidth',theColumnWidthInfo);
+
+
+% --------------------------------------------------------------------
+function InputNames_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to InputNames (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+
+function timeout_value_Callback(hObject, eventdata, handles)
+% hObject    handle to timeout_value (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of timeout_value as text
+%        str2double(get(hObject,'String')) returns contents of timeout_value as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function timeout_value_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to timeout_value (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
 end

@@ -202,26 +202,42 @@ function OpenPlot_pushbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
+
+% Most stuff below should be inside rapid.m or methods of RaPIdObject
 try
     sol=evalin('base','sol');
-    part.p = sol(1,:);
-    [res] = rapid_simuSystem( part,RaPIdObject);
-    identifiedSysData = mySettings.lastSimu.res;
-    idTime = mySettings.lastSimu.time;
-    resInterpo = rapid_interpolate(mySettings.realTime,idTime,identifiedSysData);
-    figure
-    for i = 1:length(mySettings.fmuOutData);
-        subplot(100*ceil(length(mySettings.fmuOutData)/2)+20+i)
-        plot(mySettings.realTime,mySettings.realData(i,:))
-        hold on
-        plot(idTime,identifiedSysData(i,:),'--r')
-        
-        plot(mySettings.realTime,resInterpo(i,:),'--g')
-        
-        title(mySettings.fmuOutData{i})
-        legend('real sys', 'identified sys', 'interpolated data')
+    bestparameters = sol;
+    switch RaPIdObject.experimentSettings.solverMode
+        case 'Simulink'
+            if strcmp(gcs,RaPIdObject.experimentSettings.blockName) % check if model already loaded
+                %NOP
+            else
+                tmp=[];
+                if exist(RaPIdObject.experimentSettings.pathToSimulinkModel,'file')
+                    tmp=RaPIdObject.experimentSettings.pathToSimulinkModel;
+                elseif ~exist(RaPIdObject.experimentSettings.pathToSimulinkModel,'file') && exist(fullfile(evalin('base','pwd'),RaPIdObject.experimentSettings.pathToSimulinkModel),'file')
+                    tmp=fullfile(evalin('base','pwd'),RaPIdObject.experimentSettings.pathToSimulinkModel);
+                end
+                load_system(tmp);
+            end
+            res = rapid_simuSystem(bestparameters,RaPIdObject);
+        case 'ODE'
+            res = rapid_ODEsolve(bestparameters,RaPIdObject);
     end
-catch
+    if ~isempty(res)
+        for i = 1:length(RaPIdObject.fmuOutputNames);  %this should be changed maybe, since FMUoutput is not necessarily what we used for fitness-function
+            figure, hold on %For now, plot each comparison i new figure.
+            plot(RaPIdObject.experimentData.referenceTime,RaPIdObject.experimentData.referenceOutdata(:,i))
+            hold on
+            plot(RaPIdObject.experimentData.referenceTime,res(:,i),'--r')
+            title(RaPIdObject.fmuOutputNames{i})
+            legend('Reference system:', 'Calibrated system:')
+        end
+    else
+        error('Failed to simulate');
+    end
+catch err
+    disp(err.message)
     warning('Functionality not yet implemented / No Data to plot...')
 end
 
@@ -373,13 +389,19 @@ function SaveContainer_pushbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
-[filename, pathname] = uiputfile('*.mat');
-if exist('sol','var')
-    save(strcat(pathname,filename),'RaPIdObject','sol','hist');
-else
-    save(strcat(pathname,filename),'RaPIdObject')
+try
+    [filename, pathname, success] = uiputfile('*.mat');
+    if  success && exist('sol','var')
+        save(strcat(pathname,filename),'RaPIdObject','sol','hist');
+    elseif success
+        save(strcat(pathname,filename),'RaPIdObject')
+    else
+        disp('User did not save file.');
+    end
+catch err
+    warning(strcat('Could not save the file because of error: ',err.message));
 end
-
+    
 
 % --- Executes on button press in LoadContainer_pushbutton.
 function LoadContainer_pushbutton_Callback(hObject, eventdata, handles)
@@ -436,10 +458,20 @@ function LastResult_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 try
-    sol=evalin('base','sol');
-    results; 
-catch
-    warning('No data to look at...')
+    sol=evalin('base','sol');      
+    RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
+    fprintf('The best parameters,given in workspace variable %s, are:\n','sol')
+    fprintf(' %15s',RaPIdObject.parameterNames{:});
+    fprintf('\n');
+    fprintf(' %15.4e', sol);
+    fprintf('\n');
+catch err
+    if strcmp(err.identifier,'MATLAB:UndefinedFunction')
+        disp('No data in workspace.')
+    else
+        warning(err.message); %Should not be critical for anything.
+    end
+
 end
 
 

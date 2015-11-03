@@ -21,7 +21,7 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-classdef RaPIdClass <handle
+classdef  RaPIdClass <handle
     %RAPIDCLASS defines a handle object to store and send settings and data in RaPId 
     % without too much overhead
     
@@ -44,20 +44,29 @@ classdef RaPIdClass <handle
         fmuOutputNames
         parameterNames
         fmuInputNames
-        version=1;  %decimals of sqrt(2)
+        version;  %decimals of sqrt(2)
     end
     
     methods (Static)
         % Implement loading features to ensure backwards compatibility
-        function obj = loadobj(obj) % we will use version here later
-            if isstruct(obj)
-                obj = RaPIdClass(obj);
+        function obj = loadobj(s)
+            try
+                if ~isprop(s, 'version') || isempty(s.version) % if no version -> assign version=1
+                    s.version=double(~isempty(isprop(s, 'version'))); % 0 if really old, else 1 - old
+                    obj = RaPIdClass(s); % update object
+                elseif s.version <1.4 % check if latest ver
+                    obj = RaPIdClass(s); % update object
+                else
+                    obj=s; % everything is up to date
+                end
+            catch err
+                disp(err)
             end
         end
     end
     methods
         function obj = RaPIdClass(varargin)
-            if nargin==1 && isstruct(varargin{1}) % just to convert some old mySettings structs that was used for storing settings will be removed in future
+            if nargin > 0 && isstruct(varargin{1}) && varargin{1}.version==0 %to convert some old mySettings-structs, will be removed in future.
                 tmp=varargin{1};
                 obj.psoSettings = tmp.pso_options;
                 obj.naiveSettings = tmp.naive_options;
@@ -93,7 +102,7 @@ classdef RaPIdClass <handle
                     obj.experimentSettings.solverMode = tmp.mode;
                 else
                     obj.experimentSettings.solverMode = 'Simulink';
-                end
+                end         
                 if isfield(tmp,'fmuInputNames')
                     obj.fmuInputNames = tmp.fmuInputNames;
                 end
@@ -106,12 +115,45 @@ classdef RaPIdClass <handle
                     obj.pfSettings = struct('nb_particles', 100,'prune_threshold', 0.1,'kernel_sigma',1);
                 end
                 if ~isfield(tmp,'inDat')
-                   tmp.inDat = struct('path',[],'signal',[],'time',[]);
+                    tmp.inDat = struct('path',[],'signal',[],'time',[]);
                 end
                 obj.experimentData.pathToInData = tmp.inDat.path;
                 obj.experimentData.expressionInData = tmp.inDat.signal;
                 obj.experimentData.expressionInDataTime = tmp.inDat.time;
+                obj.version=1; % ver should be according to 1
+                obj=RaPIdClass(obj); % update to latest version
             end
+            if nargin > 0 && isstruct(varargin{1}) && varargin{1}.version==1
+                tmp=varargin{1};
+                obj.psoSettings=tmp.psoSettings;
+                obj.gaSettings=tmp.gaSettings;
+                obj.combiSettings=tmp.combiSettings;
+                obj.naiveSettings=tmp.naiveSettings;
+                obj.knitroSettings=tmp.knitroSettings;
+                obj.nmSettings=tmp.nmSettings;
+                obj.cgSettings=tmp.cgSettings;
+                obj.psoExtSettings=tmp.psoExtSettings;
+                obj.gaExtSettings=tmp.gaExtSettings;
+                obj.fminconSettings=tmp.fminconSettings;
+                obj.pfSettings=tmp.pfSettings;
+                obj.experimentSettings=tmp.experimentSettings;
+                obj.experimentData=tmp.experimentData;
+                obj.resultData=tmp.resultData;
+                obj.fmuOutputNames=tmp.fmuOutputNames;
+                obj.parameterNames=tmp.parameterNames;
+                obj.fmuInputNames=tmp.fmuInputNames;
+                obj.version=tmp.version;
+                obj=RaPIdClass(obj); % update rapidobject to latest version
+            elseif nargin>0 && isa(varargin{1},'RaPIdClass')
+                if varargin{1}.version<1.4
+                    obj=varargin{1};
+                    obj.experimentSettings.timeOut=2; %default
+                    obj.version=1.4;
+                    % this should contain more things as changed to attributes
+                    % are introduced. i.e if <1.41 and so on.
+                end
+            end
+            
         end
         function obj = saveobj(obj)
             
