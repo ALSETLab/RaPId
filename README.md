@@ -53,6 +53,15 @@ Don't forget to save your container, after your modifications!
 
 More details is available in the Documentation. 
 
+## Creating FMUs from Modelica Power System Models using the iTesla Power Systems Modelica Library (iPSL)
+RaPId can be used with any FMU generated from an [FMI Compliant tool](https://www.fmi-standard.org/tools).
+
+However, the development of RaPId was carried out in parallel to the development of the iPSL, also within the iTesla project, to be able to validate and calibrate power system models.
+
+To create FMUs for power system models you can use a [Modelica tool of your choice](https://modelica.org/tools) capable of generating FMUs. FMU generation with RaPId has been tested using [JModelica](http://www.jmodelica.org/), [OpenModelica](https://www.openmodelica.org/) and [Dymola](http://www.3ds.com/products-services/catia/products/dymola).
+
+If you would like to use Modelica to generate FMUs containing power system models, you can use the [iPSL](https://github.com/itesla/ipsl). Several of the examples in RaPId where developed using the iPSL.
+
 ## Acknowledgements
 The initial development of iTesla RaPId was possible through the [iTesla](http://www.itesla-project.eu/) project funded by the European Commission through the FP7. 
 The original development team at KTH SmarTS Lab was also supported by [Statnett SF](http://www.statnett.no/) (the Norwegian power grid operator), the NER-funded project [STRONgrid](http://www.nordicenergy.org/project/smart-transmission-grid-operation-and-control/), and the [STandUP for Energy collaboration initiative](http://www.standupforenergy.se/).
