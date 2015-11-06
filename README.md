@@ -1,4 +1,15 @@
-# iTesla RaPId
+# iTesla RaPId - Abstract
+iTesla RaPId  (a recursive acronym for "Rapid Parameter Identification") utilizes different optimization and simulation technologies to provide a framework for model validation and calibration of any kind of dynamical systems, but specifically catered to power systems.
+
+# Release - How to download the latest stable version of RaPId?
+- If you are not familiar using GIT to work with repositories, and all you want is to check out RaPId, please go directly to the [Release Tab](https://github.com/SmarTS-Lab/iTesla_RaPId/releases).
+
+# Contributing
+- Reporting Bugs: please use the [Issues](https://github.com/SmarTS-Lab/iTesla_RaPId/issues) facility to report bugs.
+- If you are familiar with GIT, and want to be involved in the development (from bug fixes, to anything else!), please clone the repository and use GIT to contribute. 
+- Contribution Guideliness can be found at: (in construction).
+
+# iTesla RaPId - Introduction
 iTesla RaPId  (a recursive acronym for "Rapid Parameter Identification") utilizes different optimization and simulation technologies to provide a framework for model validation and calibration of any kind of dynamical systems, but specifically catered to power systems. The foundation of RaPId is MATLAB/Simulink which is necessary for processing the available measurements and for the simulation of the Modelica model within the MATLAB/Simulink platform. Simulation of the Modelica model is carried out using the FMI Toolbox for MATLAB. Within the MATLAB environment, RaPId provides the user with different functionalities, such as the set-up of an optimization problem, access to different solvers to simulate the model, and automates a parameter optimization process (or “calibration”) so that the model is not only validated (i.e. satisfies the error allowed in an objective function) but also calibrated (i.e. the error of the objective function is minimized by finding optimal parameters). 
 
 The user is provided with a Graphical User Interface (GUI) which he can use to set-up the model validation and calibration problem. More advanced users, such as researchers, can take benefit of the modular design of RaPId which allows the use of the command line interface via MATLAB scripts, the inclusion of dedicated optimization routines (by extending RaPId's source code), and the formulation of different optimization problems.
@@ -53,10 +64,13 @@ Don't forget to save your container, after your modifications!
 
 More details is available in the Documentation. 
 
-## Creating FMUs from Modelica Power System Models using the iTesla Power Systems Modelica Library (iPSL)
-RaPId can be used with any FMU generated from an [FMI Compliant tool](https://www.fmi-standard.org/tools).
+## Creating FMUs
 
-However, the development of RaPId was carried out in parallel to the development of the iPSL, also within the iTesla project, to be able to validate and calibrate power system models.
+In principle, RaPId be used with any FMU generated from an [FMI Compliant tool](https://www.fmi-standard.org/tools). However, because RaPId depends on the FMI Toolbox for MATLAB/Simulink, the user needs to check if their tool has been supported and/or tested by the FMI Toolbox developers, [Modelon](http://www.modelon.com/products/supported-tools/).
+
+## Creating FMUs for Power System Models
+
+The development of RaPId was carried out in parallel to the development of the iTesla Power Systems Modelica Library ([iPSL](https://github.com/itesla/ipsl)), also within the iTesla project, to be able to validate and calibrate power system models.
 
 To create FMUs for power system models you can use a [Modelica tool of your choice](https://modelica.org/tools) capable of generating FMUs. FMU generation with RaPId has been tested using [JModelica](http://www.jmodelica.org/), [OpenModelica](https://www.openmodelica.org/) and [Dymola](http://www.3ds.com/products-services/catia/products/dymola).
 
