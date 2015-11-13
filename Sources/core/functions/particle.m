@@ -64,8 +64,8 @@ classdef particle
     methods
         function obj = particle(varargin)
             if nargin==3 
-                pMax=varargin{1};
-                pMin=varargin{2};
+                pMin=varargin{1};
+                pMax=varargin{2};
                 parameters=varargin{3};
             if length(pMax) ~= length(pMin) 
                 throw('wrong size for pmax or pmin');

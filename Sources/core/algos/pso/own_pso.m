@@ -70,14 +70,14 @@ alpha3 = RaPIdObject.psoSettings.alpha3;
 limit = RaPIdObject.experimentSettings.maxIterations;
 if RaPIdObject.experimentSettings.saveHist %pre-allocate for speed
     bestfitness_history = zeros(limit,1); % pre-allocate vector (guesstimate size)
-    bestparameters_history = zeros(limit,RaPIdObject.experimentSettings.p_0); % pre-allocate some array (guesstimate size)
+    bestparameters_history = zeros(limit,length(RaPIdObject.experimentSettings.p_0)); % pre-allocate some array (guesstimate size)
     improved_at_iterations=bestfitness_history; % pre-allocate vector (guesstimate size)
 end
 debugging=0; % set to 1 for troubleshooting the code
 bestfitness = func(RaPIdObject.experimentSettings.p_0, RaPIdObject); % calculate fitness for initial parameter guess
 bestfitness_history(1)=bestfitness; % save fitness history
 bestparameters=RaPIdObject.experimentSettings.p_0; % best current parameters
-bestparameters_history(1)=bestfiness; % save best parameter history
+bestparameters_history(1)=bestfitness; % save best parameter history
 improved_at_iterations(1)=0;  % save at which iterations the fitness & best parameters were saved
 k=2; % pointer in history arrays
 %% Init the swarm: give positions to all particles
@@ -103,23 +103,24 @@ for i = 1:length(swarm)
     if fitness < bestfitness % new best fitness?
         bestfitness = fitness; % update best fitness
         bestparameters = swarm{i}.p; % and corresponding parameters
-        if verbose
-            disp(['i = 1. Best parameters: ' num2str(bestparameters) ' with fitness = ' num2str(bestfitness)])
-        end
+        bestfitness_history(k) = bestfitness;
         if RaPIdObject.experimentSettings.saveHist
-            bestfitness_history(k) = bestfitness;
-            bestparameters_history(k) = bestparameters;
-            improved_at_iterations(k) = 1;
-            k=k+1;
+            bestparameters_history(k,:) = bestparameters;
+            improved_at_iterations(k) = 1; 
         else
             improved_at_iterations = 1;
         end
+        if verbose
+            disp(['i = 1. Best parameters: ' num2str(bestparameters) ' with fitness = ' num2str(bestfitness)])
+        end
+        %k=k+1;
     end
 end
 iteration = 2;
-worst_pointer=1;
+initial_fitness=bestfitness_history(2);
 %% Algorithm's main body
-while iteration <= limit&&bestfitness_history(end) >= bestfitness_history(worst_pointer)*RaPIdObject.psoSettings.fitnessStopRatio % speed update loop
+while iteration <= limit && bestfitness >= initial_fitness*RaPIdObject.psoSettings.fitnessStopRatio % speed update loop
+    k=k+1;
     if debugging&&mod(iteration,10) == 0 % debug info display
         sprintf(strcat('iteration ',int2str(iteration),' in pso body'));
     end
@@ -140,22 +141,23 @@ while iteration <= limit&&bestfitness_history(end) >= bestfitness_history(worst_
             %swarm{i}.setBest(fitness);
         end
         if fitness < bestfitness % new best fitness?
-            if verbose
-                disp(['i = ' num2str(iteration) '. Best parameters: ' num2str(swarm{i}.p) ' with fitness = ' num2str(fitness)])
-            end
             bestparameters = swarm{i}.p;
             bestfitness = fitness;
+            bestfitness_history(k) = bestfitness;
+            if verbose
+                disp(['i = ' num2str(iteration) '. Best parameters: ' num2str(swarm{i}.p) ' with fitness = ' num2str(fitness)])
+            end            
             if RaPIdObject.experimentSettings.saveHist
-                bestfitness_history(k) = bestfitness;
                 bestparameters_history(k,:) = bestparameters;
                 improved_at_iterations(k) = iteration;
-                k=k+1;
-                if ~isfinite(Best_H(worst_pointer))
-                    worst_pointer=max(bestfitness_history(isfinite(bestfitness_history)));
-                end
+                
+%                 if ~is(Best_H(worst_pointer))
+%                     worst_pointer=max(bestfitness_history((bestfitness_history(1:k)<1e66)));
+%                 end
             else
                 improved_at_iterations = iteration;
             end
+            
         end
     end % end of looping through particles of the swam
     iteration = iteration + 1;

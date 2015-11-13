@@ -49,7 +49,20 @@ function [res] = rapid_simuSystem(newParameters,RaPIdObject)
 % This function should never be called, the function FUNC does all the job
 % for you
 % --------> See the help for FUNC
-global nbIterations'
+global nbIterations
+persistent paramStruct
+
+if isempty(paramStruct)
+    paramStruct.SaveOutput='on';
+    paramStruct.OutputSaveName='simout';
+    paramStruct.StartTime='0';
+    paramStruct.FixedStep=num2str(RaPIdObject.experimentSettings.ts);
+    paramStruct.FixedStep='auto';
+    paramStruct.StopTime=num2str(RaPIdObject.experimentSettings.tf);
+    paramStruct.Solver=RaPIdObject.experimentSettings.integrationMethod;
+    paramStruct.TimeOut=RaPIdObject.experimentSettings.timeOut;
+    paramStruct.RelTol=num2str(1e-3);
+end
 debugging=0; % will use this for troubleshooting
 parameterName = RaPIdObject.parameterNames;
 for l = 1:length(newParameters)
@@ -58,7 +71,7 @@ end
 
 try
 %   output=sim(settings.modelName,'SaveOutput','on','OutputSaveName','simout','StartTime','0','FixedStep',num2str(settings.Ts),'StopTime',num2str(settings.tf),'Solver',settings.intMethod,'TimeOut',10, 'LoadExternalInput', 'on','ExternalInput', '[settings.realTime settings.realData]');
-    [stuff,output]=evalc('sim(RaPIdObject.experimentSettings.modelName,''SaveOutput'',''on'',''OutputSaveName'',''simout'',''StartTime'',''0'',''FixedStep'',num2str(RaPIdObject.experimentSettings.ts),''StopTime'',num2str(RaPIdObject.experimentSettings.tf),''Solver'',RaPIdObject.experimentSettings.integrationMethod,''TimeOut'',num2str(RaPIdObject.experimentSettings.timeOut))');
+    [stuff,output]=evalc('sim(RaPIdObject.experimentSettings.modelName,paramStruct);');
     if debugging
         disp(stuff);
     end

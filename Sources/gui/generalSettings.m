@@ -735,9 +735,9 @@ function verbose_Callback(hObject, eventdata, handles)
 
 % Hint: get(hObject,'Value') returns toggle state of verbose
 if get(hObject,'Value')==1
-    set(hObject,'String','Save History: On')
+    set(hObject,'String','Verbose: On')
 else
-    set(hObject,'String','Save History: Off')
+    set(hObject,'String','Verbose: Off')
 end
 
 
