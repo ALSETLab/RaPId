@@ -49,7 +49,8 @@ function [res] = rapid_simuSystem(newParameters,RaPIdObject)
 % This function should never be called, the function FUNC does all the job
 % for you
 % --------> See the help for FUNC
-global nbIterations
+global nbIterations'
+debugging=0; % will use this for troubleshooting
 parameterName = RaPIdObject.parameterNames;
 for l = 1:length(newParameters)
     fmuSetValueSimulink(RaPIdObject.experimentSettings.blockName,parameterName{l},num2str(newParameters(l))); % set FMU-block parameters
@@ -57,8 +58,8 @@ end
 
 try
 %   output=sim(settings.modelName,'SaveOutput','on','OutputSaveName','simout','StartTime','0','FixedStep',num2str(settings.Ts),'StopTime',num2str(settings.tf),'Solver',settings.intMethod,'TimeOut',10, 'LoadExternalInput', 'on','ExternalInput', '[settings.realTime settings.realData]');
-    [stuff,output]=evalc('sim(RaPIdObject.experimentSettings.modelName,''SaveOutput'',''on'',''OutputSaveName'',''simout'',''StartTime'',''0'',''FixedStep'',num2str(RaPIdObject.experimentSettings.ts),''StopTime'',num2str(RaPIdObject.experimentSettings.tf),''Solver'',RaPIdObject.experimentSettings.integrationMethod,''TimeOut'',1)');
-    if RaPIdObject.experimentSettings.verbose
+    [stuff,output]=evalc('sim(RaPIdObject.experimentSettings.modelName,''SaveOutput'',''on'',''OutputSaveName'',''simout'',''StartTime'',''0'',''FixedStep'',num2str(RaPIdObject.experimentSettings.ts),''StopTime'',num2str(RaPIdObject.experimentSettings.tf),''Solver'',RaPIdObject.experimentSettings.integrationMethod,''TimeOut'',num2str(RaPIdObject.experimentSettings.timeOut))');
+    if debugging
         disp(stuff);
     end
     tmp=get(output,'simout');

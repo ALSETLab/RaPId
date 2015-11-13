@@ -62,22 +62,29 @@ classdef particle
     end
     
     methods
-        function obj = particle(pm,pM,p)
-            if length(pM) ~= length(pm)
-                throw('wrong size for pM or pm');
+        function obj = particle(varargin)
+            if nargin==3 
+                pMax=varargin{1};
+                pMin=varargin{2};
+                parameters=varargin{3};
+            if length(pMax) ~= length(pMin) 
+                throw('wrong size for pmax or pmin');
             end
-            obj.p_min = pm;
-            obj.p_max = pM;
-            obj.n = length(pm);
-            if isempty(p)
+            obj.p_min = pMin;
+            obj.p_max = pMax;
+            obj.n = length(pMin);
+            if isempty(parameters)
                 obj.p = (obj.p_max - obj.p_min).*rand(obj.n,1)' + obj.p_min;
             else
-                obj.p = p;
+                obj.p = parameters;
             end
             obj.v_max = (obj.p_max - obj.p);
             obj.v_min = (obj.p_min - obj.p);
             obj.v = (obj.v_max - obj.v_min).*rand(obj.n,1)' + obj.v_min;
             obj.plot = false;
+            else
+                % just return a particle with default properties
+            end 
         end
         
         function obj = particleV(pm,pM,verbose)

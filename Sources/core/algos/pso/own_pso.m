@@ -68,12 +68,18 @@ alpha1 = RaPIdObject.psoSettings.alpha1;
 alpha2 = RaPIdObject.psoSettings.alpha2;
 alpha3 = RaPIdObject.psoSettings.alpha3;
 limit = RaPIdObject.experimentSettings.maxIterations;
-best = 1e66;
-bestP = [];
-
-best = func(RaPIdObject.experimentSettings.p_0, RaPIdObject);
-bestP=RaPIdObject.experimentSettings.p_0;
-fit_store=[0;best];
+if RaPIdObject.experimentSettings.saveHist %pre-allocate for speed
+    bestfitness_history = zeros(limit,1); % pre-allocate vector (guesstimate size)
+    bestparameters_history = zeros(limit,RaPIdObject.experimentSettings.p_0); % pre-allocate some array (guesstimate size)
+    improved_at_iterations=bestfitness_history; % pre-allocate vector (guesstimate size)
+end
+debugging=0; % set to 1 for troubleshooting the code
+bestfitness = func(RaPIdObject.experimentSettings.p_0, RaPIdObject); % calculate fitness for initial parameter guess
+bestfitness_history(1)=bestfitness; % save fitness history
+bestparameters=RaPIdObject.experimentSettings.p_0; % best current parameters
+bestparameters_history(1)=bestfiness; % save best parameter history
+improved_at_iterations(1)=0;  % save at which iterations the fitness & best parameters were saved
+k=2; % pointer in history arrays
 %% Init the swarm: give positions to all particles
 list = generateOrganisedSwarm( RaPIdObject.psoSettings.nb_particles, RaPIdObject.psoSettings.nRandMin,RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,RaPIdObject.experimentSettings.p_0);
 for i = 1:size(list,1)
@@ -84,84 +90,86 @@ for i = size(list,1)+1:RaPIdObject.psoSettings.nb_particles
 end
 % we should modify this to include the possibility of having a grid along
 % with the randomly drawn particles
-iteration = 2;
+
 %% init the algorithm, set the best position and fitness to every particle
 % and to the overall best
-verbose=RaPIdObject.experimentSettings.verbose;
+verbose=RaPIdObject.experimentSettings.verbose; % used to decide if displaying progress
 for i = 1:length(swarm)
-    % debug info display
-    if verbose&&mod(i,10)==0
+    if debugging&&mod(i,10)==0 % debug info display
         sprintf(strcat('init particle ',int2str(i),' in pso'));
     end
-    fitness = func(swarm{i}.p, RaPIdObject);
-    swarm{i} = swarm{i}.setBest(fitness);
-    if fitness < best
-        best = fitness;
-        bestP = swarm{i}.p;
-        fit_store(1,1)=1;
-        fit_store(2,1)=fitness;
+    fitness = func(swarm{i}.p, RaPIdObject); % calculate fitness of particle i
+    swarm{i} = swarm{i}.setBest(fitness); % save fitness in particle i
+    if fitness < bestfitness % new best fitness?
+        bestfitness = fitness; % update best fitness
+        bestparameters = swarm{i}.p; % and corresponding parameters
+        if verbose
+            disp(['i = 1. Best parameters: ' num2str(bestparameters) ' with fitness = ' num2str(bestfitness)])
+        end
+        if RaPIdObject.experimentSettings.saveHist
+            bestfitness_history(k) = bestfitness;
+            bestparameters_history(k) = bestparameters;
+            improved_at_iterations(k) = 1;
+            k=k+1;
+        else
+            improved_at_iterations = 1;
+        end
     end
 end
-best_H = [best];
-bestP_H = [bestP];
-disp(['i = 1. Best parameters: ' num2str(bestP) ' with fitness = ' num2str(best)])
+iteration = 2;
 worst_pointer=1;
-%% Algorithm's body
-% speed update loop
-while iteration <= limit&&best_H(end) >= best_H(worst_pointer)*RaPIdObject.psoSettings.fitnessStopRatio
-    % debug info display
-    if verbose&&mod(iteration,10) == 0
+%% Algorithm's main body
+while iteration <= limit&&bestfitness_history(end) >= bestfitness_history(worst_pointer)*RaPIdObject.psoSettings.fitnessStopRatio % speed update loop
+    if debugging&&mod(iteration,10) == 0 % debug info display
         sprintf(strcat('iteration ',int2str(iteration),' in pso body'));
     end
-    % loop on all the particles of the swarm
-    for i = 1:length(swarm)
-        % debug info display
-        if verbose&&mod(i,10) == 0
+    for i = 1:length(swarm) % loop on all the particles of the swarm
+        if debugging&&mod(i,10) == 0 % debug info display
             sprintf(strcat('particle ',int2str(iteration)));
         end
-        % update of the particle's speed
-        swarm{i}.v = alpha1 * rand * swarm{i}.v + alpha2*rand(1,length(swarm{i}.p)).*(swarm{i}.bestPos - swarm{i}.p) + alpha3*rand(1,length(swarm{i}.p)).*(bestP - swarm{i}.p);
-        % kicks the particle when it's starting to get stuck (position converges)
-        if norm(swarm{i}.v) < norm(swarm{i}.v_max)*RaPIdObject.psoSettings.kick_multiplier
+        swarm{i}.v = alpha1 * rand * swarm{i}.v + alpha2*rand(1,length(swarm{i}.p)).*(swarm{i}.bestPos - swarm{i}.p) + alpha3*rand(1,length(swarm{i}.p)).*(bestparameters - swarm{i}.p); % update of the particle's speed
+        if norm(swarm{i}.v) < norm(swarm{i}.v_max)*RaPIdObject.psoSettings.kick_multiplier % kicks the particle when it's starting to get stuck (position converges)
             r = 2*rand(1,length(swarm{i}.p))-1;
             swarm{i}.v = (r + swarm{i}.v)*norm(swarm{i}.v_max)/norm(r+swarm{i}.v);
         end
-        % change the position according to the speed update and update best
-        % fitness and best position
-        swarm{i} = swarm{i}.updatePart();
-        fitness = func(swarm{i}.p, RaPIdObject);
+        swarm{i} = swarm{i}.updatePart(); % change the position according to the speed update and update best fitness and best position
+        fitness = func(swarm{i}.p, RaPIdObject); %calculate fitness
         if fitness < swarm{i}.bestValue
             swarm{i}.bestPos = swarm{i}.p;
             swarm{i}.bestValue = fitness;
             %swarm{i}.setBest(fitness);
         end
-        if fitness < best
-            disp(['i = ' num2str(iteration) '. Best parameters: ' num2str(swarm{i}.p) ' with fitness = ' num2str(fitness)])
-            bestP = swarm{i}.p;
-            best = fitness;
-            fit_store([1,2],end+1)=[iteration*RaPIdObject.psoSettings.nb_particles + i;fitness];  
+        if fitness < bestfitness % new best fitness?
+            if verbose
+                disp(['i = ' num2str(iteration) '. Best parameters: ' num2str(swarm{i}.p) ' with fitness = ' num2str(fitness)])
+            end
+            bestparameters = swarm{i}.p;
+            bestfitness = fitness;
+            if RaPIdObject.experimentSettings.saveHist
+                bestfitness_history(k) = bestfitness;
+                bestparameters_history(k,:) = bestparameters;
+                improved_at_iterations(k) = iteration;
+                k=k+1;
+                if ~isfinite(Best_H(worst_pointer))
+                    worst_pointer=max(bestfitness_history(isfinite(bestfitness_history)));
+                end
+            else
+                improved_at_iterations = iteration;
+            end
         end
-        
-    end
+    end % end of looping through particles of the swam
     iteration = iteration + 1;
-   
-    if RaPIdObject.experimentSettings.saveHist
-        best_H = [best_H; best];
-        bestP_H = [bestP_H; bestP];
-        if ~isfinite(Best_H(worst_pointer))
-            worst_pointer=max(best_H(isfinite(best_H)));
-        end
-    end
-end
+end  % end of main iteration loop
+%% Finish and return results
 if ~RaPIdObject.experimentSettings.saveHist
-    best_H=best;
-    bestP_H=bestP;
+    bestfitness_history=bestfitness;
+    bestparameters_history=bestparameters;
 end
-sol = bestP;
-historic.best_H = best_H;
-historic.bestP_H = bestP_H;
+sol = bestparameters;
+historic.best_H = bestfitness_history;
+historic.bestP_H = bestparameters_history;
+historic.improvement_at_iterations=improved_at_iterations;
 historic.swarm = swarm;
-historic.fit_store=fit_store;
 end
 
 
