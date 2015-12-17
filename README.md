@@ -29,6 +29,11 @@ If you use RaPId in your work or research, all we ask you in exchange is that yo
 ## Demo Videos
 To see RaPId in action, you can find demo videos in youtube: [GUI](https://www.youtube.com/watch?v=e7OkVEtcz6A) and [CLI](https://www.youtube.com/watch?v=4qrPASIWdiY).
 
+Demonstration on the use of RaPId for identification of exciter parameters in the MOSTAR power plant: [MOSTAR DEMO](https://www.youtube.com/watch?v=X8X89l1HBjo)
+
+Extended functionalities of RaPId for small-signal (linearized model) and time-domain (non-linear time domain) power system inter-area electromechanical mode model validation and calibration: [Inter-Area Mode Model-Validation](Add link)
+
+
 ## Software requirements (dependencies):
 Here is compiled a list of the required software packages to run the toolbox. 
 - Matlab R2011b to R2014b ([MathWorks](http://se.mathworks.com/products/matlab/))
