@@ -46,7 +46,7 @@ function varargout = rapid_main_window(varargin)
 
 % Edit the above text to modify the response to help main
 
-% Last Modified by GUIDE v2.5 08-Sep-2015 19:46:45
+% Last Modified by GUIDE v2.5 02-Dec-2015 23:21:10
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -621,3 +621,13 @@ if strcmp(get(get(source,'SelectedObject'),'String'),'Simulink')
 else
     RaPIdObject.experimentSettings.solverMode='ODE';
 end
+
+
+
+
+% --- Executes on button press in SSAbutton.
+function SSAbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to SSAbutton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+SSAsettings

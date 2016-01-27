@@ -21,7 +21,7 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-function fitness = rapid_objectiveFunction(referenceResults,simulatedResults,RaPIdObject)
+function fitness = rapid_objectiveFunction(referenceResults,simulatedResults,RaPIdObject, modes)
 %RAPID_OBJECTIVEFUNCTION computes a fitness according to a fitness criterion
 %   realRes is data used for matching, from measurments
 %   simuRes is the data we want to have matching realRes
@@ -42,6 +42,9 @@ function fitness = rapid_objectiveFunction(referenceResults,simulatedResults,RaP
     % and the simulated output signals weren't sampled at the same sampling instants.
     % after interpolation simuRes contains the simulated output evaluated
     % at the same time instant as settings.realTime  
+if nargin < 4
+   modes = 0;
+end
 
 assert(all(size(simulatedResults)==size(referenceResults)),'The size of reference and simulation data is not the same.')
 
@@ -53,7 +56,26 @@ switch RaPIdObject.experimentSettings.cost_type
        fitness = sum(sum(delta.*delta));   
     case 2,
        weights = RaPIdObject.experimentSettings.objective_weights;
-       fitness=sum(sum(delta.*delta*weights)); 
+       fitness=sum(sum(delta.*delta*weights));
+    case 3 % small signal analysis
+       weights = RaPIdObject.experimentSettings.objective_weights;
+       TDfitness=sum(sum(delta.*delta*weights)); 
+       
+       refmode=RaPIdObject.ReferenceMode;
+       if ~isreal(refmode)
+           SSfitness=abs(modes-refmode);
+       else
+           error('Referent mode is not a complex number');  
+       end
+       
+       TDweight=RaPIdObject.experimentSettings.TDweight;
+       SSweight=RaPIdObject.experimentSettings.SSweight;
+       
+       fitness=TDweight*TDfitness + SSweight*SSfitness;
+       fprintf('fitness : %15.9f \n' , fitness);
+       fprintf('\n');
+    
+       
     otherwise
         errorWrongCost
 end

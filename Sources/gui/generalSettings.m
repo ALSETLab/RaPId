@@ -46,7 +46,7 @@ function varargout = generalSettings(varargin)
 
 % Edit the above text to modify the response to help generalSettings
 
-% Last Modified by GUIDE v2.5 09-Sep-2015 21:22:00
+% Last Modified by GUIDE v2.5 03-Dec-2015 20:02:24
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -139,7 +139,13 @@ try
     set(handles.edit15,'String',num2str(RaPIdObject.experimentSettings.t_fitness_start));
 end
 
+try
+    set(handles.TDweightEdit,'String',num2str(RaPIdObject.experimentSettings.TDweight));
+end
 
+try
+    set(handles.SSweightEdit,'String',num2str(RaPIdObject.experimentSettings.SSweight));
+end
 
 
 
@@ -602,6 +608,8 @@ settings2.ts = eval(get(handles.edit1,'String'));
 settings2.tf = eval(get(handles.edit2,'String'));
 settings2.verbose = get(handles.verbose,'Value');
 settings2.cost_type = str2num(get(handles.edit9,'String'));
+settings2.TDweight=str2num(get(handles.TDweightEdit,'String'));
+settings2.SSweight=str2num(get(handles.SSweightEdit,'String'));
 settings2.integrationMethod = get(handles.edit11,'String');
 settings2.maxIterations = str2double(get(handles.edit16,'String'));
 settings2.t_fitness_start = (get(handles.edit15,'String'));
@@ -785,4 +793,50 @@ else
         theData{indices(1),indices(2)}=[];
     end
     set(hObject,'Data',theData);
+end
+
+
+
+function TDweightEdit_Callback(hObject, eventdata, handles)
+% hObject    handle to TDweightEdit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of TDweightEdit as text
+%        str2double(get(hObject,'String')) returns contents of TDweightEdit as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function TDweightEdit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to TDweightEdit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function SSweightEdit_Callback(hObject, eventdata, handles)
+% hObject    handle to SSweightEdit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of SSweightEdit as text
+%        str2double(get(hObject,'String')) returns contents of SSweightEdit as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function SSweightEdit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to SSweightEdit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
 end

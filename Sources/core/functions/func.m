@@ -44,15 +44,22 @@ end
 switch RaPIdObject.experimentSettings.solverMode
     case 'ODE'
         [simuRes] = rapid_ODEsolve(p,RaPIdObject);
+        %[simuRes] = randn(502,3); % Vedran DELETE THIS !!!!!!!!!!!!!!!!!!!1
     case 'Simulink'
         [simuRes] = rapid_simuSystem(p,RaPIdObject);
+        % [simuRes] = randn(517,2); % Vedran DELETE THIS !!!!!!!!!!!!!!!!!!!1
     otherwise
         error('In "mySettings.mode": You must select either "ODE" (internal ODE-solvers) or "Simulink"');
 end
+%% small signal stability fitting
+if RaPIdObject.experimentSettings.cost_type==3
+    modes = SmallSignalPerformance(p, RaPIdObject);
+end
+
 if isempty(simuRes)
     fitness=1e66;
 else
-    fitness=rapid_objectiveFunction(RaPIdObject.experimentData.referenceOutdata,simuRes,RaPIdObject);
+    fitness=rapid_objectiveFunction(RaPIdObject.experimentData.referenceOutdata,simuRes,RaPIdObject, modes);
     if length(fitness) > 1
         error('problem with fitness size')
     end
