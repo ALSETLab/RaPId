@@ -42,12 +42,12 @@ function [sol, historic] = pso_algo(RaPIdObject)
 %           norm(v_max)*kick_multiplier, v_max being the speed (computed
 %           internally) which would lead the particle as far as possible
 %           inside the space defined by p_min/p_max
-%       - alpha1: multiplier on the contribution of the last sample of the
+%       - w: multiplier on the contribution of the last sample of the
 %            particle's speed to it's next sample
-%       - alpha2: multiplier on the contribution of the distance to the
+%       - self_coeff: multiplier on the contribution of the distance to the
 %           particle's personal best position to the next sample of
 %           the speed
-%       - alpha3: multiplier on the contribution of the distance to the swarm's
+%       - social_coeff: multiplier on the contribution of the distance to the swarm's
 %           overall best position to the next sample of the speed
 %       - limit: number maximal of iterations in the speeds updates
 %       - fitnessStopRatio: the algorithm stops if the best fitness reaches
@@ -61,7 +61,12 @@ function [sol, historic] = pso_algo(RaPIdObject)
 %       vector of parameters
 %       - storeData, boolean allowing to store all the best fitness and
 %       particles at every iterations (get's big very quickly)
-[ sol, historic] = own_pso(RaPIdObject,@func);
+switch RaPIdObject.psoSettings.method
+    case 'CFA-PSO'
+        [ sol, historic] = own_cfapso(RaPIdObject,@func);
+    otherwise
+        [ sol, historic] = own_pso(RaPIdObject,@func);
+end
 end
 
 

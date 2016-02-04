@@ -46,7 +46,7 @@ function varargout = psoSettings(varargin)
 
 % Edit the above text to modify the response to help psoSettings
 
-% Last Modified by GUIDE v2.5 17-May-2013 09:43:08
+% Last Modified by GUIDE v2.5 04-Feb-2016 22:34:19
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -88,14 +88,28 @@ guidata(hObject, handles);
 
 if isprop(RaPIdObject,'psoSettings')
     tmp=RaPIdObject.psoSettings;
-    set(handles.edit1,'String',tmp.alpha1);
-    set(handles.edit2,'String',tmp.alpha2);
-    set(handles.edit3,'String',tmp.alpha3);
+    set(handles.edit1,'String',tmp.w);
+    set(handles.edit2,'String',tmp.self_coeff);
+    set(handles.edit3,'String',tmp.social_coeff);
     set(handles.edit4,'String',tmp.limit);
     set(handles.edit5,'String',tmp.nb_particles);
     set(handles.edit6,'String',tmp.fitnessStopRatio);
     set(handles.edit7,'String',tmp.kick_multiplier);
     set(handles.edit14,'String',tmp.nRandMin);
+    pso_methods={'PSO','CFA-PSO'};
+    set(handles.popupmenu1,'String',[tmp.method pso_methods(~strcmp(tmp.method,pso_methods))]);
+    set(handles.edit18,'String',tmp.w_min);
+    set(handles.edit19,'String',tmp.w_max);
+    
+    set(handles.text1,'String','Particle inertia weight:');
+    set(handles.text2,'String','Self recognition coefficient:');
+    set(handles.text3,'String','Social coefficient:');
+    set(handles.text4,'String','Iteration limit:');
+    set(handles.text5,'String','Number of particles:');
+    set(handles.text6,'String','Fitness stop ratio (0=disable)');
+    set(handles.text7,'String','kick_multiplier');
+    set(handles.text15,'String','Min. no. rand. particles');
+    set(handles.text18,'String','Method');
 end
 
 
@@ -279,14 +293,19 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handle2main=getappdata(0,'HandleMainGUI');
 RaPIdObject=getappdata(handle2main,'RaPIdObject');
-pso_options.alpha1 = eval(get(handles.edit1,'String'));
-pso_options.alpha2 = eval(get(handles.edit2,'String'));
-pso_options.alpha3 = eval(get(handles.edit3,'String'));
+pso_options.w = eval(get(handles.edit1,'String'));
+pso_options.self_coeff = eval(get(handles.edit2,'String'));
+pso_options.social_coeff = eval(get(handles.edit3,'String'));
 pso_options.limit = eval(get(handles.edit4,'String'));
 pso_options.nRandMin = eval(get(handles.edit14,'String'));
 pso_options.nb_particles = eval(get(handles.edit5,'String'));
 pso_options.fitnessStopRatio = eval(get(handles.edit6,'String'));
 pso_options.kick_multiplier = eval(get(handles.edit7,'String'));
+pso_options.w_min = eval(get(handles.edit18,'String'));
+pso_options.w_max = eval(get(handles.edit19,'String'));
+tmp=get(handles.popupmenu1,'String');
+tmp_ind=get(handles.popupmenu1,'Value');
+pso_options.method =tmp(tmp_ind);
 RaPIdObject.psoSettings = pso_options;
 close(gcf)
 
@@ -350,6 +369,98 @@ function edit16_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function edit16_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to edit16 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit17_Callback(hObject, eventdata, handles)
+% hObject    handle to edit17 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit17 as text
+%        str2double(get(hObject,'String')) returns contents of edit17 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit17_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit17 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in popupmenu1.
+function popupmenu1_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu1 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu1
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit18_Callback(hObject, eventdata, handles)
+% hObject    handle to edit18 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit18 as text
+%        str2double(get(hObject,'String')) returns contents of edit18 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit18_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit18 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit19_Callback(hObject, eventdata, handles)
+% hObject    handle to edit19 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit19 as text
+%        str2double(get(hObject,'String')) returns contents of edit19 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit19_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit19 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

@@ -48,7 +48,8 @@ classdef  RaPIdClass <handle
     end
     
     methods (Static)
-        % Implement loading features to ensure backwards compatibility
+        % Implement self-updating loading features to ensure backwards
+        % compatibility with old objects
         function obj = loadobj(s)
             try
                 if ~isprop(s, 'version') || isempty(s.version) % if no version -> assign version=1
@@ -125,33 +126,28 @@ classdef  RaPIdClass <handle
             end
             if nargin > 0 && isstruct(varargin{1}) && varargin{1}.version==1
                 tmp=varargin{1};
-                obj.psoSettings=tmp.psoSettings;
-                obj.gaSettings=tmp.gaSettings;
-                obj.combiSettings=tmp.combiSettings;
-                obj.naiveSettings=tmp.naiveSettings;
-                obj.knitroSettings=tmp.knitroSettings;
-                obj.nmSettings=tmp.nmSettings;
-                obj.cgSettings=tmp.cgSettings;
-                obj.psoExtSettings=tmp.psoExtSettings;
-                obj.gaExtSettings=tmp.gaExtSettings;
-                obj.fminconSettings=tmp.fminconSettings;
-                obj.pfSettings=tmp.pfSettings;
-                obj.experimentSettings=tmp.experimentSettings;
-                obj.experimentData=tmp.experimentData;
-                obj.resultData=tmp.resultData;
-                obj.fmuOutputNames=tmp.fmuOutputNames;
-                obj.parameterNames=tmp.parameterNames;
-                obj.fmuInputNames=tmp.fmuInputNames;
-                obj.version=tmp.version;
+                names=properties(obj);
+                for k=1:length(names)
+                    obj.(names{k})=tmp.(names{k});
+                end
                 obj=RaPIdClass(obj); % update rapidobject to latest version
             elseif nargin>0 && isa(varargin{1},'RaPIdClass')
-                if varargin{1}.version<1.4
                     obj=varargin{1};
+                if obj.version<1.4
                     obj.experimentSettings.timeOut=2; %default
                     obj.version=1.4;
-                    % this should contain more things as changed to attributes
-                    % are introduced. i.e if <1.41 and so on.
+                    oldnames={'alpha1','alpha2','alpha3'};
+                    newnames={'w','self_coeff','social_coeff'};
+                    for k=1:3 %renaming fields in psoSettings
+                        obj.psoSettings.(newnames{k})=obj.psoSettings.(oldnames{k});
+                    end
+                    obj.psoSettings=rmfield(obj.psoSettings,oldnames); % remove old names
+                    obj.psoSettings.method='PSO';  
+                    obj.psoSettings.w_min=0.01;
+                    obj.psoSettings.w_max=1;
                 end
+                    % this should contain more things as changed to attributes
+                    % are introduced. i.e if ==1.4 and so on.
             end
             
         end
