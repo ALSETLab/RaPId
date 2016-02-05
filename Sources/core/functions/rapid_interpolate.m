@@ -28,12 +28,13 @@ function interpolatedData = rapid_interpolate(simulationTime,simulationData, ref
 % 
 %   Assume everything is in column form
 assert(iscolumn(simulationTime),'The time of the simulation is not a column vector.')
-assert(size(simulationData,1)==length(simulationTime),'The simulated outdata is not in column form.')
-    
+assert(size(simulationData,1)==length(simulationTime),'The simulated outdata is not in column form.')  
 interpolatedData=zeros(length(referenceTime),size(simulationData,2)); %pre-allocate
-
+k=find(simulationTime>=referenceTime(1),1,'first');
+simulationTime=simulationTime(k:end);
+simulationData=simulationData(k:end,:);
+[simulationTime,i_s] = unique(simulationTime);
 for k = 1:size(simulationData,2)
-    [simulationTime,i_s] = unique(simulationTime);
     try
         interpolatedData(:,k)=interp1(simulationTime,simulationData(i_s,k),referenceTime)';
     catch err

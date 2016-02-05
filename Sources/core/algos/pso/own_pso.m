@@ -102,7 +102,7 @@ for i = 1:length(swarm)
     swarm{i} = swarm{i}.setBest(fitness); % save fitness in particle i
     if fitness < bestfitness % new best fitness?
         bestfitness = fitness; % update best fitness
-        bestparameters = swarm{i}.p; % and corresponding parameters
+        bestparameters = swarm{i}.bestPos; % and corresponding parameters
         bestfitness_history(k) = bestfitness;
         if RaPIdObject.experimentSettings.saveHist
             bestparameters_history(k,:) = bestparameters;
@@ -117,7 +117,7 @@ for i = 1:length(swarm)
     end
 end
 iteration = 2;
-initial_fitness=bestfitness_history(2);
+initial_fitness=bestfitness_history(1);
 %% Algorithm's main body
 while iteration <= limit && bestfitness >= initial_fitness*RaPIdObject.psoSettings.fitnessStopRatio % speed update loop
     k=k+1;
@@ -135,11 +135,7 @@ while iteration <= limit && bestfitness >= initial_fitness*RaPIdObject.psoSettin
         end
         swarm{i} = swarm{i}.updatePart(); % change the position according to the speed update and update best fitness and best position
         fitness = func(swarm{i}.p, RaPIdObject); %calculate fitness
-        if fitness < swarm{i}.bestValue
-            swarm{i}.bestPos = swarm{i}.p;
-            swarm{i}.bestValue = fitness;
-            %swarm{i}.setBest(fitness);
-        end
+        swarm{i}.setBest(fitness);
         if fitness < bestfitness % new best fitness?
             bestparameters = swarm{i}.p;
             bestfitness = fitness;

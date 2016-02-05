@@ -209,9 +209,10 @@ try
     bestparameters = sol;
     switch RaPIdObject.experimentSettings.solverMode
         case 'Simulink'
-            if strcmp(gcs,RaPIdObject.experimentSettings.blockName) % check if model already loaded
+            if strcmp(gcs,RaPIdObject.experimentSettings.modelName) % check if model already loaded
                 %NOP
             else
+                clear rapid_simuSystem
                 tmp=[];
                 if exist(RaPIdObject.experimentSettings.pathToSimulinkModel,'file')
                     tmp=RaPIdObject.experimentSettings.pathToSimulinkModel;
@@ -221,21 +222,27 @@ try
                 load_system(tmp);
             end
             res = rapid_simuSystem(bestparameters,RaPIdObject);
+            if ~isempty(res)
+                
+            else
+                error('Failed to simulate');
+            end
         case 'ODE'
             res = rapid_ODEsolve(bestparameters,RaPIdObject);
+            if ~isempty(res)
+                for i = 1:length(RaPIdObject.fmuOutputNames);  %this should be changed maybe, since FMUoutput is not necessarily what we used for fitness-function
+                    figure, hold on %For now, plot each comparison i new figure.
+                    plot(RaPIdObject.experimentData.referenceTime,RaPIdObject.experimentData.referenceOutdata(:,i))
+                    hold on
+                    plot(RaPIdObject.experimentData.referenceTime,res(:,i),'--r')
+                    title(RaPIdObject.fmuOutputNames{i})
+                    legend('Reference system:', 'Calibrated system:')
+                end
+            else
+                error('Failed to simulate');
+            end
     end
-    if ~isempty(res)
-        for i = 1:length(RaPIdObject.fmuOutputNames);  %this should be changed maybe, since FMUoutput is not necessarily what we used for fitness-function
-            figure, hold on %For now, plot each comparison i new figure.
-            plot(RaPIdObject.experimentData.referenceTime,RaPIdObject.experimentData.referenceOutdata(:,i))
-            hold on
-            plot(RaPIdObject.experimentData.referenceTime,res(:,i),'--r')
-            title(RaPIdObject.fmuOutputNames{i})
-            legend('Reference system:', 'Calibrated system:')
-        end
-    else
-        error('Failed to simulate');
-    end
+
 catch err
     disp(err.message)
     warning('Functionality not yet implemented / No Data to plot...')

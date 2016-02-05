@@ -50,18 +50,19 @@ function [res] = rapid_simuSystem(newParameters,RaPIdObject)
 % for you
 % --------> See the help for FUNC
 global nbIterations
-persistent paramStruct
+persistent timeOut
 
-if isempty(paramStruct)
-    paramStruct.SaveOutput='on';
-    paramStruct.OutputSaveName='simout';
-    paramStruct.StartTime='0';
-    paramStruct.FixedStep=num2str(RaPIdObject.experimentSettings.ts);
-    paramStruct.FixedStep='auto';
-    paramStruct.StopTime=num2str(RaPIdObject.experimentSettings.tf);
-    paramStruct.Solver=RaPIdObject.experimentSettings.integrationMethod;
-    paramStruct.TimeOut=RaPIdObject.experimentSettings.timeOut;
-    paramStruct.RelTol=num2str(1e-3);
+if isempty(timeOut)
+    configSet = getActiveConfigSet(RaPIdObject.experimentSettings.modelName);
+    set_param(configSet,'SaveOutput','on');
+    set_param(configSet,'OutputSaveName','simout');
+    set_param(configSet,'StartTime','0');
+    %set_param(configSet,'FixedStep',num2str(RaPIdObject.experimentSettings.ts));
+    %set_param(configSet,'FixedStep','auto');
+    set_param(configSet,'StopTime',num2str(RaPIdObject.experimentSettings.tf));
+    set_param(configSet,'Solver',RaPIdObject.experimentSettings.integrationMethod);
+    timeOut=RaPIdObject.experimentSettings.timeOut;
+    set_param(configSet,'RelTol',num2str(1e-3));
 end
 debugging=0; % will use this for troubleshooting
 parameterName = RaPIdObject.parameterNames;
@@ -71,7 +72,7 @@ end
 
 try
 %   output=sim(settings.modelName,'SaveOutput','on','OutputSaveName','simout','StartTime','0','FixedStep',num2str(settings.Ts),'StopTime',num2str(settings.tf),'Solver',settings.intMethod,'TimeOut',10, 'LoadExternalInput', 'on','ExternalInput', '[settings.realTime settings.realData]');
-    [stuff,output]=evalc('sim(RaPIdObject.experimentSettings.modelName,paramStruct);');
+    [stuff,output]=evalc('sim(RaPIdObject.experimentSettings.modelName,''TimeOut'',timeOut );');
     if debugging
         disp(stuff);
     end
@@ -85,7 +86,12 @@ catch err
     elseif strcmp(err.identifier,'Simulink:SFunctions:SFcnErrorStatus')
         res=[];
         return;
-        
+    elseif strcmp(err.identifier,'Simulink:Engine:SolverNonlIterMinStepErr')
+        res=[];
+        return;  
+    elseif strcmp(err.identifier,'Simulink:Engine:SolverConsecutiveZCNum')
+        res=[];
+        return;
     else
         disp(err.identifier);
         res=[];
