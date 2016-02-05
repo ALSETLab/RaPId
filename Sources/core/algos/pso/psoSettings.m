@@ -305,7 +305,7 @@ pso_options.w_min = eval(get(handles.edit18,'String'));
 pso_options.w_max = eval(get(handles.edit19,'String'));
 tmp=get(handles.popupmenu1,'String');
 tmp_ind=get(handles.popupmenu1,'Value');
-pso_options.method =tmp(tmp_ind);
+pso_options.method =tmp{tmp_ind};
 RaPIdObject.psoSettings = pso_options;
 close(gcf)
 
