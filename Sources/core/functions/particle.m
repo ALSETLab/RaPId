@@ -21,7 +21,7 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-classdef particle
+classdef particle < handle
     %PARTICLE 
     % Class representing a particle in the parameter space 
     % The speed of the particle is given in increment (no sampling time involved)
@@ -100,14 +100,14 @@ classdef particle
             obj.v = (obj.v_max - obj.v_min).*rand(obj.n,1)' + obj.v_min;
             obj.plot = verbose; % boolean for plotting
         end
-        
+        function obj = updateSpeed(obj,v)
+            obj.v = max(min(v,obj.v_max),obj.v_min);
+        end
         function obj = updatePart(obj)
-            obj.v = max(min(obj.v,obj.v_max),obj.v_min);
             obj.p = obj.p + obj.v;
             obj.v_max = obj.p_max - obj.p;
             obj.v_min = obj.p_min - obj.p;
             obj.positions = [obj.positions, obj.p'];
-            
         end
         
         function obj = setBest(obj,value)

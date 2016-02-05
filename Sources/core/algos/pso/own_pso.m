@@ -127,13 +127,13 @@ while iteration <= limit && bestfitness >= initial_fitness*RaPIdObject.psoSettin
         if debugging&&mod(k,10) == 0 % debug info display
             sprintf(strcat('particle ',int2str(iteration)));
         end
-        swarm{k}.v = w * rand * swarm{k}.v + self_coeff*rand(1,length(swarm{k}.p)).*(swarm{k}.bestPos - swarm{k}.p) + social_coeff*rand(1,length(swarm{k}.p)).*(bestparameters - swarm{k}.p); % update the particle's speed
+        swarm{k}.updateSpeed(w * rand * swarm{k}.v + self_coeff*rand(1,length(swarm{k}.p)).*(swarm{k}.bestPos - swarm{k}.p) + social_coeff*rand(1,length(swarm{k}.p)).*(bestparameters - swarm{k}.p)); % update the particle's speed
         if norm(swarm{k}.v) < norm(swarm{k}.v_max)*RaPIdObject.psoSettings.kick_multiplier % kicks the particle when it's starting to get stuck (position converges)
             r = 2*rand(1,length(swarm{k}.p))-1;
-            swarm{k}.v = (r + swarm{k}.v)*norm(swarm{k}.v_max)/norm(r+swarm{k}.v);
+            swarm{k}.updateSpeed((r + swarm{k}.v)*norm(swarm{k}.v_max)/norm(r+swarm{k}.v));
         end
         
-        swarm{k} = swarm{k}.updatePart(); % change the position according to the speed update and update best fitness and best position
+        swarm{k}.updatePart(); % change the position according to the speed update and update best fitness and best position
         fitness = func(swarm{k}.p, RaPIdObject); %calculate fitness
         swarm{k}.setBest(fitness);
         
