@@ -55,7 +55,7 @@ classdef  RaPIdClass <handle
                 if ~isprop(s, 'version') || isempty(s.version) % if no version -> assign version=1
                     s.version=double(~isempty(isprop(s, 'version'))); % 0 if really old, else 1 - old
                     obj = RaPIdClass(s); % update object
-                elseif s.version <1.4 % check if latest ver
+                elseif s.version <1.41 % check if latest ver
                     obj = RaPIdClass(s); % update object
                 else
                     obj=s; % everything is up to date
@@ -136,6 +136,7 @@ classdef  RaPIdClass <handle
                 if obj.version<1.4
                     obj.experimentSettings.timeOut=2; %default
                     obj.version=1.4;
+                elseif obj.version <1.41
                     oldnames={'alpha1','alpha2','alpha3'};
                     newnames={'w','self_coeff','social_coeff'};
                     for k=1:3 %renaming fields in psoSettings
@@ -145,6 +146,7 @@ classdef  RaPIdClass <handle
                     obj.psoSettings.method='PSO';  
                     obj.psoSettings.w_min=0.01;
                     obj.psoSettings.w_max=1;
+                    obj.version=1.41;
                 end
                     % this should contain more things as changed to attributes
                     % are introduced. i.e if ==1.4 and so on.

@@ -98,8 +98,8 @@ for k = 1:length(swarm)
     if debugging&&mod(k,10)==0 % debug info display
         sprintf(strcat('init particle ',int2str(k),' in pso'));
     end
-    fitness = func(swarm{k}.p, RaPIdObject); % calculate fitness of particle i
-    swarm{k} = swarm{k}.setBest(fitness); % save fitness in particle i
+    fitness = func(swarm{k}.p, RaPIdObject); % calculate fitness of particle k
+    swarm{k} = swarm{k}.setBest(fitness); % save fitness in particle k
     if fitness < bestfitness % new best fitness?
         bestfitness = fitness; % update best fitness
         bestparameters = swarm{k}.p; % and corresponding parameters
@@ -116,7 +116,7 @@ for k = 1:length(swarm)
     end
 end
 iteration = 1;
-initial_fitness=bestfitness_history(2);
+initial_fitness=bestfitness_history(1);
 %% Algorithm's main body
 while iteration <= limit && bestfitness >= initial_fitness*RaPIdObject.psoSettings.fitnessStopRatio % speed update loop
     if debugging&&mod(iteration,10) == 0 % debug info display
@@ -135,11 +135,7 @@ while iteration <= limit && bestfitness >= initial_fitness*RaPIdObject.psoSettin
         
         swarm{k} = swarm{k}.updatePart(); % change the position according to the speed update and update best fitness and best position
         fitness = func(swarm{k}.p, RaPIdObject); %calculate fitness
-        if fitness < swarm{k}.bestValue
-            swarm{k}.bestPos = swarm{k}.p;
-            swarm{k}.bestValue = fitness;
-            %swarm{i}.setBest(fitness);
-        end
+        swarm{k}.setBest(fitness);
         
         if fitness < bestfitness % new best fitness?
             bestparameters = swarm{k}.p;

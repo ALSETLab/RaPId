@@ -111,8 +111,10 @@ classdef particle
         end
         
         function obj = setBest(obj,value)
-            obj.bestPos = obj.p;
-            obj.bestValue = value;
+            if isempty(obj.bestValue) || obj.bestValue>=value
+                obj.bestPos = obj.p;
+                obj.bestValue = value;
+            end
         end
                 
             
