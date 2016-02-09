@@ -112,6 +112,8 @@ dataAlloc(6,1:length(RaPIdObject.experimentSettings.p_0))=num2cell(RaPIdObject.e
 dataAlloc(7,1:length(tmp7))=tmp7;
 set(handles.InputNames,'Data',dataAlloc);
 set(handles.InputNames,'ColumnEditable',true(ones(1,maxAlloc)));
+tmp7=cell([1,maxAlloc]);
+set(handles.InputNames,'ColumnWidth',cellfun(@(x)('auto'),tmp7,'UniformOutput', false));  
 tmp8=cell([1,maxAlloc]);
 tmp8=cellfun(@(x){'char'},tmp8);
 set(handles.InputNames,'ColumnFormat',tmp8);
@@ -753,45 +755,56 @@ function InputNames_CellEditCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 indices=eventdata.Indices;
 theData=get(hObject,'Data');
+inoutData=theData(1:2,:);
+parameterData=theData(3:end,:);
 % for some reason the table wants to convert to num often?? Taking care of
 % it below
-
 %if non-empty string entered
-if ~isempty(eventdata.EditData)
-    % if the line is  supposed to be text
-    if any([1,2,3]==indices(1))
-        theData(indices(1),indices(2))={eventdata.EditData};
-        if size(theData,2)==indices(2)%expand table
-            set(hObject,'ColumnEditable',true(ones(1,indices(2)+1))); 
-            set(hObject,'Data',[theData {'';'';'';[];[];[];[]}]);
-            set(handles.InputNames,'ColumnFormat',[get(handles.InputNames,'ColumnFormat') 'char']);
-        else
-            set(hObject,'Data',theData);
-                theColumnWidthInfo=get(hObject,'ColumnWidth');
-                theColumnWidthInfo{indices(2)}=10*max(cellfun(@(x)length(x),theData(:,indices(2))))+1;
-                set(hObject,'ColumnWidth',theColumnWidthInfo);
-        end
+if  ~isempty(eventdata.EditData) && ~isnan(eventdata.EditData) % enter data
+    if indices(1)<3
+        inoutData(indices(1),indices(2))={eventdata.EditData};
+    elseif indices(1)==3;
+        parameterData(indices(1)-2,indices(2))={eventdata.EditData};
     else
-        if size(theData,2)==indices(2) % expand table
-            set(hObject,'ColumnEditable',true(ones(1,indices(2)+1)));
-            set(hObject,'Data',[theData {'';'';'';[];[];[];[]}]);
-            set(handles.InputNames,'ColumnFormat',[get(handles.InputNames,'ColumnFormat') 'char']);
-        end
+        parameterData(indices(1)-2,indices(2))={eventdata.NewData};
     end
 
-else %delete data
-    if size(theData,2)==indices(2) 
-        theData{indices(1),indices(2)}=[];
-        if all(cellfun(@isempty,theData(indices(1),:))) %resize table
-            theData(:,indices(2))=[];
+else  %delete data
+    if indices(1)<3 
+        inoutData(indices(1),indices(2))=cell(1,1);
+        if all(cellfun(@isempty,inoutData(:,indices(2))))
+            inoutData(:,indices(2))=[];
         end
-        set(hObject,'ColumnEditable',true(ones(1,length(theData))));
+    elseif indices(1)==3
+        parameterData(indices(1)-2,indices(2))=cell(1,1);
+        if cellfun(@isempty,parameterData(:,indices(2)))
+            parameterData(:,find(all(cellfun(@isempty,parameterData))))='';
+        end
     else
-        theData{indices(1),indices(2)}=[];
+        parameterData(indices(1)-2,indices(2))=cell(1,1);
+        if cellfun(@isempty,parameterData(:,indices(2)))
+            parameterData(:,find(all(cellfun(@isempty,parameterData))))=[];
+        end
     end
-    set(hObject,'Data',theData);
+ 
 end
 
+
+if size(inoutData,2)>size(parameterData,2)
+    tmp=size(inoutData,2)+1-all(cellfun(@isempty,inoutData(:,end)));
+elseif size(inoutData,2)<size(parameterData,2)
+    tmp=size(parameterData,2)+1-all(cellfun(@isempty,parameterData(:,end)));
+else
+    tmp=size(parameterData,2)+1-(all(cellfun(@isempty,inoutData(:,end)))&& all(cellfun(@isempty,parameterData(:,end))));
+end
+theData=cell(7,tmp);
+tmp=size(inoutData,2);
+theData(1:2,1:tmp)=inoutData;
+theData(3:7,1:size(parameterData,2))=parameterData;
+set(hObject,'Data',theData);
+set(hObject,'ColumnEditable',true(ones(1,size(theData,2)))); 
+tmp2=cell([1,tmp]);
+set(handles.InputNames,'ColumnFormat',cellfun(@(x){'char'},tmp2));
 
 % --- Executes when selected cell(s) is changed in InputNames.
 function InputNames_CellSelectionCallback(hObject, eventdata, handles)
@@ -799,12 +812,12 @@ function InputNames_CellSelectionCallback(hObject, eventdata, handles)
 % eventdata  structure with the following fields (see UITABLE)
 %	Indices: row and column indices of the cell(s) currently selecteds
 % handles    structure with handles and user data (see GUIDATA)
-indices=eventdata.Indices;
-theColumnWidthInfo=get(hObject,'ColumnWidth');
-theData=get(hObject,'Data');
-theColumnWidthInfo=cellfun(@(x)('auto'),theColumnWidthInfo,'UniformOutput', false); %reset to auto
-theColumnWidthInfo{indices(2)}=10*max(cellfun(@(x)length(x),theData(:,indices(2))))+1;
-set(hObject,'ColumnWidth',theColumnWidthInfo);
+% indices=eventdata.Indices;
+% theColumnWidthInfo=get(hObject,'ColumnWidth');
+% theData=get(hObject,'Data');
+% theColumnWidthInfo=cellfun(@(x)('auto'),theColumnWidthInfo,'UniformOutput', false); %reset to auto
+% theColumnWidthInfo{indices(2)}=10*max(cellfun(@(x)length(x),theData(:,indices(2))))+1;
+% set(hObject,'ColumnWidth',theColumnWidthInfo);
 
 
 % --------------------------------------------------------------------

@@ -126,7 +126,7 @@ while iteration <= limit && globalBestFit >= initial_fitness*RaPIdObject.psoSett
         sprintf(strcat('iteration ',int2str(iteration),' in pso body'));
     end
     wt=wmax-(wmax-wmin)*iteration/limit;
-    length(swarm)
+    length(swarm);
     for k = 1:length(swarm) % loop on all the particles of the swarm
         if debugging&&mod(k,10) == 0 % debug info display
             sprintf(strcat('particle ',int2str(iteration)));
