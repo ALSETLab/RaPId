@@ -136,7 +136,8 @@ classdef  RaPIdClass <handle
                 if obj.version<1.4
                     obj.experimentSettings.timeOut=2; %default
                     obj.version=1.4;
-                elseif obj.version <1.41
+                end
+                if obj.version <1.41
                     oldnames={'alpha1','alpha2','alpha3'};
                     newnames={'w','self_coeff','social_coeff'};
                     for k=1:3 %renaming fields in psoSettings
