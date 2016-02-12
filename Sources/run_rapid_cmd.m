@@ -62,9 +62,11 @@ ChangeLoadedSettings=0;
 if ChangeLoadedSettings
     switch RaPIdObject.experimentSettings.optimizationAlgorithm
         case 'pso'
-            pso_options.alpha1 = 0.5/(0.5+1+0.8);
-            pso_options.alpha2 = 1/(0.5+1+0.8);
-            pso_options.alpha3 = 0.8/(0.5+1+0.8);
+            pso_options.w = 0.5/(0.5+1+0.8);
+            pso_options.w_min = 0.01;
+            pso_options.w_max = 1;
+            pso_options.self_coeff = 1/(0.5+1+0.8);
+            pso_options.social_coeff = 0.8/(0.5+1+0.8);
             pso_options.fitnessStopRatio = 1e-5;
             pso_options.kick_multiplier = 2e-3;
             pso_options.nb_particles = 5;
@@ -72,6 +74,7 @@ if ChangeLoadedSettings
             pso_options.nRandMin = 2;
             pso_options.p0s = psoSettings.p0;
             pso_options.storeData = 0;
+            pso_options.method = 'PSO';
             RaPIdObject.psoSettings = pso_options;
         case 'ga'
             ga_options.nbCromosomes = 40;

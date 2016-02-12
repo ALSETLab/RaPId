@@ -93,6 +93,7 @@ function [ sol, historic,RaPIdObject] = rapid(RaPIdObject)
 
 
 %% Check and set the in-data to the model
+finishup = onCleanup(@(x)cleanFunc);
 if ~isempty(RaPIdObject.experimentData.pathToInData)  
     if exist(RaPIdObject.experimentData.pathToInData,'file') % Indata exist on absolute path
             load(RaPIdObject.experimentData.pathToInData);
@@ -135,18 +136,19 @@ if ~isempty(RaPIdObject.experimentData.pathToReferenceData)
         load(RaPIdObject.experimentData.pathToReferenceData);
         timeOutputT=eval(RaPIdObject.experimentData.expressionReferenceTime);
         outputT=eval(RaPIdObject.experimentData.expressionReferenceData);
-        if isrow(timeOutputT)
+        if isrow(timeOutputT) % make it column data
             timeOutputT=transpose(timeOutputT);
         end
-        [timeOutputT, i_t]=unique(timeOutputT); % remove double time-stamps
-        outputT = outputT(i_t,:); 
-        if length(timeOutputT) == size(outputT,1)
-            dataMeasuredS = [timeOutputT,outputT];
-        elseif  length(timeOutputT) == size(outputT,2)
-            dataMeasuredS = [timeOutputT,transpose(outputT(:,i_t))];
+        if length(timeOutputT) == size(outputT,1) %if outputTsquare: OK - provided that data channel iscol
+            % NOP
+        elseif  length(timeOutputT) == size(outputT,2) % need to transpose
+            outputT=transpose(outputT);
         else
-            error('Check consistency of output data.');
+            error('Check consistency of output data.'); %Something is bad with the data
         end
+        [timeOutputT, i_t]=unique(timeOutputT); % remove double time-stamps
+        outputT = outputT(i_t,:);
+        dataMeasuredS = [timeOutputT,outputT];
         RaPIdObject.experimentData.referenceTime=dataMeasuredS(:,1);
         RaPIdObject.experimentData.referenceOutdata=dataMeasuredS(:,2:end);
         assignin('base','dataMeasuredS',dataMeasuredS)
@@ -258,15 +260,17 @@ switch RaPIdObject.experimentSettings.solverMode
             end
             delete(fmu)
             clearvars fmu
-            RaPIdObject.fmuHandle=[];
         end
         clear rapid_ODEsolve
 end
 disp(sol)
-finishup = onCleanup(@(x)cleanFunc);
 
 end
 function cleanFunc(varargin)
-    clear(rapid_ODEsolve)
-    delete(timerfind('Tag', 'ODEtimeout'));
+clear rapid_ODEsolve rapid_simuSystem  % clean up the persistent variable in this function.
+tm=timerfind('Tag', 'ODEtimeout');
+if ~isempty(tm)
+    stop(tm)
+    delete(tm);
+end
 end

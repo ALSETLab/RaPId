@@ -46,7 +46,7 @@ function varargout = generalSettings(varargin)
 
 % Edit the above text to modify the response to help generalSettings
 
-% Last Modified by GUIDE v2.5 09-Sep-2015 21:22:00
+% Last Modified by GUIDE v2.5 02-Nov-2015 22:45:12
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -88,6 +88,7 @@ handle2main=getappdata(0,'HandleMainGUI');
 RaPIdObject=getappdata(handle2main,'RaPIdObject');
 set(handles.edit1,'String',RaPIdObject.experimentSettings.ts);
 set(handles.edit2,'String',RaPIdObject.experimentSettings.tf);
+set(handles.timeout_value,'String',RaPIdObject.experimentSettings.timeOut);
 set(handles.edit11,'String',RaPIdObject.experimentSettings.integrationMethod);
 set(handles.togglebutton1,'Value',RaPIdObject.experimentSettings.saveHist);
 set(handles.edit9,'String',num2str(RaPIdObject.experimentSettings.cost_type));
@@ -111,6 +112,8 @@ dataAlloc(6,1:length(RaPIdObject.experimentSettings.p_0))=num2cell(RaPIdObject.e
 dataAlloc(7,1:length(tmp7))=tmp7;
 set(handles.InputNames,'Data',dataAlloc);
 set(handles.InputNames,'ColumnEditable',true(ones(1,maxAlloc)));
+tmp7=cell([1,maxAlloc]);
+set(handles.InputNames,'ColumnWidth',cellfun(@(x)('auto'),tmp7,'UniformOutput', false));  
 tmp8=cell([1,maxAlloc]);
 tmp8=cellfun(@(x){'char'},tmp8);
 set(handles.InputNames,'ColumnFormat',tmp8);
@@ -605,6 +608,7 @@ settings2.cost_type = str2num(get(handles.edit9,'String'));
 settings2.integrationMethod = get(handles.edit11,'String');
 settings2.maxIterations = str2double(get(handles.edit16,'String'));
 settings2.t_fitness_start = (get(handles.edit15,'String'));
+settings2.timeOut = str2double(get(handles.timeout_value,'String'));
 settings2.saveHist=get(handles.togglebutton1,'Value');
 tmp=get(handles.InputNames,'Data');
 RaPIdObject.fmuInputNames = tmp(1,~cellfun(@isempty,tmp(1,:)));
@@ -733,9 +737,9 @@ function verbose_Callback(hObject, eventdata, handles)
 
 % Hint: get(hObject,'Value') returns toggle state of verbose
 if get(hObject,'Value')==1
-    set(hObject,'String','Save History: On')
+    set(hObject,'String','Verbose: On')
 else
-    set(hObject,'String','Save History: Off')
+    set(hObject,'String','Verbose: Off')
 end
 
 
@@ -751,38 +755,96 @@ function InputNames_CellEditCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 indices=eventdata.Indices;
 theData=get(hObject,'Data');
+inoutData=theData(1:2,:);
+parameterData=theData(3:end,:);
 % for some reason the table wants to convert to num often?? Taking care of
 % it below
-
 %if non-empty string entered
-if ~isempty(eventdata.EditData)
-    % if the line is  supposed to be text
-    if any([1,2,3]==indices(1))
-        theData(indices(1),indices(2))={eventdata.EditData};
-        %expand table
-        if size(theData,2)==indices(2)
-            set(hObject,'ColumnEditable',true(ones(1,indices(2)+1))); 
-            set(hObject,'Data',[theData {'';'';'';[];[];[];[]}]);
-            set(handles.InputNames,'ColumnFormat',[get(handles.InputNames,'ColumnFormat') 'char']);
-        else
-            set(hObject,'Data',theData);
+if  ~isempty(eventdata.EditData) && ~isnan(eventdata.EditData) % enter data
+    if indices(1)<3
+        inoutData(indices(1),indices(2))={eventdata.EditData};
+    elseif indices(1)==3;
+        parameterData(indices(1)-2,indices(2))={eventdata.EditData};
+    else
+        parameterData(indices(1)-2,indices(2))={eventdata.NewData};
+    end
+
+else  %delete data
+    if indices(1)<3 
+        inoutData(indices(1),indices(2))=cell(1,1);
+        if all(cellfun(@isempty,inoutData(:,indices(2))))
+            inoutData(:,indices(2))=[];
+        end
+    elseif indices(1)==3
+        parameterData(indices(1)-2,indices(2))=cell(1,1);
+        if cellfun(@isempty,parameterData(:,indices(2)))
+            parameterData(:,find(all(cellfun(@isempty,parameterData))))='';
         end
     else
-        if size(theData,2)==indices(2)
-            set(hObject,'ColumnEditable',true(ones(1,indices(2)+1)));
-            set(hObject,'Data',[theData {'';'';'';[];[];[];[]}]);
-            set(handles.InputNames,'ColumnFormat',[get(handles.InputNames,'ColumnFormat') 'char']);
+        parameterData(indices(1)-2,indices(2))=cell(1,1);
+        if cellfun(@isempty,parameterData(:,indices(2)))
+            parameterData(:,find(all(cellfun(@isempty,parameterData))))=[];
         end
     end
+ 
+end
+
+
+if size(inoutData,2)>size(parameterData,2)
+    tmp=size(inoutData,2)+1-all(cellfun(@isempty,inoutData(:,end)));
+elseif size(inoutData,2)<size(parameterData,2)
+    tmp=size(parameterData,2)+1-all(cellfun(@isempty,parameterData(:,end)));
 else
-    if size(theData,2)==indices(2) 
-        theData{indices(1),indices(2)}=[];
-        if all(cellfun(@isempty,theData(indices(1),:)))
-            theData(:,indices(2))=[];
-        end
-        set(hObject,'ColumnEditable',true(ones(1,length(theData))));
-    else
-        theData{indices(1),indices(2)}=[];
-    end
-    set(hObject,'Data',theData);
+    tmp=size(parameterData,2)+1-(all(cellfun(@isempty,inoutData(:,end)))&& all(cellfun(@isempty,parameterData(:,end))));
+end
+theData=cell(7,tmp);
+tmp=size(inoutData,2);
+theData(1:2,1:tmp)=inoutData;
+theData(3:7,1:size(parameterData,2))=parameterData;
+set(hObject,'Data',theData);
+set(hObject,'ColumnEditable',true(ones(1,size(theData,2)))); 
+tmp2=cell([1,tmp]);
+set(handles.InputNames,'ColumnFormat',cellfun(@(x){'char'},tmp2));
+
+% --- Executes when selected cell(s) is changed in InputNames.
+function InputNames_CellSelectionCallback(hObject, eventdata, handles)
+% hObject    handle to InputNames (see GCBO)
+% eventdata  structure with the following fields (see UITABLE)
+%	Indices: row and column indices of the cell(s) currently selecteds
+% handles    structure with handles and user data (see GUIDATA)
+% indices=eventdata.Indices;
+% theColumnWidthInfo=get(hObject,'ColumnWidth');
+% theData=get(hObject,'Data');
+% theColumnWidthInfo=cellfun(@(x)('auto'),theColumnWidthInfo,'UniformOutput', false); %reset to auto
+% theColumnWidthInfo{indices(2)}=10*max(cellfun(@(x)length(x),theData(:,indices(2))))+1;
+% set(hObject,'ColumnWidth',theColumnWidthInfo);
+
+
+% --------------------------------------------------------------------
+function InputNames_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to InputNames (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+
+function timeout_value_Callback(hObject, eventdata, handles)
+% hObject    handle to timeout_value (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of timeout_value as text
+%        str2double(get(hObject,'String')) returns contents of timeout_value as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function timeout_value_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to timeout_value (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
 end

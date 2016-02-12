@@ -49,11 +49,13 @@ delta = abs(referenceResults-simulatedResults);
 switch RaPIdObject.experimentSettings.cost_type
     % Add your case here and set the RaPIdObject accordingly if you
     % want to compute the fitness function differently.
-    case 1, % norm 2 error cost function
+    case 1, % something
        fitness = sum(sum(delta.*delta));   
     case 2,
        weights = RaPIdObject.experimentSettings.objective_weights;
        fitness=sum(sum(delta.*delta*weights)); 
+    case 3, % Frobenius 
+       fitness = sqrt(sum(sum(delta.*delta))); 
     otherwise
         errorWrongCost
 end
