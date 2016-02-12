@@ -266,7 +266,7 @@ disp(sol)
 finishup = onCleanup(@(x)cleanFunc);
 end
 function cleanFunc(varargin)
-clear rapid_ODEsolve
+clear rapid_ODEsolve rapid_simuSystem  % clean up the persistent variable in this function.
 tm=timerfind('Tag', 'ODEtimeout');
 if ~isempty(tm)
     stop(tm)
