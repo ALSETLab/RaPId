@@ -92,6 +92,8 @@ catch err
     elseif strcmp(err.identifier,'Simulink:Engine:SolverConsecutiveZCNum')
         res=[];
         return;
+    elseif strcmp(err.identifier,'Simulink:Commands:SimAborted')
+        error('RaPId:AbortRaPId','User command: Abort simulations.');
     else
         disp(err.identifier);
         res=[];
