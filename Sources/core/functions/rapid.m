@@ -258,7 +258,7 @@ switch RaPIdObject.experimentSettings.solverMode
             end
             delete(fmu)
             clearvars fmu
-            RaPIdObject.fmuHandle=[];
+            %RaPIdObject.fmuHandle=[]; -Ravi 
         end
         clear rapid_ODEsolve
 end

@@ -116,8 +116,8 @@ catch err
     if ~strcmp(err.message,'Simulation timed out')
         disp(err.message);
     end
-    disp(err)
-    disp(err)
+    disp(err) %%%%%%% WHY 2 DISPLAYS? -Ravi
+    %disp(err)
     res=[];
     return;
 end

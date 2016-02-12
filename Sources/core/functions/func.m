@@ -51,18 +51,25 @@ switch RaPIdObject.experimentSettings.solverMode
     otherwise
         error('In "mySettings.mode": You must select either "ODE" (internal ODE-solvers) or "Simulink"');
 end
-%% small signal stability fitting
+%% small signal stability fitting (modified by Ravi)
 if RaPIdObject.experimentSettings.cost_type==3
     modes = SmallSignalPerformance(p, RaPIdObject);
-end
-
-if isempty(simuRes)
-    fitness=1e66;
+    if isempty(simuRes)
+       fitness=1e66;
+    else
+        if modes==0
+            fitness=rapid_objectiveFunction(RaPIdObject.experimentData.referenceOutdata,simuRes,RaPIdObject);  
+        else
+            fitness=rapid_objectiveFunction(RaPIdObject.experimentData.referenceOutdata,simuRes,RaPIdObject,modes);
+        end
+       if length(fitness) > 1
+           error('problem with fitness size')
+       end
+    end
 else
-    fitness=rapid_objectiveFunction(RaPIdObject.experimentData.referenceOutdata,simuRes,RaPIdObject, modes);
+    fitness=rapid_objectiveFunction(RaPIdObject.experimentData.referenceOutdata,simuRes,RaPIdObject); 
     if length(fitness) > 1
         error('problem with fitness size')
-    end
+    end 
 end
-
 end

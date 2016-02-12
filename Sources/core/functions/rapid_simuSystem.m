@@ -57,7 +57,7 @@ end
 
 try
 %   output=sim(settings.modelName,'SaveOutput','on','OutputSaveName','simout','StartTime','0','FixedStep',num2str(settings.Ts),'StopTime',num2str(settings.tf),'Solver',settings.intMethod,'TimeOut',10, 'LoadExternalInput', 'on','ExternalInput', '[settings.realTime settings.realData]');
-    [stuff,output]=evalc('sim(RaPIdObject.experimentSettings.modelName,''SaveOutput'',''on'',''OutputSaveName'',''simout'',''StartTime'',''0'',''FixedStep'',num2str(RaPIdObject.experimentSettings.ts),''StopTime'',num2str(RaPIdObject.experimentSettings.tf),''Solver'',RaPIdObject.experimentSettings.integrationMethod,''TimeOut'',1)');
+    [stuff,output]=evalc('sim(RaPIdObject.experimentSettings.modelName,''SaveOutput'',''on'',''OutputSaveName'',''simout'',''StartTime'',''0'',''FixedStep'',num2str(RaPIdObject.experimentSettings.ts),''StopTime'',num2str(RaPIdObject.experimentSettings.tf),''Solver'',RaPIdObject.experimentSettings.integrationMethod,''TimeOut'',10)');
     if RaPIdObject.experimentSettings.verbose
         disp(stuff);
     end
