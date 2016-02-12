@@ -93,6 +93,7 @@ function [ sol, historic,RaPIdObject] = rapid(RaPIdObject)
 
 
 %% Check and set the in-data to the model
+finishup = onCleanup(@(x)cleanFunc);
 if ~isempty(RaPIdObject.experimentData.pathToInData)  
     if exist(RaPIdObject.experimentData.pathToInData,'file') % Indata exist on absolute path
             load(RaPIdObject.experimentData.pathToInData);
@@ -263,7 +264,7 @@ switch RaPIdObject.experimentSettings.solverMode
         clear rapid_ODEsolve
 end
 disp(sol)
-finishup = onCleanup(@(x)cleanFunc);
+
 end
 function cleanFunc(varargin)
 clear rapid_ODEsolve rapid_simuSystem  % clean up the persistent variable in this function.
