@@ -264,6 +264,7 @@ switch RaPIdObject.experimentSettings.solverMode
         clear rapid_ODEsolve
 end
 disp(sol)
+
 end
 function cleanFunc(varargin)
 clear rapid_ODEsolve rapid_simuSystem  % clean up the persistent variable in this function.
