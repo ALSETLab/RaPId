@@ -51,7 +51,7 @@ switch RaPIdObject.experimentSettings.solverMode
     otherwise
         error('In "mySettings.mode": You must select either "ODE" (internal ODE-solvers) or "Simulink"');
 end
-%% small signal stability fitting (modified by Ravi)
+%% small signal stability fitting
 if RaPIdObject.experimentSettings.cost_type==3
     modes = SmallSignalPerformance(p, RaPIdObject);
     if isempty(simuRes)

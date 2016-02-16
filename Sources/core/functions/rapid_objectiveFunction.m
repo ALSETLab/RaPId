@@ -72,8 +72,8 @@ switch RaPIdObject.experimentSettings.cost_type
        SSweight=RaPIdObject.experimentSettings.SSweight;
        
        fitness=TDweight*TDfitness + SSweight*SSfitness;
-       %fprintf('fitness : %15.9f \n' , fitness); -Ravi
-       %fprintf('\n');  -Ravi
+       %fprintf('fitness : %15.9f \n' , fitness);
+       %fprintf('\n'); 
     
        
     otherwise

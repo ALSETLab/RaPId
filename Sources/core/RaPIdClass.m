@@ -44,8 +44,6 @@ classdef RaPIdClass <handle
         fmuOutputNames
         parameterNames
         fmuInputNames
-        DymolaModelName 
-        DymolaPath 
         ReferenceMode
         version=1;  %decimals of sqrt(2)
     end
@@ -114,13 +112,6 @@ classdef RaPIdClass <handle
                 obj.experimentData.pathToInData = tmp.inDat.path;
                 obj.experimentData.expressionInData = tmp.inDat.signal;
                 obj.experimentData.expressionInDataTime = tmp.inDat.time;
-                
-                if ~isfield(tmp,'DymolaModelName')
-                   obj.dymolaModelName = tmp.DymolaModelName;
-                end
-                if ~isfield(tmp,'DymolaPath')
-                   obj.dymolaPath = tmp.DymolaPath;
-                end
                 if ~isfield(tmp,'ReferenceMode')
                    obj.ReferenceMode = tmp.ReferenceMode;
                 end
