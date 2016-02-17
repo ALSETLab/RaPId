@@ -760,7 +760,7 @@ parameterData=theData(3:end,:);
 % for some reason the table wants to convert to num often?? Taking care of
 % it below
 %if non-empty string entered
-if  ~isempty(eventdata.EditData) && ~isnan(eventdata.EditData) % enter data
+if  ~isempty(eventdata.EditData) % enter data
     if indices(1)<3
         inoutData(indices(1),indices(2))={eventdata.EditData};
     elseif indices(1)==3;
@@ -768,7 +768,6 @@ if  ~isempty(eventdata.EditData) && ~isnan(eventdata.EditData) % enter data
     else
         parameterData(indices(1)-2,indices(2))={eventdata.NewData};
     end
-
 else  %delete data
     if indices(1)<3 
         inoutData(indices(1),indices(2))=cell(1,1);
@@ -788,8 +787,6 @@ else  %delete data
     end
  
 end
-
-
 if size(inoutData,2)>size(parameterData,2)
     tmp=size(inoutData,2)+1-all(cellfun(@isempty,inoutData(:,end)));
 elseif size(inoutData,2)<size(parameterData,2)
