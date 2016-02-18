@@ -611,6 +611,7 @@ settings2.t_fitness_start = (get(handles.edit15,'String'));
 settings2.timeOut = str2double(get(handles.timeout_value,'String'));
 settings2.saveHist=get(handles.togglebutton1,'Value');
 tmp=get(handles.InputNames,'Data');
+% Make sure that everything is 
 RaPIdObject.fmuInputNames = tmp(1,~cellfun(@isempty,tmp(1,:)));
 RaPIdObject.fmuOutputNames = tmp(2,~cellfun(@isempty,tmp(2,:)));
 RaPIdObject.parameterNames = tmp(3,~cellfun(@isempty,tmp(3,:)));
@@ -766,7 +767,15 @@ if  ~isempty(eventdata.EditData) % enter data
     elseif indices(1)==3;
         parameterData(indices(1)-2,indices(2))={eventdata.EditData};
     else
-        parameterData(indices(1)-2,indices(2))={eventdata.NewData};
+        if ~isnumeric (eventdata.NewData)
+            tempData=str2double(eventdata.NewData);
+            if isnan(eventdata.NewData)
+                warning Please enter a numeric value
+            end
+        else
+            tempData = eventdata.NewData;
+        end
+        parameterData(indices(1)-2,indices(2))={tempData};
     end
 else  %delete data
     if indices(1)<3 
