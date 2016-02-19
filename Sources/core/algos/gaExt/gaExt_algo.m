@@ -36,7 +36,7 @@ function [ sol, other] = gaExt_algo(RaPIdObject)
 %        ga(@rastr,2,                  [],[],[],[],[],            [],[],options)
 %     sol = ga(@func,length(settings.p0),[],[],[],[],settings.p_min,settings.p_max);
 options = eval(RaPIdObject.gaExtOptions);
-sol = ga(@func,length(RaPIdObject.experimentSettings.p_0),[],[],[],[],RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,[],options);
+sol = ga(@(x)func(x,RaPIdObject),length(RaPIdObject.experimentSettings.p_0),[],[],[],[],RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,[],options);
 other = [];
 if RaPIdObject.experimentSettings.verbose
     part.p = RaPIdObject.experimentSettings.p_0;
