@@ -1,6 +1,7 @@
 %% ==========Moving to the example folder==========
 
-str = 'X:/dev/iTesla_RaPId/iTesla_RaPId/Examples/SecondOrder';
+
+str = '../../Examples/SecondOrder';
 cd(str);
 
 %% ==========Reference data settings==========
