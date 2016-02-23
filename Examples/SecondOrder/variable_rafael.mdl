@@ -6,7 +6,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.22"
+    ComputedModelVersion    "1.24"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -39,7 +39,7 @@ Model {
 	DockPosition		"Left"
 	Width			[50]
 	Height			[50]
-	Filter			[8]
+	Filter			[9]
       }
       Object {
 	$PropName		"ExplorerBarInfo"
@@ -56,7 +56,7 @@ Model {
 	LoadSaveID		"0"
 	Extents			[1512.0, 869.0]
 	ZoomFactor		[3.5635593220338988]
-	Offset			[-2.1474435196194435, 50.071343638525562]
+	Offset			[-2.1474435196194577, 50.071343638525548]
       }
     }
   }
@@ -66,9 +66,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Tin Rabuzin"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Fri Feb 19 15:13:42 2016"
-  RTWModifiedTimeStamp	  377795587
-  ModelVersionFormat	  "1.%<AutoIncrement:22>"
+  LastModifiedDate	  "Tue Feb 23 09:54:14 2016"
+  RTWModifiedTimeStamp	  378122050
+  ModelVersionFormat	  "1.%<AutoIncrement:24>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -850,8 +850,8 @@ Model {
       Position		      [310, 207, 350, 263]
       ZOrder		      -3
       Floating		      off
-      Location		      [207, 743, 907, 1016]
-      Open		      on
+      Location		      [389, 469, 1296, 987]
+      Open		      off
       NumInputPorts	      "1"
       List {
 	ListType		AxesTitles
@@ -859,12 +859,12 @@ Model {
       }
       List {
 	ListType		ScopeGraphics
-	FigureColor		"[0.501960784313725 0.501960784313725 0.501960784313725]"
-	AxesColor		"[0 0 0]"
-	AxesTickColor		"[1 1 1]"
-	LineColors		"[1 1 0;1 0 1;0 1 1;1 0 0;0 1 0;0 0 1]"
+	FigureColor		"[1 1 1]"
+	AxesColor		"[1 1 1]"
+	AxesTickColor		"[0 0 0]"
+	LineColors		"[0 0 1;1 0 0;0 1 1;1 0 0;0 1 0;0 0 1]"
 	LineStyles		"-|-|-|-|-|-"
-	LineWidths		"[0.5 0.5 0.5 0.5 0.5 0.5]"
+	LineWidths		"[2 2 0.5 0.5 0.5 0.5]"
 	MarkerStyles		"none|none|none|none|none|none"
       }
       ShowLegends	      off
@@ -942,7 +942,7 @@ MatData {
     "6UE '-T;W!4:6UE  !T;VQE<F%N8V4    .    .     8    (    !@         %    \"     $    !     0         )    \"        "
     "       #@   #@    &    \"     8         !0    @    !     0    $         \"0    @           !)0 X    X    !@    @  "
     "  &          4    (     0    $    !          D    (    +4,<Z^(V&C\\.    .     8    (    !@         %    \"     $  "
-    "  !     0         )    \"    #\"4A35OP+L6#@   $ &   &    \"     (         !0    @    !     0    $         !0 $  \\"
+    "  !     0         )    \"    )\"/UP0RVE8]#@   $ &   &    \"     (         !0    @    !     0    $         !0 $  \\"
     "    !    \\    &YR                 &YI                 &YB                 &YS                 &YE                "
     " &YT                 &YP87)A;65T97)S     &YC;VYS=&%N=',      &YD:7-C<F5T90       &YC;VYT:6YU;W5S     &YI;G!U=     "
     "       &YO=71P=70          &YI;G1E<FYA;        &YN;VYE             &EN<'5T<&]R=&1A=&$  &]U='!U='!O<G1D871A  X    X"
@@ -1065,7 +1065,7 @@ MatData {
     "  @ !       .    R     8    (     @         %    \"     $    !     0         %  0 $     $    @    8FQO8VMI8V]N    "
     "     '5S969M=6EC;VYI9F%N>0 .    ,     8    (    !@         %    \"                0         )          X    P    !"
     "@    @    ) @        4    (     0    $    !          (  0 !    #@   #@    &    \"     8         !0    @    !     0"
-    "    $         \"0    @           400 X    P    !@    @    ) @        4    (     0    $    !          (  0 !    #@ "
+    "    $         \"0    @         @ D(0 X    P    !@    @    ) @        4    (     0    $    !          (  0 !    #@ "
     "  %     &    \"     0         !0    @    !    &0    $         $    !D   !2869A96Q?;W)I9VEN86Q?97-T:6UA=&5D        "
     "  X    P    !@    @    ) @        4    (     0    $    !          (  0 !    #@   (@    &    \"     (         !0   "
     " @    !     0    $         !0 $  T    !    #0   &9M:6QL;V=L979E;      .    .     8    (    !          %    \"     "
@@ -1122,17 +1122,17 @@ MatData {
     "871H                 &9O;&1E<G!A=&@              &9I;&5N86UE                 '5N>FEP961P871H             ')E;&%T:7"
     "9E9FUU9F]L9&5R     &1L;'!A=&@                  'AM;'!A=&@                  %)E;&]A9                    %)E;&]A9$-P"
     "='(              $YE=F5R3&]A9&5D             $YO1&QL4&QA=&9O<FU3=7!P;W)T       .    2     8    (    !          %  "
-    "  \"     $    4     0         0    %    #(X+49E8BTR,#$T(#$W.C$V.C(T      X   \"(    !@    @    $          4    (  "
+    "  \"     $    4     0         0    %    #(S+49E8BTR,#$V(# X.C(T.C$U      X   \"(    !@    @    $          4    (  "
     "   0   %4    !         !    !5    6#I<9&5V7&E497-L85]285!)9%QI5&5S;&%?4F%0261<17AA;7!L97-<4V5C;VYD3W)D97)<4F%F865L"
     "7S!O<FEG:6YA;%\\P97-T:6UA=&5D+F9M=0    X   !H    !@    @    $          4    (     0   #4    !         !     U    6"
     "#I<9&5V7&E497-L85]285!)9%QI5&5S;&%?4F%0261<17AA;7!L97-<4V5C;VYD3W)D97(    .    4     8    (    !          %    \" "
     "    $    ?     0         0    'P   %)A9F%E;%\\P;W)I9VEN86Q?,&5S=&EM871E9\"YF;74 #@   (     &    \"     0         !"
-    "0    @    !    3P    $         $    $\\   !#.EQ5<V5R<UQ424Y204)^,5Q!<'!$871A7$QO8V%L7%1E;7!<9FUU7'1P,C W8C4R83)?93"
-    "!B-U\\T-3AC7SDT,S5?9C(Q961E8C=A-C4S  X    P    !@    @    $          4    (               !         !          #@ "
+    "0    @    !    3P    $         $    $\\   !#.EQ5<V5R<UQ424Y204)^,5Q!<'!$871A7$QO8V%L7%1E;7!<9FUU7'1P-3$Q,C-F-#-?86"
+    "4U85\\T-3!F7S@V.&-?,#DR,C,U,S<R,&1C  X    P    !@    @    $          4    (               !         !          #@ "
     "  +     &    \"     0         !0    @    !    ?@    $         $    'X   !#.EQ5<V5R<UQ424Y204)^,5Q!<'!$871A7$QO8V%L"
-    "7%1E;7!<9FUU7'1P,C W8C4R83)?93!B-U\\T-3AC7SDT,S5?9C(Q961E8C=A-C4S7&)I;F%R:65S7'=I;C,R7%)A9F%E;%\\P;W)I9VEN86Q?,&5S"
+    "7%1E;7!<9FUU7'1P-3$Q,C-F-#-?864U85\\T-3!F7S@V.&-?,#DR,C,U,S<R,&1C7&)I;F%R:65S7'=I;C,R7%)A9F%E;%\\P;W)I9VEN86Q?,&5S"
     "=&EM871E9\"YD;&P   X   \"8    !@    @    $          4    (     0   &0    !         !    !D    0SI<57-E<G-<5$E.4D%\""
-    "?C%<07!P1&%T85Q,;V-A;%Q496UP7&9M=5QT<#(P-V(U,F$R7V4P8C=?-#4X8U\\Y-#,U7V8R,65D96(W838U,UQM;V1E;$1E<V-R:7!T:6]N+GAM;"
+    "?C%<07!P1&%T85Q,;V-A;%Q496UP7&9M=5QT<#4Q,3(S9C0S7V%E-6%?-#4P9E\\X-CAC7S Y,C(S-3,W,C!D8UQM;V1E;$1E<V-R:7!T:6]N+GAM;"
     "      .    ,     8    (    \"0(        %    \"     $    !     0         \"  $       X    X    !@    @    &        "
     "  4    (     0    $    !          D    (               .    ,     8    (    \"0(        %    \"     $    !     0  "
     "       \"  $       X    P    !@    @    ) @        4    (     0    $    !          (  0 !    #@     %   &    \"   "
