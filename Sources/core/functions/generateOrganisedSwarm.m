@@ -52,6 +52,6 @@ if n_a > 1
         bulk = bulk2;
     end
     rndMat = rand(nbParticles-size(p0s,1)-n_a^length(p_min),length(p_min));
-    list = {p0s;bulk};%;rndMat.*repmat((p_max-p_min),size(rndMat,1),1) + repmat(p_min,size(rndMat,1),1)
+    list = num2cell([p0s;bulk]);%;rndMat.*repmat((p_max-p_min),size(rndMat,1),1) + repmat(p_min,size(rndMat,1),1)
 end
 end

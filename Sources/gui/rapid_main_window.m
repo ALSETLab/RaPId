@@ -190,7 +190,11 @@ try
 catch err
     set(handles.text8,'BackgroundColor','y');
     set(handles.text8,'String','error');
-    rethrow(err);
+    if strcmp(err.identifier,'Simulink:Commands:SimAborted')
+        disp(err.message);
+    else
+        rethrow(err);
+    end
 end
 set(handles.text8,'String','Simulation completed.');
 set(handles.text8,'BackgroundColor','g');
