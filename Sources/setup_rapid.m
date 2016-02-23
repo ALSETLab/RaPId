@@ -31,6 +31,7 @@ savepath
 
 % Check of RaPId dependencies
 run('.\install\check_installed')
-
+disp('======= Running the test example =======');
+run('.\install\run_example')
 % En of setup, run the GUI
 run_rapid_gui
