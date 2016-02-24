@@ -31,6 +31,13 @@ savepath
 
 % Check of RaPId dependencies
 run('.\install\check_installed')
-
+disp('======= Running the test example =======');
+try
+    run('.\install\run_example')
+catch msg_error
+    cd('../../Sources');
+    disp(' /!\ Something went wrong in the example /!\');
+    throwAsCaller(msg_error);
+end
 % En of setup, run the GUI
 run_rapid_gui
