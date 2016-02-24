@@ -1,7 +1,7 @@
 %% ==========Moving to the example folder==========
 
 
-str = '../../Examples/SecondOrder';
+[str,~,~] = fileparts(mfilename('fullpath'));
 oldFolder=cd(str);
 
 %% ==========Reference data settings==========
