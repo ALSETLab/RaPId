@@ -247,8 +247,8 @@ end
 %% Cleaning up after the optimization
 switch RaPIdObject.experimentSettings.solverMode
     case 'Simulink'
-        switch RaPIdObject.experimentSettings.displayMode
-            case 'show'
+        switch lower(RaPIdObject.experimentSettings.displayMode)
+            case {'show'}
                 % NOP
             otherwise
                 close_system(RaPIdObject.experimentSettings.modelName,0)   

@@ -1,9 +1,13 @@
 %% ==========Moving to the example folder==========
 
-str = 'X:/dev/iTesla_RaPId/iTesla_RaPId/Examples/SecondOrder';
-cd(str);
+
+[str,~,~] = fileparts(mfilename('fullpath'));
+oldFolder=cd(str);
 
 %% ==========Reference data settings==========
+
+% Create a RaPIdObject (optional but recommended - will work with just a structure)
+RaPIdObject=RaPIdClass();
 
 %Output data
 RaPIdObject.experimentData.pathToReferenceData = 'measuredDataO.mat'; %Data file name
@@ -76,4 +80,6 @@ pause(1); %Waiting one second for scope to initialize
 %Starting the estimation process
 [sol, hist] = rapid(RaPIdObject);
 sprintf('Vector of estimated parameters is: %s',mat2str(sol,3)) 
+%Restoring workspace
+cd(oldFolder);
 
