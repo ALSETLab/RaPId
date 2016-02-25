@@ -91,7 +91,6 @@ if isprop(RaPIdObject,'psoSettings')
     set(handles.edit1,'String',tmp.w);
     set(handles.edit2,'String',tmp.self_coeff);
     set(handles.edit3,'String',tmp.social_coeff);
-    set(handles.edit4,'String',tmp.limit);
     set(handles.edit5,'String',tmp.nb_particles);
     set(handles.edit6,'String',tmp.fitnessStopRatio);
     set(handles.edit7,'String',tmp.kick_multiplier);
@@ -296,7 +295,6 @@ RaPIdObject=getappdata(handle2main,'RaPIdObject');
 pso_options.w = eval(get(handles.edit1,'String'));
 pso_options.self_coeff = eval(get(handles.edit2,'String'));
 pso_options.social_coeff = eval(get(handles.edit3,'String'));
-pso_options.limit = eval(get(handles.edit4,'String'));
 pso_options.nRandMin = eval(get(handles.edit14,'String'));
 pso_options.nb_particles = eval(get(handles.edit5,'String'));
 pso_options.fitnessStopRatio = eval(get(handles.edit6,'String'));

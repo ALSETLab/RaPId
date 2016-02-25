@@ -115,11 +115,11 @@ try
             end
         end
     end
-    iteration = 1;
     initial_fitness=bestfitness_history(1);
+    target_fitness=initial_fitness*RaPIdObject.psoSettings.fitnessStopRatio;
     %% Algorithm's main body
-    while iteration <= limit && bestfitness >= initial_fitness*RaPIdObject.psoSettings.fitnessStopRatio % speed update loop
-        if debugging&&mod(iteration,10) == 0 % debug info display
+    for iteration=1:limit  
+        if debugging&&mod(iteration,10) == 0 %info display if debugging
             sprintf(strcat('iteration ',int2str(iteration),' in pso body'));
         end
         
@@ -151,11 +151,13 @@ try
                     improved_at_iterations = iteration;
                 end
             end
-            
         end % end of looping through particles of the swarm
-        iteration = iteration + 1;
+        if bestfitness <= target_fitness
+            break;
+        end
     end  % end of main iteration loop
-catch % error handling
+catch err % error handling
+    disp(err)
     % placeholder for any custom error handling that we might want to do in
     % the future, for now we just clear the error 
 end

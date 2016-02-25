@@ -88,10 +88,11 @@ for k = 1:nb_particles
 end
 % we should modify this to include the possibility of having a grid along
 % with the randomly drawn particles
-iteration = 1;
+
 initial_fitness=bestfitness_history(1);
+target_fitness=initial_fitness*RaPIdObject.psoSettings.fitnessStopRatio;
 %% Algorithm's main body
-while iteration <= limit && globalBestFit >= initial_fitness*RaPIdObject.psoSettings.fitnessStopRatio % speed update loop
+for iteration=1:limit 
     if debugging&&mod(iteration,10) == 0 % debug info display
         sprintf(strcat('iteration ',int2str(iteration),' in pso body'));
     end
@@ -112,7 +113,9 @@ while iteration <= limit && globalBestFit >= initial_fitness*RaPIdObject.psoSett
     end
     swarm.updateCFAspeed(constriction,wt,self_coeff,social_coeff); % update the particles's speeds
     positions = swarm.updatePositions(); % change the position
-    iteration = iteration + 1;
+    if globalBestFit <= target_fitness % speed update loop
+        break;
+    end
 end  
 %% Finish and return results
 if ~RaPIdObject.experimentSettings.saveHist
