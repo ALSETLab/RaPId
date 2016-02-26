@@ -81,10 +81,10 @@ handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
-load('dataFmu');
-set(handles.edit1,'String',datafmu.edit1);
-set(handles.edit2,'String',datafmu.edit2);
-set(handles.edit4,'String',datafmu.edit4);
+
+set(handles.edit1,'String','');
+set(handles.edit2,'String','');
+set(handles.edit4,'String','');
 
 % UIWAIT makes generateFmu wait for user response (see UIRESUME)
 % uiwait(handles.generateFMU);
@@ -193,11 +193,10 @@ function pushbutton3_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 datafmu.edit1 = get(handles.edit1,'String');
 datafmu.edit2 = get(handles.edit2,'String');
-% data.edit3 = get(handles.edit3,'String');
 datafmu.edit4 = get(handles.edit4,'String');
 
 
-save('gui\dataFmu.mat','datafmu');
+
 % addpath(genpath(get(handles.edit5,'String')));
 DymolaChannel = ddeinit('dymola', ' ');
 if DymolaChannel == 0

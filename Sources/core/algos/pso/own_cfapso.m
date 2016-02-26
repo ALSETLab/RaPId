@@ -58,8 +58,6 @@ function [sol, historic] = own_cfapso(RaPIdObject,func)
 %       - saveHist, boolean allowing to store all the best fitness and
 %       particles at every iterations (get's big very quickly)
 
-global nbIterations
-nbIterations=0;
 wmin = RaPIdObject.psoSettings.w_min;
 wmax = RaPIdObject.psoSettings.w_max;
 self_coeff = RaPIdObject.psoSettings.self_coeff;

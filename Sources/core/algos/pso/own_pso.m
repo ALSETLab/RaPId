@@ -62,8 +62,6 @@ function [sol, historic] = own_pso(RaPIdObject,func)
 %       - saveHist, boolean allowing to store all the best fitness and
 %       particles at every iterations (get's big very quickly)
 
-global nbIterations
-nbIterations=0;
 w = RaPIdObject.psoSettings.w;
 self_coeff = RaPIdObject.psoSettings.self_coeff;
 social_coeff = RaPIdObject.psoSettings.social_coeff;

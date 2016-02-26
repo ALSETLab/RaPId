@@ -50,11 +50,8 @@ function [ sol, other] = own_ga(RaPIdObject,func)
 %       vector of parameters
 %       - saveHist, boolean allowing to store all the best fitness and
 %       particles at every iterations (get's big very quickly)
-global nbIterations
-nbIterations=0;
 
-% fetch parameters of the ga algorithm
-
+% fetch parameters of the GA algorithm
 gaSettings=RaPIdObject.gaSettings;
 saveHist=RaPIdObject.experimentSettings.saveHist;
 nbCromosomes = gaSettings.nbCromosomes;
@@ -66,8 +63,6 @@ headSize1 = gaSettings.headSize1;
 headSize2 = gaSettings.headSize2;
 headSize3 = gaSettings.headSize3;
 limit = RaPIdObject.experimentSettings.maxIterations; % hundred iterations, chosen randomly, the terminal condition should be better
-best = 1e66;
-bestP = [];
 verbose=RaPIdObject.experimentSettings.verbose;
 T=ChromosomeArray(nbCromosomes+2*(nbCroossOver1+nbCroossOver2)+nbMutations);
 % creating the cell through initialisation of chromosomes
@@ -84,22 +79,21 @@ end
 for k = T.pointerToLastOldChromosome+1:T.pointerToNewChromosome-1
     % debug info display
     if verbose&&mod(k,10) == 0
-        sprintf(strcat('iteration ',int2str(k),' in ga initialisation'));
+        sprintf(strcat('iteration ',int2str(k),' in GA initialisation'));
     end
     fitness = func(T.ChromosomeList(k).p, RaPIdObject);
     T.ChromosomeList(k).fitness = fitness;
 end
 T.pointerToLastOldChromosome=k;
-sort(T,'ascend');
+T.sort('ascend');
 best = T.ChromosomeList(1).fitness;
 bestP = T.ChromosomeList(1).p;
+target_fitness=best*gaSettings.fitnessStopRatio;
 %% Body
-iteration = 0;
-
-while iteration < limit %%&& best(end) > best_i*gaSettings.fitnessStopRatio
+for iteration=1:limit
     % debug info display
     if verbose&&mod(iteration,10) == 0
-        sprintf(strcat('iteration ',int2str(iteration),' in ga body'));
+        sprintf(strcat('iteration ',int2str(iteration),' in GA body'));
     end
     T.doCrossOverType1(nbCroossOver1); % Check that this is correct wrt headSize1!!! Can be mistake in original code aswell
     for k=T.pointerToLastOldChromosome+1:T.pointerToNewChromosome-1
@@ -119,7 +113,6 @@ while iteration < limit %%&& best(end) > best_i*gaSettings.fitnessStopRatio
     sort(T.ChromosomeList,'ascend');
     %% Evolution: who survives to this round
     T.survivalOfTheFittest(nbCromosomes);
-    iteration = iteration + 1;
     disp(['i = ' num2str(iteration) '. Best parameters: ' num2str(bestP(1,:)) ' with fitness = ' num2str(best)])
     if saveHist
         best = [best;T.ChromosomeList(1).fitness];
@@ -128,6 +121,9 @@ while iteration < limit %%&& best(end) > best_i*gaSettings.fitnessStopRatio
         best = T.ChromosomeList(1).fitness;
         bestP = T.ChromosomeList(1).p;
     end
+    if best <= target_fitness
+        break;
+    end 
 end
 sol = bestP;
 other.fitness = best;

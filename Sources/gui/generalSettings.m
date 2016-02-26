@@ -106,9 +106,15 @@ dataAlloc=cell(7,maxAlloc);
 dataAlloc(1,1:length(tmp1))=tmp1;
 dataAlloc(2,1:length(RaPIdObject.fmuOutputNames))=RaPIdObject.fmuOutputNames;
 dataAlloc(3,1:length(RaPIdObject.parameterNames))=RaPIdObject.parameterNames;
-dataAlloc(4,1:length(RaPIdObject.experimentSettings.p_min))=num2cell(RaPIdObject.experimentSettings.p_min);
-dataAlloc(5,1:length(RaPIdObject.experimentSettings.p_max))=num2cell(RaPIdObject.experimentSettings.p_max);
-dataAlloc(6,1:length(RaPIdObject.experimentSettings.p_0))=num2cell(RaPIdObject.experimentSettings.p_0);
+if ~isempty(RaPIdObject.experimentSettings.p_min)
+    dataAlloc(4,1:length(RaPIdObject.experimentSettings.p_min))=num2cell(RaPIdObject.experimentSettings.p_min);
+end
+if ~isempty(RaPIdObject.experimentSettings.p_min)
+    dataAlloc(5,1:length(RaPIdObject.experimentSettings.p_max))=num2cell(RaPIdObject.experimentSettings.p_max);
+end
+if ~isempty(RaPIdObject.experimentSettings.p_min)
+    dataAlloc(6,1:length(RaPIdObject.experimentSettings.p_0))=num2cell(RaPIdObject.experimentSettings.p_0);
+end
 dataAlloc(7,1:length(tmp7))=tmp7;
 set(handles.InputNames,'Data',dataAlloc);
 set(handles.InputNames,'ColumnEditable',true(ones(1,maxAlloc)));
