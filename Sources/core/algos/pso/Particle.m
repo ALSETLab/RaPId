@@ -41,12 +41,13 @@ classdef Particle < matlab.mixin.Copyable
         fitness = Inf; % how good it is with regard with the cost function (0 is ideal)
         bestPos;
         bestValue;
-        positions
+        positions;
+        kick=0.001;
     end
     methods
         %% Constructor
         % constructor generating the initial position randomly
-        function obj = Particle(pmin,pmax,p, varargin)
+        function obj = Particle(pmin,pmax,p,kick)
             if nargin ==0
                 % Allow initalization of chromosome-arrays
             else
@@ -64,26 +65,24 @@ classdef Particle < matlab.mixin.Copyable
                         obj.p = (obj.p_max - obj.p_min).*rand(obj.n,1)' + obj.p_min;
                     end
                 end
-            obj.v_max = (obj.p_max - obj.p);
-            obj.v_min = (obj.p_min - obj.p);
-            obj.v = (obj.v_max - obj.v_min).*rand(obj.n,1)' + obj.v_min;
-            end
-        end            
-       function obj = updateSpeed(obj,v)
-            obj.v=max(min(v,obj.v_max),obj.v_min);
-            if all(obj.v==0) % we are stuck, bounce
-                v=rand(obj.n,1)*abs(obj.p_max-obj.p_min); % random vector scaled by the size of the parameter space directions.
-                v=0.01*v/norm(v);
-                obj.v=max(min(v,obj.v_max),obj.v_min);
-%                 [indices,~]=sort(abs(v)); % find largest magnitude
-%                 for ii=1:obj.n
-%                     obj.v(indices(ii))= max(min(),)
-%                     if any(obj.v != 0)
-%                         break;
-%                     end
-%                 end
+                obj.v_max = (obj.p_max - obj.p);
+                obj.v_min = (obj.p_min - obj.p);
+                obj.v = (obj.v_max - obj.v_min).*rand(obj.n,1)' + obj.v_min;
+                if nargin==4
+                    obj.kick=kick;
+                end
             end
         end
+       function obj = updateSpeed(obj,v,varargin)
+           obj.v=max(min(v,obj.v_max),obj.v_min);
+           if all(obj.v==0) % we are stuck, bounce
+               if nargin==3
+                   obj.kick=varargin{1}; %allow to change this
+               end
+               v=(obj.v_max - obj.v_min).*rand(obj.n,1)' + obj.v_min; %random
+               obj.v=obj.kick*v/norm(v); %rescale it
+           end
+       end
         function obj = updatePosition(obj)
             obj.p = obj.p + obj.v;
             obj.v_max = obj.p_max - obj.p;
