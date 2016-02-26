@@ -106,9 +106,15 @@ dataAlloc=cell(7,maxAlloc);
 dataAlloc(1,1:length(tmp1))=tmp1;
 dataAlloc(2,1:length(RaPIdObject.fmuOutputNames))=RaPIdObject.fmuOutputNames;
 dataAlloc(3,1:length(RaPIdObject.parameterNames))=RaPIdObject.parameterNames;
-dataAlloc(4,1:length(RaPIdObject.experimentSettings.p_min))=num2cell(RaPIdObject.experimentSettings.p_min);
-dataAlloc(5,1:length(RaPIdObject.experimentSettings.p_max))=num2cell(RaPIdObject.experimentSettings.p_max);
-dataAlloc(6,1:length(RaPIdObject.experimentSettings.p_0))=num2cell(RaPIdObject.experimentSettings.p_0);
+if ~isempty(RaPIdObject.experimentSettings.p_min)
+    dataAlloc(4,1:length(RaPIdObject.experimentSettings.p_min))=num2cell(RaPIdObject.experimentSettings.p_min);
+end
+if ~isempty(RaPIdObject.experimentSettings.p_min)
+    dataAlloc(5,1:length(RaPIdObject.experimentSettings.p_max))=num2cell(RaPIdObject.experimentSettings.p_max);
+end
+if ~isempty(RaPIdObject.experimentSettings.p_min)
+    dataAlloc(6,1:length(RaPIdObject.experimentSettings.p_0))=num2cell(RaPIdObject.experimentSettings.p_0);
+end
 dataAlloc(7,1:length(tmp7))=tmp7;
 set(handles.InputNames,'Data',dataAlloc);
 set(handles.InputNames,'ColumnEditable',true(ones(1,maxAlloc)));
@@ -611,6 +617,7 @@ settings2.t_fitness_start = (get(handles.edit15,'String'));
 settings2.timeOut = str2double(get(handles.timeout_value,'String'));
 settings2.saveHist=get(handles.togglebutton1,'Value');
 tmp=get(handles.InputNames,'Data');
+% Make sure that everything is 
 RaPIdObject.fmuInputNames = tmp(1,~cellfun(@isempty,tmp(1,:)));
 RaPIdObject.fmuOutputNames = tmp(2,~cellfun(@isempty,tmp(2,:)));
 RaPIdObject.parameterNames = tmp(3,~cellfun(@isempty,tmp(3,:)));
@@ -760,15 +767,22 @@ parameterData=theData(3:end,:);
 % for some reason the table wants to convert to num often?? Taking care of
 % it below
 %if non-empty string entered
-if  ~isempty(eventdata.EditData) && ~isnan(eventdata.EditData) % enter data
+if  ~isempty(eventdata.EditData) % enter data
     if indices(1)<3
         inoutData(indices(1),indices(2))={eventdata.EditData};
     elseif indices(1)==3;
         parameterData(indices(1)-2,indices(2))={eventdata.EditData};
     else
-        parameterData(indices(1)-2,indices(2))={eventdata.NewData};
+        if ~isnumeric (eventdata.NewData)
+            tempData=str2double(eventdata.NewData);
+            if isnan(eventdata.NewData)
+                warning Please enter a numeric value
+            end
+        else
+            tempData = eventdata.NewData;
+        end
+        parameterData(indices(1)-2,indices(2))={tempData};
     end
-
 else  %delete data
     if indices(1)<3 
         inoutData(indices(1),indices(2))=cell(1,1);
@@ -788,8 +802,6 @@ else  %delete data
     end
  
 end
-
-
 if size(inoutData,2)>size(parameterData,2)
     tmp=size(inoutData,2)+1-all(cellfun(@isempty,inoutData(:,end)));
 elseif size(inoutData,2)<size(parameterData,2)

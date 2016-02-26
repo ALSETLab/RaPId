@@ -41,75 +41,72 @@ function [res] = rapid_ODEsolve(newParameters,RaPIdObject)
 % This function should never be called, the function FUNC does all the job
 % for you
 % --------> See the help for FUNC
-persistent inputconf outconf
+persistent inputconf outconf postprocessing parameterNames options fmupath
 
-if isempty(inputconf)
-    if isprop(RaPIdObject,'fmuInputNames') && iscell(RaPIdObject.fmuInputNames)
-        for k=1:length(RaPIdObject.fmuInputNames)
-        inputconf{k}.name=RaPIdObject.fmuInputNames{k};
-        inputconf{k}.vec=RaPIdObject.experimentData.IndataMatrix(:,[1,k+1]);
-        end
-        outconf.name=RaPIdObject.fmuOutputNames;
+if isempty(inputconf) % will run once
+    if exist(RaPIdObject.experimentSettings.pathToFmuModel,'file') % FMU exist on absolute path
+        fmupath=RaPIdObject.experimentSettings.pathToFmuModel;
+    elseif ~exist(RaPIdObject.experimentSettings.pathToFmuModel,'file') && exist(fullfile(evalin('base','pwd'),RaPIdObject.experimentSettings.pathToFmuModel),'file') %FMU exist on relative path
+        fmupath=fullfile(evalin('base','pwd'),RaPIdObject.experimentSettings.pathToFmuModel);
     else
+        error('FMU file could not be found!')
+    end
+    parameterNames=RaPIdObject.parameterNames;
+    options=odeset('MaxStep',10*RaPIdObject.experimentSettings.ts,'RelTol', 1^-4,'Events',@(x)(disp('kek')) ); % just a temporary hack with ts
+    T=timer('StartDelay',RaPIdObject.experimentSettings.timeOut, 'Period', 10.0,'ExecutionMode','fixedSpacing','Tag','ODEtimeout','UserData',0);
+    T.TimerFcn={@mycallback};
+    outconf.name=RaPIdObject.fmuOutputNames;
+    outconf.toplevel = false; %disable standard model outputs to avoid duplicates
+    if isprop(RaPIdObject,'fmuInputNames') && iscell(RaPIdObject.fmuInputNames)  % do we use inputs to the fmu?
+        for k=1:length(RaPIdObject.fmuInputNames)
+            inputconf{k}.name=RaPIdObject.fmuInputNames{k};
+            inputconf{k}.vec=RaPIdObject.experimentData.IndataMatrix(:,[1,k+1]); % this is the indata
+        end
+    else % no fmu inputs
         inputconf=[];
     end
+    % Test anonymous function + compability work-around for old matlab & handle functions
+    if ~isempty(RaPIdObject.experimentSettings.outputPostProcessing)
+        postprocessing=str2func(func2str(RaPIdObject.experimentSettings.outputPostProcessing));
+        try
+            assert( all(size(postprocessing(ones(2,length(outconf))))==[2, size(RaPIdObject.experimentData.referenceOutdata,2)]));
+        catch err %not a good function - reset this
+            disp(err);
+            postprocessing=[]; %nothing
+        end
+    else
+        postprocessing=[];
+    end
 end
-
-if exist(RaPIdObject.experimentSettings.pathToFmuModel,'file') % FMU exist on absolute path
-    fmu = FMUModelME1(RaPIdObject.experimentSettings.pathToFmuModel,'Loglevel','warning'); % or change to loadFMU?
-elseif ~exist(RaPIdObject.experimentSettings.pathToFmuModel,'file') && exist(fullfile(evalin('base','pwd'),RaPIdObject.experimentSettings.pathToFmuModel),'file') %FMU exist on relative path
-    fmu = FMUModelME1(fullfile(evalin('base','pwd'),RaPIdObject.experimentSettings.pathToFmuModel),'Loglevel','warning'); % or change to loadFMU?
-else
-    error('FMU file could not be found!')
-end
-
-parameterNames=RaPIdObject.parameterNames;
-maxInstantiateAttempts=1;
-timeouts=1;
-if ~fmu.isInstantiated
-   for k=1:maxInstantiateAttempts
+fmu = loadFMU(fmupath,'Loglevel','warning');  % load fmu
+maxInstantiateAttempts=5;  % limit the amounts of attempts to instantiate
+for k=1:maxInstantiateAttempts
     try
         fmu.fmiInstantiateModel
         break;
     catch err
-        %disp(err.message)
-        %pause(timeouts)
+        pause(0.1); % wait 100 ms
     end
-   end
-   if ~fmu.isInstantiated
-       tmp=fmu.fmupath;
-       try
-          % clearvars('fmu');
-           pause(timeouts)
-           fmu=[];    
-           fmu=FMUModelME1(tmp);
-           fmu.fmiInstantiateModel;
-       catch err
-           disp('Error while trying to create new fmu?');
-           disp(err);
-           
-       end
-   end
+end
+if ~fmu.isInstantiated
+    rethrow(err);
 end
 for l = 1:length(newParameters)
     fmu.setValue(parameterNames{l},newParameters(l));
 end
-% simulate the system, this is done in the base-workspace 
-
 
 try %needs fixes!
     apa=fmu.fmiInitialize;
+    start(T)
     tspan=0:RaPIdObject.experimentSettings.ts:RaPIdObject.experimentSettings.tf; % needs fixing
-    options=odeset('MaxStep',10*RaPIdObject.experimentSettings.ts,'RelTol', 1^-4 ); % just a temporary hack with ts
     [time,res,yname]=fmu.simulate([0 RaPIdObject.experimentSettings.tf],'Output',outconf,'Input',inputconf,'Options',options,'Solver',RaPIdObject.experimentSettings.integrationMethod);
-    fmu=[];
-    if ~isempty(res)
-        res=RaPIdObject.experimentSettings.outputPostProcessing(res); % this is a user-defined function
-    end
+    stop(T)
     if isempty(time)
         error('please make sure the To Workspace component in the simulink model outputs a struct with time')
     end
-    %% Do something with res here!
+    if ~isempty(res) && ~isempty(postprocessing)
+        res=postprocessing(res); % this is a user-defined function
+    end    
     realTime=RaPIdObject.experimentData.referenceTime;
     res = rapid_interpolate(time,res,realTime);
 catch err
@@ -117,8 +114,13 @@ catch err
         disp(err.message);
     end
     disp(err)
-    disp(err)
     res=[];
     return;
 end
+end
+function mycallback(myTimerObj,thisEvent, varargin)
+    set(myTimerObj,'UserData',myTimerObj.UserData+1);
+    if rem(myTimerObj.UserData,9)==1
+        disp(['FMU took more than ', num2str(myTimerObj.StartDelay+myTimerObj.TasksExecuted*myTimerObj.StartDelay),' sec. to simulate - total number of ' num2str(myTimerObj.UserData) ' time(s).'])
+    end
 end

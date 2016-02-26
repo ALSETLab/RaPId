@@ -27,29 +27,29 @@ classdef ChromosomeArray < handle
         pointerToLastOldChromosome % ptr to place for last old Chromosomes
         pointerToNewChromosome  % ptr to place for new Chromosomes
         listOfUnfitted  % unused as of now
+        arraylength=0
     end
     methods
         %% Constructor which create the object and pre-allocates an array of Chromosomes
-        function obj = ChromosomeArray(n) % Pre-allocate Array
-            for n=n:-1:1 % counting backwards for Memory pre-allocation
-                obj.ChromosomeList(n)=Chromosome();
+        function obj = ChromosomeArray(varargin) % Pre-allocate Array
+            if nargin==1
+                obj.arraylength=varargin{1};
+                for n=obj.arraylength:-1:1 % counting backwards for Memory pre-allocation
+                    obj.ChromosomeList(n)=Chromosome();
+                end
             end
-            obj.pointerToNewChromosome=1;
+            obj.pointerToNewChromosome=1; %no pre-allocation
             obj.pointerToLastOldChromosome=0;
+            
         end
         %% Create new chromosome
         function obj=createChromosome(obj,pmin,pmax,p) % Create actual Chromosomes
             ii=obj.pointerToNewChromosome;
-            assert(length(pmax) == length(pmin),'wrong size for pmin or pmax');
-            obj.ChromosomeList(ii).p_min = pmin;
-            obj.ChromosomeList(ii).p_max = pmax;
-            obj.ChromosomeList(ii).n = length(pmin);
-            if isempty(p) || length(pmin) ~= length(p)
-                obj.ChromosomeList(ii).p = (pmax - pmin).*rand(obj.ChromosomeList(ii).n,1)' + pmin;
-            else
-                obj.ChromosomeList(ii).p = p;
+            if ii>obj.arraylength
+                obj.arraylength=ii;
             end
-            obj.pointerToNewChromosome=obj.pointerToNewChromosome+1;
+            obj.ChromosomeList(ii)=Chromosome(pmin,pmax,p);
+            obj.pointerToNewChromosome=ii+1;
         end
         %% Sort according to fitness
         function obj=sort(obj,varargin)

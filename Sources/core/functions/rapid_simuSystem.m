@@ -49,7 +49,6 @@ function [res] = rapid_simuSystem(newParameters,RaPIdObject)
 % This function should never be called, the function FUNC does all the job
 % for you
 % --------> See the help for FUNC
-global nbIterations
 persistent timeOut
 
 if isempty(timeOut)
@@ -92,6 +91,8 @@ catch err
     elseif strcmp(err.identifier,'Simulink:Engine:SolverConsecutiveZCNum')
         res=[];
         return;
+    elseif strcmp(err.identifier,'Simulink:Commands:SimAborted')
+        error('RaPId:AbortRaPId','User command: Abort simulations.');
     else
         disp(err.identifier);
         res=[];
@@ -105,5 +106,4 @@ if isempty(time)
     error('Make sure the To Workspace component in the simulink model outputs a struct with time')
 end
 res = rapid_interpolate(time,res,RaPIdObject.experimentData.referenceTime);
-nbIterations = nbIterations + 1; % debug variable, how many times was the system simulated...
 end

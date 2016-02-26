@@ -23,24 +23,14 @@
 
 function fitness = func(p,RaPIdObject)
 %FUNC Function computing the fitness of a vector of parameter
-%   p: vector of parameter to be tested
-%   fitness: fitness of the vector of parameters, calculated relatively to
-%   an objective function
-%   see: rapid_simuSystem and rapid_objectiveFunction
-%   It requires the global variable settings_ to be declared before call to
-%   this function (in the toolbox this declaration is done in rapid)
-%   settings should contain all the appropriate parameters
-%   in this function are used the parameters relative to the simulink model
-%   settings should contain:
-%       - Ts, sampling time (not meaningful if variable step method is chosen)
-%       - tf, final time for the simulation
-%       - intMethod, integration method (solver used)
+%   p: vector of parameters to be tested
+%   fitness: the calculate fitness after simulating with the parameters
+%   RaPIdObject: a instance of the RaPIdClass (or a correct structure)
+%   RaPIdObject should contain all the appropriate parameters in
+%   experimentSettings and experimentData - see 
+%   rapid_simuSystem, rapid_objectiveFunction, rapid_interpolate,
+%   and rapid_ODEsolve for which parameters are necessary.
 
-global nbIterations;
-
-if ~isempty(nbIterations) && (nbIterations > RaPIdObject.experimentSettings.maxIterations)
-    %error('Toolbox stopped because we reached the max number of iteration, you can ignore the error message and continue');
-end
 switch RaPIdObject.experimentSettings.solverMode
     case 'ODE'
         [simuRes] = rapid_ODEsolve(p,RaPIdObject);

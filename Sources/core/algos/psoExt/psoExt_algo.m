@@ -34,7 +34,7 @@ function [ sol, other] = psoExt_algo(RaPIdObject)
 
 options = eval(RaPIdObject.psoExtSettings);
 % pso(fitnessfcn,nvars,Aineq,bineq,Aeq,beq,LB,UB,nonlcon,options)
-sol = pso(@func,length(RaPIdObject.experimentSettings.p_0),[],[],[],[],RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,[],options);
+sol = pso(@(x)func(x,RaPIdObject),length(RaPIdObject.experimentSettings.p_0),[],[],[],[],RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,[],options);
 other = [];
 if RaPIdObject.experimentSettings.verbose
     part.p = RaPIdObject.experimentSettings.p_0;

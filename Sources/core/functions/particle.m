@@ -101,7 +101,18 @@ classdef particle < handle
             obj.plot = verbose; % boolean for plotting
         end
         function obj = updateSpeed(obj,v)
-            obj.v = max(min(v,obj.v_max),obj.v_min);
+            obj.v=max(min(v,obj.v_max),obj.v_min);
+            if all(obj.v==0) % we are stuck, bounce
+                v_limitfactor=rand;
+                obj.v=max(min(-v,v_limitfactor*obj.v_max),v_limitfactor*obj.v_min);
+%                 [indices,~]=sort(abs(v)); % find largest magnitude
+%                 for ii=1:obj.n
+%                     obj.v(indices(ii))= max(min(),)
+%                     if any(obj.v != 0)
+%                         break;
+%                     end
+%                 end
+            end
         end
         function obj = updatePart(obj)
             obj.p = obj.p + obj.v;

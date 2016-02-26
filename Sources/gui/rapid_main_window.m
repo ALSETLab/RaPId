@@ -83,8 +83,7 @@ handles.output = hObject;
 guidata(hObject, handles);
 setappdata(0,'HandleMainGUI',hObject);
 try
-    path2rapid=getPathToRapid();
-    load(fullfile(path2rapid,'core\init\data.mat'),'RaPIdObject');%load standard settings...
+    RaPIdObject=RaPIdClass();
     setappdata(handles.MainRaPiDWindow,'RaPIdObject',RaPIdObject);
 catch err
     disp err;
@@ -190,7 +189,11 @@ try
 catch err
     set(handles.text8,'BackgroundColor','y');
     set(handles.text8,'String','error');
-    rethrow(err);
+    if strcmp(err.identifier,'Simulink:Commands:SimAborted')
+        disp(err.message);
+    else
+        rethrow(err);
+    end
 end
 set(handles.text8,'String','Simulation completed.');
 set(handles.text8,'BackgroundColor','g');
