@@ -118,8 +118,9 @@ end
 dataAlloc(7,1:length(tmp7))=tmp7;
 set(handles.InputNames,'Data',dataAlloc);
 set(handles.InputNames,'ColumnEditable',true(ones(1,maxAlloc)));
-tmp7=cell([1,maxAlloc]);
-set(handles.InputNames,'ColumnWidth',cellfun(@(x)('auto'),tmp7,'UniformOutput', false));  
+tmp7=num2cell(max(2+max(cellfun(@(x)length(x),dataAlloc)),10)); % max width + 2 per col. or 10
+fontsize=0.65*get(handles.InputNames,'Fontsize'); % assume width is ~65% of height
+set(handles.InputNames,'ColumnWidth',cellfun(@(x)(x*fontsize),tmp7,'UniformOutput', false));  
 tmp8=cell([1,maxAlloc]);
 tmp8=cellfun(@(x){'char'},tmp8);
 set(handles.InputNames,'ColumnFormat',tmp8);
@@ -815,6 +816,9 @@ theData(1:2,1:tmp)=inoutData;
 theData(3:7,1:size(parameterData,2))=parameterData;
 set(hObject,'Data',theData);
 set(hObject,'ColumnEditable',true(ones(1,size(theData,2)))); 
+tmp7=num2cell(max(2+max(cellfun(@(x)length(x),theData)),10)); % max width + 2 per col. or 10
+fontsize=0.65*get(handles.InputNames,'Fontsize'); % assume width is ~65% of height
+set(handles.InputNames,'ColumnWidth',cellfun(@(x)(x*fontsize),tmp7,'UniformOutput', false));  
 tmp2=cell([1,tmp]);
 set(handles.InputNames,'ColumnFormat',cellfun(@(x){'char'},tmp2));
 

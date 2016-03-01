@@ -31,10 +31,10 @@ function fitness = func(p,RaPIdObject)
 %   rapid_simuSystem, rapid_objectiveFunction, rapid_interpolate,
 %   and rapid_ODEsolve for which parameters are necessary.
 
-switch RaPIdObject.experimentSettings.solverMode
-    case 'ODE'
+switch lower(RaPIdObject.experimentSettings.solverMode)
+    case 'ode'
         [simuRes] = rapid_ODEsolve(p,RaPIdObject);
-    case 'Simulink'
+    case 'simulink'
         [simuRes] = rapid_simuSystem(p,RaPIdObject);
     otherwise
         error('In "mySettings.mode": You must select either "ODE" (internal ODE-solvers) or "Simulink"');

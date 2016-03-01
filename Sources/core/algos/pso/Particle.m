@@ -47,7 +47,7 @@ classdef Particle < matlab.mixin.Copyable
     methods
         %% Constructor
         % constructor generating the initial position randomly
-        function obj = Particle(pmin,pmax,p,kick)
+        function obj = Particle(pmin,pmax,p,kick) %return handle to object
             if nargin ==0
                 % Allow initalization of chromosome-arrays
             else
@@ -73,9 +73,9 @@ classdef Particle < matlab.mixin.Copyable
                 end
             end
         end
-       function obj = updateSpeed(obj,v,varargin)
+       function updateSpeed(obj,v,varargin)
            obj.v=max(min(v,obj.v_max),obj.v_min);
-           if all(obj.v==0) % we are stuck, bounce
+           if all(obj.v==0) % we are stuck, particle will behave chaotically
                if nargin==3
                    obj.kick=varargin{1}; %allow to change this
                end
@@ -83,15 +83,15 @@ classdef Particle < matlab.mixin.Copyable
                obj.v=obj.kick*v/norm(v); %rescale it
            end
        end
-        function obj = updatePosition(obj)
+        function updatePosition(obj)
             obj.p = obj.p + obj.v;
             obj.v_max = obj.p_max - obj.p;
             obj.v_min = obj.p_min - obj.p;
             obj.positions = [obj.positions, obj.p'];
         end
         
-        function obj = setBest(obj,value)
-            if isempty(obj.bestValue) || obj.bestValue>=value
+        function setBest(obj,value)
+            if isempty(obj.bestValue) || obj.bestValue>=value %new best
                 obj.bestPos = obj.p;
                 obj.bestValue = value;
             end

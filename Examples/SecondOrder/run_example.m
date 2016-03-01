@@ -50,7 +50,7 @@ RaPIdObject.experimentSettings.objective_weights = 1; %Weights of the output sig
 
 %% ==========Optimization Algorithm settings==========
 
-switch RaPIdObject.experimentSettings.optimizationAlgorithm
+switch lower(RaPIdObject.experimentSettings.optimizationAlgorithm) % use lower to add robustness
     case 'pso'
         RaPIdObject.psoSettings.w = 0.25; %Particle inertia weight
         RaPIdObject.psoSettings.self_coeff = 0.25; %Self recognition coefficient

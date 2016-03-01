@@ -106,10 +106,10 @@ try
                 bestparameters_history(1,:) = bestparameters;
                 improved_at_iterations(1) = 1;
             else
-                improved_at_iterations = 1;
+                improved_at_iterations = 0;
             end
             if verbose
-                disp(['i = 1. Best parameters: ' num2str(bestparameters) ' with fitness = ' num2str(bestfitness)])
+                disp(['i = 0. Best parameters: ' num2str(bestparameters) ' with fitness = ' num2str(bestfitness)])
             end
         end
     end

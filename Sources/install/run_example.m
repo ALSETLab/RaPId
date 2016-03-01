@@ -36,7 +36,7 @@ RaPIdObject.experimentSettings.pathToFMUModel = 'Rafael_0original_0estimated.fmu
 RaPIdObject.experimentSettings.modelName = 'variable_rafael'; %Simulink model name
 RaPIdObject.experimentSettings.blockName = 'variable_rafael/Rafael_original_estimated'; %FMU name
 RaPIdObject.experimentSettings.scopeName = 'simout'; %Result sink name
-RaPIdObject.experimentSettings.displayMode = 'Show';
+RaPIdObject.experimentSettings.displayMode = 'hide';
 
 %Estimation parameter settings
 RaPIdObject.experimentSettings.p_0 = [0.3, 4.1, 1.7, 1.1]; %Initial parameter guess
@@ -49,7 +49,7 @@ RaPIdObject.experimentSettings.objective_weights = 1; %Weights of the output sig
 
 %% ==========Optimization Algorithm settings==========
 
-switch RaPIdObject.experimentSettings.optimizationAlgorithm
+switch lower(RaPIdObject.experimentSettings.optimizationAlgorithm) %use lower case
     case 'pso'
         RaPIdObject.psoSettings.w = 0.25; %Particle inertia weight
         RaPIdObject.psoSettings.self_coeff = 0.25; %Self recognition coefficient
@@ -71,9 +71,9 @@ RaPIdObject.fmuOutputNames = {'y1'}; %Output variable names
 %% ==========Running the computation==========
 
 %Opening simulink model
-open_system(RaPIdObject.experimentSettings.pathToSimulinkModel); %Opening the simulink model
-open_system(strcat(RaPIdObject.experimentSettings.modelName,'/Scope')); %Opening the scope in the model to observe estimation process
-pause(1); %Waiting one second for scope to initialize
+% open_system(RaPIdObject.experimentSettings.pathToSimulinkModel); %Opening the simulink model
+% open_system(strcat(RaPIdObject.experimentSettings.modelName,'/Scope')); %Opening the scope in the model to observe estimation process
+% pause(1); %Waiting one second for scope to initialize
 %%
 
 %Starting the estimation process

@@ -209,7 +209,7 @@ if isrow(RaPIdObject.experimentSettings.objective_weights) % should not be row
 end
 
 %% Selecting the chosen opimtization method
-switch RaPIdObject.experimentSettings.optimizationAlgorithm
+switch lower(RaPIdObject.experimentSettings.optimizationAlgorithm) % use lower case
     case 'pso'
         [sol, historic] = pso_algo(RaPIdObject);
     case 'ga'
@@ -230,15 +230,15 @@ switch RaPIdObject.experimentSettings.optimizationAlgorithm
         historic.sol1 = sol1;
         historic.historic1 = historic1;
         historic.historic2 = historic2;
-    case 'psoExt'
+    case 'psoext'
         [ sol, historic] = psoExt_algo(RaPIdObject);
-    case 'gaExt'
+    case 'gaext'
         [ sol, historic] = gaExt_algo(RaPIdObject);
     case 'knitro'
         [ sol, historic] = knitro_algo(RaPIdObject);
     case 'fmincon'
         [ sol, historic] = fmincon_algo(RaPIdObject);
-    case 'pfNew'
+    case 'pfnew'
         [ sol, historic] = pf_algo(RaPIdObject);
     otherwise
         errorWrongMethodName
