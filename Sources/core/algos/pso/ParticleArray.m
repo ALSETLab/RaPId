@@ -25,27 +25,25 @@ classdef ParticleArray < handle
     properties 
         ParticleList=Particle % the main Particle array
         listOfUnfitted  % unused as of now
-        n % size of non-empty array
+        n % size of non-empty Particle array
         globalbestvalue=Inf;
         globalbestpos
     end
     methods
         %% Constructor which create the object and pre-allocates an array of Particles
-        function obj = ParticleArray(n) % Pre-allocate Array
-            for n=n:-1:1 % counting backwards for Memory pre-allocation
-                obj.ParticleList(n)=Particle();
+        function obj = ParticleArray(varargin)  % Pre-allocate Array
+            if nargin==1
+                k=varargin{1};
+                for ii=k:-1:1 % counting backwards for Memory pre-allocation
+                    obj.ParticleList(k)=Particle();
+                end
             end
             obj.n=0;
         end
         %% Create new Particle
-        function obj=createParticle(obj,pmin,pmax,p) % Create actual Particles
+        function createParticle(obj,pmin,pmax,p) % Create actual Particles
             ii=obj.n+1;
-            assert(length(pmax) == length(pmin),'wrong size for pmin or pmax');
-            if isempty(p) || length(pmin) ~= length(p)          
-                obj.ParticleList(ii) = Particle(pmin,pmax,(pmax - pmin).*rand(length(pmin),1)' + pmin);
-            else
-                obj.ParticleList(ii) = Particle(pmin,pmax,p);
-            end
+            obj.ParticleList(ii) = Particle(pmin,pmax,p);
             obj.n=obj.n+1;
 
         end
@@ -56,18 +54,18 @@ classdef ParticleArray < handle
             obj.ParticleList(1:obj.n)=obj.ParticleList(idx);
         end
         %% Duplicate specified Particles
-        function obj=duplicateParticle(obj, index)
+        function duplicateParticle(obj, index)
             obj.ParticleList(obj.n+1)=copy(obj.ParticleList(index));
             obj.n=obj.n+1;
         end
-        function obj=updateCFASpeed(obj,constriction,wt,self_coeff,social_coeff)
+        function updateCFASpeed(obj,constriction,wt,self_coeff,social_coeff)
             for ii=1:obj.n
                 obj.ParticleList(ii).updateSpeed(constriction*(wt * obj.ParticleList(ii).v + self_coeff*rand*(obj.ParticleList(ii).bestPos - obj.ParticleList(ii).p) + social_coeff*rand*(obj.globalbestpos - obj.ParticleList(ii).p)));
             end
         end
         function positions=updatePositions(obj)
             for ii=1:obj.n
-                positions=obj.ParticleList(ii).updatePosition();
+                obj.ParticleList(ii).updatePosition();
             end
         end
         function fitnesses=calculateFitnesses(obj,fitnessfunction)

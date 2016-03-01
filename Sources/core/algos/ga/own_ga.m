@@ -59,6 +59,7 @@ nbCroossOver1 = gaSettings.nbCroossOver1;
 nbCroossOver2 = gaSettings.nbCroossOver2;
 nbMutations = gaSettings.nbMutations;
 nbReproduction = gaSettings.nbReproduction;
+nbReinjection = gaSettings.nbReinjection;
 headSize1 = gaSettings.headSize1;
 headSize2 = gaSettings.headSize2;
 headSize3 = gaSettings.headSize3;
@@ -112,7 +113,7 @@ for iteration=1:limit
     T.pointerToLastOldChromosome=k;
     sort(T.ChromosomeList,'ascend');
     %% Evolution: who survives to this round
-    T.survivalOfTheFittest(nbCromosomes);
+    T.survivalOfTheFittest(1+nbReinjection);
     disp(['i = ' num2str(iteration) '. Best parameters: ' num2str(bestP(1,:)) ' with fitness = ' num2str(best)])
     if saveHist
         best = [best;T.ChromosomeList(1).fitness];

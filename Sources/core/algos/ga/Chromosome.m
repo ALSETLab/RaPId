@@ -65,7 +65,7 @@ classdef Chromosome < matlab.mixin.Copyable
             genes = obj.p(geneList);
         end        % change its own genes
         %% Get specified Genes
-        function obj = setGenes(obj,genesToCross,genes)
+        function setGenes(obj,genesToCross,genes)
             obj.p(genesToCross) = genes;
             obj.fitness=Inf;
         end

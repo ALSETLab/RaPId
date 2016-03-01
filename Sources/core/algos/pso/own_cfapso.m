@@ -67,62 +67,71 @@ nb_particles=RaPIdObject.psoSettings.nb_particles;
 verbose=RaPIdObject.experimentSettings.verbose; % used to decide if displaying progress
 debugging=0; % set to 1 for troubleshooting the code
 if RaPIdObject.experimentSettings.saveHist %pre-allocate for speed
-    bestfitness_history = zeros(limit,1); % pre-allocate vector (guesstimate size)
-    bestparameters_history = zeros(limit,length(RaPIdObject.experimentSettings.p_0)); % pre-allocate some array (guesstimate size)
-    improved_at_iterations=bestfitness_history; % pre-allocate vector (guesstimate size)
+    best_fitness_history = zeros(limit,1); % pre-allocate vector 
+    best_parameters_history = zeros(limit,length(RaPIdObject.experimentSettings.p_0)); % pre-allocate array
+    improved_at_iterations=best_fitness_history; % pre-allocate vector 
 end
-if social_coeff+self_coeff <4 %the acceleration coefficients should be over 4 too guarantee stability
+if social_coeff+self_coeff <4 %the acceleration coefficients should be over 4 to guarantee stability
    self_coeff=1.55+rand;  %random number between 1.55 and 2.55
    social_coeff=4.1-self_coeff; %number between 1.55 and 2.55  
 end
 phi=social_coeff+self_coeff;    
-constriction=2/(2-phi-sqrt(phi^2 - 4*phi));   %constriction factor 
-%% Init the swarm: give positions to all particles
+constriction=2/abs(2-phi-sqrt(phi^2 - 4*phi));   %constriction factor 
+%% Initalization of the swarm: give positions & fitness to all particles
 list = generateOrganisedSwarm( nb_particles, RaPIdObject.psoSettings.nRandMin,RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,RaPIdObject.experimentSettings.p_0);
 swarm=ParticleArray(nb_particles);
 list=[list; cell(nb_particles-length(list),1)];
 for k = 1:nb_particles
     swarm.createParticle(RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,list{k});
 end
+fitnesses = swarm.calculateFitnesses(@(x)(func(x,RaPIdObject))); %calculate fitnesses
+[global_best_fitness,global_best_pos,newbest]=swarm.updateGlobalBest();
+best_parameters_history(1,:) = global_best_pos;
+best_fitness_history(1,:) = global_best_fitness;
+improved_at_iterations(1) = 1;
+if verbose
+    disp(['i = 0. Best parameters: ' num2str(global_best_pos) ' with fitness = ' num2str(global_best_fitness)])
+end
 % we should modify this to include the possibility of having a grid along
 % with the randomly drawn particles
 
-initial_fitness=bestfitness_history(1);
-target_fitness=initial_fitness*RaPIdObject.psoSettings.fitnessStopRatio;
+target_fitness=best_fitness_history(1)*RaPIdObject.psoSettings.fitnessStopRatio;
 %% Algorithm's main body
 for iteration=1:limit 
     if debugging&&mod(iteration,10) == 0 % debug info display
         sprintf(strcat('iteration ',int2str(iteration),' in pso body'));
     end
-    wt=wmax-(wmax-wmin)*iteration/limit;   % calculate new inertia
+    wt=wmax-((wmax-wmin)*iteration/limit);   % calculate new inertia
+    swarm.updateCFASpeed(constriction,wt,self_coeff,social_coeff); % update the particles's speeds
+    swarm.updatePositions(); % change the position
     fitnesses = swarm.calculateFitnesses(@(x)(func(x,RaPIdObject))); %calculate fitnesses
-    [globalbestvalue,globalbestpos,newbest]=swarm.updateGlobalBest();
+    [global_best_fitness,global_best_pos,newbest]=swarm.updateGlobalBest();
     if newbest
-        bestfitness_history(iteration) = globalbestvalue;
+        best_fitness_history(iteration) = global_best_fitness;
         if verbose
-            disp(['i = ' num2str(iteration) '. Best parameters: ' num2str(globalbestpos) ' with fitness = ' num2str(globalbestvalue)])
+            disp(['i = ' num2str(iteration) '. Best parameters: ' num2str(global_best_pos) ' with fitness = ' num2str(global_best_fitness)])
         end
         if RaPIdObject.experimentSettings.saveHist
-            bestparameters_history(iteration,:) = globalbestvalue;
+            best_parameters_history(iteration,:) = global_best_pos;
+            best_fitness_history(iteration)=global_best_fitness;
             improved_at_iterations(iteration) = iteration;
         else
             improved_at_iterations = iteration;
         end
     end
-    swarm.updateCFAspeed(constriction,wt,self_coeff,social_coeff); % update the particles's speeds
-    positions = swarm.updatePositions(); % change the position
-    if globalBestFit <= target_fitness % speed update loop
+
+    if global_best_fitness <= target_fitness % speed update loop
         break;
     end
 end  
 %% Finish and return results
 if ~RaPIdObject.experimentSettings.saveHist
-    bestfitness_history=globalbestfitness;
-    bestparameters_history=globalbestpos;
+    best_fitness_history=global_best_fitness;
+    best_parameters_history=global_best_pos;
 end
-sol = globalBestPos;
-historic.best_H = bestfitness_history;
-historic.bestP_H = bestparameters_history;
+sol = global_best_pos;
+historic.best_H = best_fitness_history;
+historic.bestP_H = best_parameters_history;
 historic.improvement_at_iterations=improved_at_iterations;
 historic.swarm = swarm;
 end
