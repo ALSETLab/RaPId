@@ -51,16 +51,16 @@ end
 
 % We can either use Simulink or Matlab's ODE solver directly.
 switch RaPIdObject.experimentSettings.solverMode
-    case 'ODE'
+    case 'ode'
         
-    case 'Simulink'
+    case 'simulink'
         
 end
 RaPIdObject.experimentSettings.solverMode='ODE';
 %% This part contains example of settings that can changed at will if needed
 ChangeLoadedSettings=0;
 if ChangeLoadedSettings
-    switch RaPIdObject.experimentSettings.optimizationAlgorithm
+    switch lower(RaPIdObject.experimentSettings.optimizationAlgorithm)
         case 'pso'
             pso_options.w = 0.5/(0.5+1+0.8);
             pso_options.w_min = 0.01;
@@ -116,10 +116,10 @@ if ChangeLoadedSettings
         case 'combi'
             RaPIdObject.combiSettings.firstMethod = 'pf';
             RaPIdObject.combiSettings.secondMethod = 'naive';
-        case 'psoExt'
+        case 'psoext'
             addpath(genpath(strcat(getPathToRapid,'\psopt'))); % change this path if needed
             RaPIdObject.psoExtSettings = 'optimset(psooptimset,''TolFun'',1e-2)';
-        case 'gaExt'
+        case 'gaext'
             RaPIdObject.gaExtSettings = 'gaoptimset';
         case 'knitro'
             RaPIdObject.knitroSettings.path2Knitro = 'P:\Program Files\Ziena\knitro';

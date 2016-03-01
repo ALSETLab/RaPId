@@ -29,4 +29,4 @@ type('copyright_statement')
 % the GUI needs to be completely initialised the first time
 % it is recommended to save containers when exiting the program or 
 % switching from a model to another.
-rapid_main_window
+rapidMainWindow;
