@@ -31,10 +31,11 @@ check = false;
 %List the dependencies (with -- not installed! if not installed)
 disp('RaPId Toolbox dependancies are: ');
 for (i=1:length(dep_list))
-    disp(dep_list{i});
     if  ~sum(ismember(dep_inst(1,1,:),dep_list(i)))
         warning(strcat(dep_list{i},' -- not installed!'));
         check = check || true;
+    else
+        disp(strcat(dep_list{i}, ' -- OK !'));
     end
 end
 
