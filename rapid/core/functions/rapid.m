@@ -1,8 +1,7 @@
 function [sol,historic,rapidObject] = rapid(rapidObject)
 %RAPID carries out the parameter identification in the RaPId Toolbox.
-% the settings struct must contain the fields:
-%   [SOL, HISTORIC,RAPIDOBJECT] = RAPID(RAPIDOBJECT) returns a vector SOL of the identified parameters,
-%   and a struct HIS containg the history of the parameter identification, given the settings specified in RAPIDOBJECT which is
+%   [SOL,HISTORY,RAPIDOBJECT] = RAPID(RAPIDOBJECT) returns a vector SOL of the identified parameters,
+%   and a struct HISTORY containg the history of the parameter identification, given the settings specified in RAPIDOBJECT which is
 %   an instance of the RaPIdClass (or a struct in legacy-mode).
 % See also: RUNRAPIDGUI, RAPIDCLASS
 %
