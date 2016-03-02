@@ -4,7 +4,7 @@
 %% ==========Moving to the example folder==========
 
 str = '../../Examples/SecondOrder';
-cd(str);
+oldFolder = cd(str);
 
 %% ==========Reference data settings==========
 
@@ -78,7 +78,7 @@ RaPIdObject.fmuOutputNames = {'y1'}; %Output variable names
 
 %Starting the estimation process
 [sol, hist] = rapid(RaPIdObject);
-cd('../../Sources');
+cd(oldFolder);
 if isempty(sol) 
     warning('Test example failed!');
 else
