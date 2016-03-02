@@ -78,7 +78,7 @@ RaPIdObject.fmuOutputNames = {'y1'}; %Output variable names
 
 %Starting the estimation process
 [sol, hist] = rapid(RaPIdObject);
-cd('../../Sources');
+cd('../../RaPId');
 if isempty(sol) 
     warning('Test example failed!');
 else
