@@ -22,7 +22,7 @@
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
 
-function varargout = pathSettings(varargin)
+function varargout = modelSettings(varargin)
 % RAPID_GUI MATLAB code for rapid_gui.fig
 %      RAPID_GUI, by itself, creates a new RAPID_GUI or raises the existing
 %      singleton*.
@@ -46,7 +46,7 @@ function varargout = pathSettings(varargin)
 
 % Edit the above text to modify the response to help rapid_gui
 
-% Last Modified by GUIDE v2.5 14-May-2013 18:08:58
+% Last Modified by GUIDE v2.5 02-Mar-2016 14:36:19
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -84,25 +84,25 @@ guidata(hObject, handles);% Update handles structure
 string = mfilename('fullpath');
 string = string(1:end-length(mfilename)-5);
 path = strcat(string,'\model');
-set(handles.edit6,'String',path);
-set(handles.edit1,'String','test.mdl');
-set(handles.edit2,'String','FMUme');
-set(handles.edit5,'String','path to your .fmu here');
+set(handles.Simulink_modelpath_edit,'String',path);
+set(handles.simulinkModelName_edit,'String','test.mdl');
+set(handles.FMUBlockName_edit,'String','FMUme');
+set(handles.FMU_filepath_edit,'String','path to your .fmu here');
 tmp=RaPIdObject.experimentSettings;
 if isfield(tmp,'pathToSimulinkModel')
-    set(handles.edit6,'String',tmp.pathToSimulinkModel);
+    set(handles.Simulink_modelpath_edit,'String',tmp.pathToSimulinkModel);
 end
 if isfield(tmp,'modelName')
-    set(handles.edit1,'String',tmp.modelName);
+    set(handles.simulinkModelName_edit,'String',tmp.modelName);
 end
 if isfield(tmp,'blockName')
-    set(handles.edit2,'String',tmp.blockName);
+    set(handles.FMUBlockName_edit,'String',tmp.blockName);
 end
 if isfield(tmp,'scopeName')
-    set(handles.edit4,'String',tmp.scopeName);
+    set(handles.scopeName_edit,'String',tmp.scopeName);
 end
 if isfield(tmp,'pathToFmuModel')
-    set(handles.edit5,'String',tmp.pathToFmuModel);
+    set(handles.FMU_filepath_edit,'String',tmp.pathToFmuModel);
 end
 
 
@@ -119,9 +119,9 @@ function varargout = rapid_gui_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-% --- Executes on button press in pushbutton3.
-function pushbutton3_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton3 (see GCBO)
+% --- Executes on button press in Simulink_modelpath_pushbutton.
+function Simulink_modelpath_pushbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to Simulink_modelpath_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [FILENAME, PATHNAME] = uigetfile({'*.mdl;*.slx','Simulink-files'},'Select the Simulink file that contains the FMU block you want to simulate');
@@ -135,31 +135,31 @@ try
         disp('There seems to be no valid FMU-blocks in the Simulink model');
     elseif length(listOfFMUblocks)==1
         FMUblock=listOfFMUblocks{:};
-        set(handles.edit2,'String',FMUblock);
+        set(handles.FMUBlockName_edit,'String',FMUblock);
     end
 catch err
     disp(err.message);
 end
-set(handles.edit6,'String',strcat(PATHNAME,FILENAME));
-set(handles.edit1,'String',FILENAME);
+set(handles.Simulink_modelpath_edit,'String',strcat(PATHNAME,FILENAME));
+set(handles.simulinkModelName_edit,'String',FILENAME);
 
 
 
 
 
 
-function edit1_Callback(hObject, eventdata, handles)
-% hObject    handle to edit1 (see GCBO)
+function simulinkModelName_edit_Callback(hObject, eventdata, handles)
+% hObject    handle to simulinkModelName_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit1 as text
-%        str2double(get(hObject,'String')) returns contents of edit1 as a double
+% Hints: get(hObject,'String') returns contents of simulinkModelName_edit as text
+%        str2double(get(hObject,'String')) returns contents of simulinkModelName_edit as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit1 (see GCBO)
+function simulinkModelName_edit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to simulinkModelName_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -171,18 +171,18 @@ end
 
 
 
-function edit2_Callback(hObject, eventdata, handles)
-% hObject    handle to edit2 (see GCBO)
+function FMUBlockName_edit_Callback(hObject, eventdata, handles)
+% hObject    handle to FMUBlockName_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit2 as text
-%        str2double(get(hObject,'String')) returns contents of edit2 as a double
+% Hints: get(hObject,'String') returns contents of FMUBlockName_edit as text
+%        str2double(get(hObject,'String')) returns contents of FMUBlockName_edit as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit2 (see GCBO)
+function FMUBlockName_edit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to FMUBlockName_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -193,43 +193,43 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in pushbutton5.
-function pushbutton5_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton5 (see GCBO)
+% --- Executes on button press in FMU_filepath_pushbutton.
+function FMU_filepath_pushbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to FMU_filepath_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [FILENAME, PATHNAME] = uigetfile({'*.fmu','FMU-files'},'Select the FMU file that you want to simulate (NB only FMI 1.0 for ODE-solving!)');
-set(handles.edit5,'String',fullfile(PATHNAME,FILENAME))
+set(handles.FMU_filepath_edit,'String',fullfile(PATHNAME,FILENAME))
 
-% --- Executes on button press in pushbutton7.
-function pushbutton7_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton7 (see GCBO)
+% --- Executes on button press in closeModelSettings_pushbutton.
+function closeModelSettings_pushbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to closeModelSettings_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handle2main=getappdata(0,'HandleMainGUI');
 RaPIdObject=getappdata(handle2main,'RaPIdObject');
-[~,tmp,~]=fileparts(get(handles.edit1,'String'));
+[~,tmp,~]=fileparts(get(handles.simulinkModelName_edit,'String'));
 RaPIdObject.experimentSettings.modelName = tmp;
-RaPIdObject.experimentSettings.blockName = get(handles.edit2,'String');
-RaPIdObject.experimentSettings.scopeName = get(handles.edit4,'String');
-RaPIdObject.experimentSettings.pathToFmuModel = get(handles.edit5,'String');
-RaPIdObject.experimentSettings.pathToSimulinkModel = get(handles.edit6,'String');
+RaPIdObject.experimentSettings.blockName = get(handles.FMUBlockName_edit,'String');
+RaPIdObject.experimentSettings.scopeName = get(handles.scopeName_edit,'String');
+RaPIdObject.experimentSettings.pathToFmuModel = get(handles.FMU_filepath_edit,'String');
+RaPIdObject.experimentSettings.pathToSimulinkModel = get(handles.Simulink_modelpath_edit,'String');
 close(gcf)
 
 
 
-function edit4_Callback(hObject, eventdata, handles)
-% hObject    handle to edit4 (see GCBO)
+function scopeName_edit_Callback(hObject, eventdata, handles)
+% hObject    handle to scopeName_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit4 as text
-%        str2double(get(hObject,'String')) returns contents of edit4 as a double
+% Hints: get(hObject,'String') returns contents of scopeName_edit as text
+%        str2double(get(hObject,'String')) returns contents of scopeName_edit as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit4_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit4 (see GCBO)
+function scopeName_edit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to scopeName_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -240,33 +240,33 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in pushbutton8.
-function pushbutton8_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton8 (see GCBO)
+% --- Executes on button press in openSimulink_pushbutton.
+function openSimulink_pushbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to openSimulink_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handle2main=getappdata(0,'HandleMainGUI');
 RaPIdObject=getappdata(handle2main,'RaPIdObject');
-% RaPIdObject.experimentSettings.modelName = get(handles.edit1,'String');
-% RaPIdObject.experimentSettings.blockName = get(handles.edit2,'String');
-% RaPIdObject.experimentSettings.scopeName = get(handles.edit4,'String');
-% RaPIdObject.experimentSettings.pathToFmuModel = get(handles.edit5,'String');
-% RaPIdObject.experimentSettings.pathToSimulinkModel = get(handles.edit6,'String');
+% RaPIdObject.experimentSettings.modelName = get(handles.simulinkModelName_edit,'String');
+% RaPIdObject.experimentSettings.blockName = get(handles.FMUBlockName_edit,'String');
+% RaPIdObject.experimentSettings.scopeName = get(handles.scopeName_edit,'String');
+% RaPIdObject.experimentSettings.pathToFmuModel = get(handles.FMU_filepath_edit,'String');
+% RaPIdObject.experimentSettings.pathToSimulinkModel = get(handles.Simulink_modelpath_edit,'String');
 open_system(RaPIdObject.experimentSettings.pathToSimulinkModel)
 
 
-function edit5_Callback(hObject, eventdata, handles)
-% hObject    handle to edit5 (see GCBO)
+function FMU_filepath_edit_Callback(hObject, eventdata, handles)
+% hObject    handle to FMU_filepath_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit5 as text
-%        str2double(get(hObject,'String')) returns contents of edit5 as a double
+% Hints: get(hObject,'String') returns contents of FMU_filepath_edit as text
+%        str2double(get(hObject,'String')) returns contents of FMU_filepath_edit as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit5_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit5 (see GCBO)
+function FMU_filepath_edit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to FMU_filepath_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -278,18 +278,18 @@ end
 
 
 
-function edit6_Callback(hObject, eventdata, handles)
-% hObject    handle to edit6 (see GCBO)
+function Simulink_modelpath_edit_Callback(hObject, eventdata, handles)
+% hObject    handle to Simulink_modelpath_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit6 as text
-%        str2double(get(hObject,'String')) returns contents of edit6 as a double
+% Hints: get(hObject,'String') returns contents of Simulink_modelpath_edit as text
+%        str2double(get(hObject,'String')) returns contents of Simulink_modelpath_edit as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit6_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit6 (see GCBO)
+function Simulink_modelpath_edit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Simulink_modelpath_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -298,3 +298,5 @@ function edit6_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
