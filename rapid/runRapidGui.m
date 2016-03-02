@@ -1,6 +1,9 @@
-%% <Rapid Parameter Identification is a toolbox for automated parameter identification>
+function runRapidGui
+%% RUNRAPIDGUI launches the RaPId GUI.
 %
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% See also: RAPID, RAPIDCLASS
+
+% Copyright 2015-2016 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
 % Francisco Gomez-Lopez
 % 
@@ -20,13 +23,6 @@
 % 
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
-
-%% Print out the copyright statement on launch
-type('copyright_statement')
-
-%% Main script for GUI assisted use of the toolbox
-% Run
-% the GUI needs to be completely initialised the first time
-% it is recommended to save containers when exiting the program or 
-% switching from a model to another.
-rapidMainWindow;
+    type('copyright_statement')% Print out the copyright statement on launch
+    rapidMainWindow;
+end

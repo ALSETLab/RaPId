@@ -1,6 +1,9 @@
-%% <Rapid Parameter Identification is a toolbox for automated parameter identification>
-%
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+function setupRapid
+%% SETUPRAPID installs the RaPId Toolbox for the first time on a Computer
+% Make sure this file is not moved from the rapid-folder inside your copy
+% of the RaPID Toolbox.
+
+% Copyright 2015-2016 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
 % Francisco Gomez-Lopez
 % 
@@ -20,24 +23,20 @@
 % 
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
-
-%% Script For Initializing the Toolbox for the first time on a Computer
-% Make sure this file is in the RaPId Toolbox folder
-%
 addpath(fullfile(fileparts(mfilename('fullpath'))));
 addpath(fullfile(fileparts(mfilename('fullpath')), 'gui'));
 addpath(genpath(fullfile(fileparts(mfilename('fullpath')), 'core')));
 savepath
-
+pathToHere=fileparts(mfilename('fullpath'));
 % Check of RaPId dependencies
-run('.\install\check_installed')
+run([pathToHere '\install\check_installed.m'])
 disp('======= Running the test example =======');
 try
-    run('.\install\run_example')
+    run([pathToHere '\install\run_example'])
 catch msg_error
-    cd('../../Sources');
     disp(' /!\ Something went wrong in the example /!\');
     throwAsCaller(msg_error);
 end
-% En of setup, run the GUI
-run_rapid_gui
+% End of setup, run the GUI
+runRapidGui();
+end
