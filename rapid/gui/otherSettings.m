@@ -85,23 +85,23 @@ guidata(hObject, handles);
 % UIWAIT makes otherSettings wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 handle2main=getappdata(0,'HandleMainGUI');
-RaPIdObject=getappdata(handle2main,'RaPIdObject');
+rapidObject=getappdata(handle2main,'rapidObject');
 
 try
-    set(handles.edit1,'String',RaPIdObject.gaExtSettings);
-    set(handles.edit2,'String',RaPIdObject.nmSettings);
-    set(handles.edit3,'String',RaPIdObject.cgSettings);
-    %set(handles.edit4,'String',RaPIdObject.psoExtPath);
-    set(handles.edit5,'String',RaPIdObject.psoExtSettings);
+    set(handles.edit1,'String',rapidObject.gaExtSettings);
+    set(handles.edit2,'String',rapidObject.nmSettings);
+    set(handles.edit3,'String',rapidObject.cgSettings);
+    %set(handles.edit4,'String',rapidObject.psoExtPath);
+    set(handles.edit5,'String',rapidObject.psoExtSettings);
     
 end
-if isprop(RaPIdObject,'knitroSettings')
-    set(handles.edit8,'String',RaPIdObject.knitroSettings.path2Knitro);
-    set(handles.edit9,'String',RaPIdObject.knitroSettings.knOptions);
-    set(handles.edit10,'String',RaPIdObject.knitroSettings.knOptionsFile);
+if isprop(rapidObject,'knitroSettings')
+    set(handles.edit8,'String',rapidObject.knitroSettings.path2Knitro);
+    set(handles.edit9,'String',rapidObject.knitroSettings.knOptions);
+    set(handles.edit10,'String',rapidObject.knitroSettings.knOptionsFile);
 end
-if isprop(RaPIdObject,'fminconSettings')
-    set(handles.edit11,'String',RaPIdObject.fminconSettings);
+if isprop(rapidObject,'fminconSettings')
+    set(handles.edit11,'String',rapidObject.fminconSettings);
 end
 
 
@@ -122,19 +122,19 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handle2main=getappdata(0,'HandleMainGUI');
-RaPIdObject=getappdata(handle2main,'RaPIdObject');
-RaPIdObject.gaExtSettings = get(handles.edit1,'String');
-RaPIdObject.nmSettings = get(handles.edit2,'String');
-RaPIdObject.cgSettings	 = get(handles.edit3,'String');
+rapidObject=getappdata(handle2main,'rapidObject');
+rapidObject.gaExtSettings = get(handles.edit1,'String');
+rapidObject.nmSettings = get(handles.edit2,'String');
+rapidObject.cgSettings	 = get(handles.edit3,'String');
 %settings2.psoExtPath = get(handles.edit4,'String');
-RaPIdObject.psoExtSettings = get(handles.edit5,'String');
-RaPIdObject.knitroSettings.path2Knitro = get(handles.edit8,'String');
-RaPIdObject.knitroSettings.knOptions = get(handles.edit9,'String');
-RaPIdObject.knitroSettings.knOptionsFile = get(handles.edit10,'String');
+rapidObject.psoExtSettings = get(handles.edit5,'String');
+rapidObject.knitroSettings.path2Knitro = get(handles.edit8,'String');
+rapidObject.knitroSettings.knOptions = get(handles.edit9,'String');
+rapidObject.knitroSettings.knOptionsFile = get(handles.edit10,'String');
 firstMethod = get(handles.popupmenu1,'String');
-RaPIdObject.combiSettings.firstMethod = firstMethod{get(handles.popupmenu1,'value')};
+rapidObject.combiSettings.firstMethod = firstMethod{get(handles.popupmenu1,'value')};
 secondMethod = get(handles.popupmenu2,'String');
-RaPIdObject.combiSettings.secondMetod = secondMethod{get(handles.popupmenu2,'value')};
+rapidObject.combiSettings.secondMetod = secondMethod{get(handles.popupmenu2,'value')};
 close(gcf)
 
 

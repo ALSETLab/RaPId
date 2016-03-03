@@ -76,7 +76,7 @@ function psoSettings_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to psoSettings (see VARARGIN)
 handle2main=getappdata(0,'HandleMainGUI');
-RaPIdObject=getappdata(handle2main,'RaPIdObject');
+rapidObject=getappdata(handle2main,'rapidObject');
 % Choose default command line output for psoSettings
 handles.output = hObject;
 
@@ -86,8 +86,8 @@ guidata(hObject, handles);
 % UIWAIT makes psoSettings wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
-if isprop(RaPIdObject,'psoSettings')
-    tmp=RaPIdObject.psoSettings;
+if isprop(rapidObject,'psoSettings')
+    tmp=rapidObject.psoSettings;
     set(handles.edit1,'String',tmp.w);
     set(handles.edit2,'String',tmp.self_coeff);
     set(handles.edit3,'String',tmp.social_coeff);
@@ -291,7 +291,7 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handle2main=getappdata(0,'HandleMainGUI');
-RaPIdObject=getappdata(handle2main,'RaPIdObject');
+rapidObject=getappdata(handle2main,'rapidObject');
 pso_options.w = eval(get(handles.edit1,'String'));
 pso_options.self_coeff = eval(get(handles.edit2,'String'));
 pso_options.social_coeff = eval(get(handles.edit3,'String'));
@@ -304,7 +304,7 @@ pso_options.w_max = eval(get(handles.edit19,'String'));
 tmp=get(handles.popupmenu1,'String');
 tmp_ind=get(handles.popupmenu1,'Value');
 pso_options.method =tmp{tmp_ind};
-RaPIdObject.psoSettings = pso_options;
+rapidObject.psoSettings = pso_options;
 close(gcf)
 
 

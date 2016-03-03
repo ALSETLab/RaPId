@@ -85,8 +85,8 @@ guidata(hObject, handles);
 % UIWAIT makes naiveSettings wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 handle2main=getappdata(0,'HandleMainGUI');
-RaPIdObject=getappdata(handle2main,'RaPIdObject');
-naive_options=RaPIdObject.naiveSettings;
+rapidObject=getappdata(handle2main,'rapidObject');
+naive_options=rapidObject.naiveSettings;
 try
     set(handles.edit1,'String',naive_options.tolerance1);
     set(handles.edit2,'String',naive_options.tolerance2);
@@ -235,6 +235,6 @@ naive_options.iterations2 = eval(get(handles.edit4,'String'));
 naive_options.iterations3 = eval(get(handles.edit5,'String'));
 settings2.naive_options = naive_options;
 handle2main=getappdata(0,'HandleMainGUI');
-RaPIdObject=getappdata(handle2main,'RaPIdObject');
-RaPIdObject.naiveSettings = setstructfields(RaPIdObject.naiveSettings,settings2);
+rapidObject=getappdata(handle2main,'rapidObject');
+rapidObject.naiveSettings = setstructfields(rapidObject.naiveSettings,settings2);
 close(gcf)

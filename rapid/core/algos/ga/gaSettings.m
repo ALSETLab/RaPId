@@ -81,8 +81,8 @@ handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
 handle2main=getappdata(0,'HandleMainGUI');
-RaPIdObject=getappdata(handle2main,'RaPIdObject');
-ga_options=RaPIdObject.gaSettings;
+rapidObject=getappdata(handle2main,'rapidObject');
+ga_options=rapidObject.gaSettings;
 try 
     set(handles.edit1,'String',ga_options.nbCromosomes);
     set(handles.edit2,'String',ga_options.nbCroossOver1);
@@ -388,8 +388,8 @@ ga_options.headSize3 = eval(get(handles.edit10,'String'));
 ga_options.nbReinjection = eval(get(handles.edit11,'String'));
 ga_options.nRandMin = eval(get(handles.edit13,'String'));
 handle2main=getappdata(0,'HandleMainGUI');
-RaPIdObject=getappdata(handle2main,'RaPIdObject');
-RaPIdObject.gaSettings=ga_options;
+rapidObject=getappdata(handle2main,'rapidObject');
+rapidObject.gaSettings=ga_options;
 close(gcf)
 
 
