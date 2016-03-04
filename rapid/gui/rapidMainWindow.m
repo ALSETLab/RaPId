@@ -83,9 +83,8 @@ handles.output = hObject;
 guidata(hObject, handles);
 setappdata(0,'HandleMainGUI',hObject);
 try
-    RaPIdObject=RaPIdClass();
-    setappdata(handles.MainRaPiDWindow,'RaPIdObject',RaPIdObject);
-    
+    rapidObject=RaPIdClass();
+    setappdata(handles.MainRaPiDWindow,'rapidObject',rapidObject);
 catch err
     disp err;
     rethrow(err);
@@ -112,9 +111,9 @@ function OptimMethodSelect_popupmenu_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns OptimMethodSelect_popupmenu contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from OptimMethodSelect_popupmenu
 str = get(handles.OptimMethodSelect_popupmenu,'String');
-RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
-RaPIdObject.experimentSettings.optimizationAlgorithm = str{get(handles.OptimMethodSelect_popupmenu,'Value')};
-set(handles.SelectedAlgorithmSettings_pushbutton,'String',[RaPIdObject.experimentSettings.optimizationAlgorithm ' Settings'])
+rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
+rapidObject.experimentSettings.optimizationAlgorithm = str{get(handles.OptimMethodSelect_popupmenu,'Value')};
+set(handles.SelectedAlgorithmSettings_pushbutton,'String',[rapidObject.experimentSettings.optimizationAlgorithm ' Settings'])
 
 
 % --- Executes during object creation, after setting all properties.
@@ -136,17 +135,17 @@ function OpenSimulink_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to OpenSimulink_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
+rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
 set(handles.statusText,'String','Running and Visualizing Optimization.');
 %set(handles.statusText,'BackgroundColor','r');
-RaPIdObject.experimentSettings.solverMode='Simulink';
-RaPIdObject.experimentSettings.displayMode='Show';
+rapidObject.experimentSettings.solverMode='Simulink';
+rapidObject.experimentSettings.displayMode='Show';
 % THIS STUFF MIGHT GO
 try
-        if exist(RaPIdObject.experimentSettings.pathToSimulinkModel,'file')
-            tmp=RaPIdObject.experimentSettings.pathToSimulinkModel;
-        elseif ~exist(RaPIdObject.experimentSettings.pathToSimulinkModel,'file') && exist(fullfile(evalin('base','pwd'),RaPIdObject.experimentSettings.pathToSimulinkModel),'file')
-            tmp=fullfile(evalin('base','pwd'),RaPIdObject.experimentSettings.pathToSimulinkModel);
+        if exist(rapidObject.experimentSettings.pathToSimulinkModel,'file')
+            tmp=rapidObject.experimentSettings.pathToSimulinkModel;
+        elseif ~exist(rapidObject.experimentSettings.pathToSimulinkModel,'file') && exist(fullfile(evalin('base','pwd'),rapidObject.experimentSettings.pathToSimulinkModel),'file')
+            tmp=fullfile(evalin('base','pwd'),rapidObject.experimentSettings.pathToSimulinkModel);
         end
             open_system(tmp); 
 
@@ -162,14 +161,14 @@ function RunOptimization_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to RunOptimization_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
+rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
 % mySettings.mode='Simulink';
 % [mySettings.realTime, i_t]=unique(mySettings.realTime); % check that we only use unique time stamps
 % mySettings.realData=mySettings.realData(i_t,:);
 
 try
     tic
-    [sol, hist] = rapid(RaPIdObject);
+    [sol, hist] = rapid(rapidObject);
     assignin('base','sol',sol);
     assignin('base','hist',hist);
     toc
@@ -191,48 +190,48 @@ function OpenPlot_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to OpenPlot_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
+rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
 
-% Most stuff below should be inside rapid.m or methods of RaPIdObject
+% Most stuff below should be inside rapid.m or methods of rapidObject
 try
     sol=evalin('base','sol');
     bestparameters = sol;
-    switch lower(RaPIdObject.experimentSettings.solverMode) % use lower case
+    switch lower(rapidObject.experimentSettings.solverMode) % use lower case
         case 'simulink'
-            if strcmp(gcs,RaPIdObject.experimentSettings.modelName) % check if model already loaded
+            if strcmp(gcs,rapidObject.experimentSettings.modelName) % check if model already loaded
                 %NOP
             else
                 clear rapid_simuSystem
                 tmp=[];
-                if exist(RaPIdObject.experimentSettings.pathToSimulinkModel,'file')
-                    tmp=RaPIdObject.experimentSettings.pathToSimulinkModel;
-                elseif ~exist(RaPIdObject.experimentSettings.pathToSimulinkModel,'file') && exist(fullfile(evalin('base','pwd'),RaPIdObject.experimentSettings.pathToSimulinkModel),'file')
-                    tmp=fullfile(evalin('base','pwd'),RaPIdObject.experimentSettings.pathToSimulinkModel);
+                if exist(rapidObject.experimentSettings.pathToSimulinkModel,'file')
+                    tmp=rapidObject.experimentSettings.pathToSimulinkModel;
+                elseif ~exist(rapidObject.experimentSettings.pathToSimulinkModel,'file') && exist(fullfile(evalin('base','pwd'),rapidObject.experimentSettings.pathToSimulinkModel),'file')
+                    tmp=fullfile(evalin('base','pwd'),rapidObject.experimentSettings.pathToSimulinkModel);
                 end
                 load_system(tmp);
             end
-            res = rapid_simuSystem(bestparameters,RaPIdObject);
+            res = rapid_simuSystem(bestparameters,rapidObject);
             if ~isempty(res)
                 
             else
                 error('Failed to simulate');
             end
         case 'ode'
-            res = rapid_ODEsolve(bestparameters,RaPIdObject);
+            res = rapid_ODEsolve(bestparameters,rapidObject);
             if ~isempty(res)
-                for i = 1:length(RaPIdObject.fmuOutputNames);  %this should be changed maybe, since FMUoutput is not necessarily what we used for fitness-function
+                for i = 1:length(rapidObject.fmuOutputNames);  %this should be changed maybe, since FMUoutput is not necessarily what we used for fitness-function
                     figure, hold on %For now, plot each comparison i new figure.
-                    plot(RaPIdObject.experimentData.referenceTime,RaPIdObject.experimentData.referenceOutdata(:,i))
+                    plot(rapidObject.experimentData.referenceTime,rapidObject.experimentData.referenceOutdata(:,i))
                     hold on
-                    plot(RaPIdObject.experimentData.referenceTime,res(:,i),'--r')
-                    title(RaPIdObject.fmuOutputNames{i})
+                    plot(rapidObject.experimentData.referenceTime,res(:,i),'--r')
+                    title(rapidObject.fmuOutputNames{i})
                     legend('Reference system:', 'Calibrated system:')
                 end
             else
                 error('Failed to simulate');
             end
     end
-
+    
 catch err
     disp(err.message)
     warning('Functionality not yet implemented / No Data to plot...')
@@ -244,16 +243,17 @@ function GeneralSettings_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to GeneralSettings_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-generalSettings
+odeSettings
+
 
 % --- Executes on button press in SelectedAlgorithmSettings_pushbutton.
 function SelectedAlgorithmSettings_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to SelectedAlgorithmSettings_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
-switch lower(RaPIdObject.experimentSettings.optimizationAlgorithm)
-  case 'pso'
+rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
+switch lower(rapidObject.experimentSettings.optimizationAlgorithm)
+    case 'pso'
         psoSettings;
     case 'ga'
         gaSettings;
@@ -274,187 +274,83 @@ switch lower(RaPIdObject.experimentSettings.optimizationAlgorithm)
     case 'fmincon'
         otherSettings;
     case 'pfnew'
-        otherSettings; 
+        otherSettings;
     otherwise
-       error('Seems like there is something wrong with the chosen optimzation selecting string');
+        error('Seems like there is something wrong with the chosen optimzation selecting string');
 end
 
-
-% --- Executes on button press in pushbutton9.
-function pushbutton9_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton9 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in pushbutton10.
-function pushbutton10_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton10 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in pushbutton11.
-function pushbutton11_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton11 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in pushbutton12.
-function pushbutton12_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton12 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in OpenSimulink_pushbutton.
-function pushbutton15_Callback(hObject, eventdata, handles)
-% hObject    handle to OpenSimulink_pushbutton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
-if exist(RaPIdObject.experimentSettings.pathToSimulinkModel,'file')
-    open_system(RaPIdObject.experimentSettings.pathToSimulinkModel)
-elseif ~exist(RaPIdObject.experimentSettings.pathToSimulinkModel,'file') && exist(fullfile(evalin('base','pwd'),RaPIdObject.experimentSettings.pathToSimulinkModel),'file')
-    open_system(fullfile(evalin('base','pwd'),RaPIdObject.experimentSettings.pathToSimulinkModel))
-end
-
-
-
-function OutputTimeVectorExpression_EditableTextfield_Callback(hObject, eventdata, handles)
-% hObject    handle to OutputTimeVectorExpression_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of OutputTimeVectorExpression_EditableTextfield as text
-%        str2double(get(hObject,'String')) returns contents of OutputTimeVectorExpression_EditableTextfield as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function OutputTimeVectorExpression_EditableTextfield_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to OutputTimeVectorExpression_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-function OutputArrayExpression_EditableTextfield_Callback(hObject, eventdata, handles)
-% hObject    handle to OutputArrayExpression_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of OutputArrayExpression_EditableTextfield as text
-%        str2double(get(hObject,'String')) returns contents of OutputArrayExpression_EditableTextfield as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function OutputArrayExpression_EditableTextfield_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to OutputArrayExpression_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on button press in MeasuredOutputSelection_pushbutton.
-function MeasuredOutputSelection_pushbutton_Callback(hObject, eventdata, handles)
-% hObject    handle to MeasuredOutputSelection_pushbutton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-[filename, pathname] = uigetfile();
-set(handles.MeasuredOutputPath_EditableTextfield,'String',strcat(pathname,filename));
-
-
-% --- Executes on button press in SendSettings_pushbutton.
-function SendSettings_pushbutton_Callback(hObject, eventdata, handles)
-% hObject    handle to SendSettings_pushbutton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
-RaPIdObject.experimentData.expressionReferenceTime = get(handles.OutputTimeVectorExpression_EditableTextfield,'String');
-RaPIdObject.experimentData.expressionReferenceData = get(handles.OutputArrayExpression_EditableTextfield,'String');
-RaPIdObject.experimentData.pathToReferenceData = get(handles.MeasuredOutputPath_EditableTextfield,'String');
-RaPIdObject.experimentData.expressionInDataTime = get(handles.InputTimeVectorExpression_EditableTextfield,'String');
-RaPIdObject.experimentData.expressionInData = get(handles.InputArrayExpression_EditableTextfield,'String');
-RaPIdObject.experimentData.pathToInData = get(handles.PathToInputData_EditableTextfield,'String');
 
 % --- Executes on button press in SaveContainer_pushbutton.
 function SaveContainer_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to SaveContainer_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
+rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
 try
     [filename, pathname, success] = uiputfile('*.mat');
     if  success && exist('sol','var')
-        save(strcat(pathname,filename),'RaPIdObject','sol','hist');
+        save(strcat(pathname,filename),'rapidObject','sol','hist');
     elseif success
-        save(strcat(pathname,filename),'RaPIdObject')
+        save(strcat(pathname,filename),'rapidObject')
     else
         disp('User did not save file.');
     end
 catch err
     warning(strcat('Could not save the file because of error: ',err.message));
 end
-    
+
 
 % --- Executes on button press in LoadContainer_pushbutton.
 function LoadContainer_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to LoadContainer_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-%RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
-[filename, pathname] = uigetfile;
-load(strcat(pathname,filename));
-oldFolder = cd(pathname);
-contentOfContainer=who('-file',strcat(pathname,filename));
-if any(strcmp(contentOfContainer,'mySettings'))
+%rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
+try
+    [filename, pathname] = uigetfile;
+    if pathname==0
+        error('No file selected.');
+    end
+    cd(pathname);
+    containerFileString=strcat(pathname,filename);
+    contentOfContainer=whos('-file',containerFileString);
+    if length(contentOfContainer)==1  % typical case
+        rapidObject=importdata(containerFileString);
+    else
+        warning('Something went wrong, check the format of the container!')
+    end
+    if isstruct(rapidObject) % old container
         try
-            RaPIdObject=RaPIdClass(mySettings);
+            rapidObject=RaPIdClass(mySettings);
             disp('Converted old container to new, please save this new container');
         catch err
             disp(err.message)
         end
-end
-if exist('RaPIdObject','var') && isa(RaPIdObject,'RaPIdClass')
-    setappdata(handles.MainRaPiDWindow,'RaPIdObject',RaPIdObject);
-    if ~isfield(RaPIdObject.experimentSettings,'optimizationAlgorithm') % if no algorithm set
-        RaPIdObject.experimentSettings.optimizationAlgorithm='pso';%default to pso
     end
-    tmp=find(strcmpi(cellstr(get(handles.OptimMethodSelect_popupmenu,'String')),RaPIdObject.experimentSettings.optimizationAlgorithm)); % find which one in the list it is
-    set(handles.OptimMethodSelect_popupmenu,'Value',tmp); %set selected item in list to reflect choice of algorithm
-    tmp2=get(handles.OptimMethodSelect_popupmenu,'String');
-    set(handles.SelectedAlgorithmSettings_pushbutton,'String',[tmp2{tmp} ' Settings'])
-    if strcmpi(RaPIdObject.experimentSettings.solverMode,'simulink') % initialize radio buttons here
-        tmp1=1;
-    else
-        tmp1=0;
-    end
-    set(handles.simulinkselector,'Value',tmp1);
-    set(handles.odeselector,'Value',~tmp1);
-    if isprop(RaPIdObject,'experimentData') && isfield(RaPIdObject.experimentData, 'pathToReferenceData')  %we take care of Data settings pane in the next few lines
-        set(handles.MeasuredOutputPath_EditableTextfield,'String',RaPIdObject.experimentData.pathToReferenceData);
-        set(handles.OutputTimeVectorExpression_EditableTextfield,'String',RaPIdObject.experimentData.expressionReferenceTime);
-        set(handles.OutputArrayExpression_EditableTextfield,'String',RaPIdObject.experimentData.expressionReferenceData);
-        if isfield(RaPIdObject.experimentData,'pathToInData')
-            set(handles.PathToInputData_EditableTextfield,'String',RaPIdObject.experimentData.pathToInData);
-            set(handles.InputTimeVectorExpression_EditableTextfield,'String',RaPIdObject.experimentData.expressionInDataTime);
-            set(handles.InputArrayExpression_EditableTextfield,'String',RaPIdObject.experimentData.expressionInData);
+    if exist('rapidObject','var') && isa(rapidObject,'RaPIdClass') % everything is good
+        
+        setappdata(handles.MainRaPiDWindow,'rapidObject',rapidObject);
+        if ~isfield(rapidObject.experimentSettings,'optimizationAlgorithm') % if no algorithm set
+            rapidObject.experimentSettings.optimizationAlgorithm='pso';%default to pso
         end
+        tmp=find(strcmpi(cellstr(get(handles.OptimMethodSelect_popupmenu,'String')),rapidObject.experimentSettings.optimizationAlgorithm)); % find which one in the list it is
+        set(handles.OptimMethodSelect_popupmenu,'Value',tmp); %set selected item in list to reflect choice of algorithm
+        tmp2=get(handles.OptimMethodSelect_popupmenu,'String');
+        set(handles.SelectedAlgorithmSettings_pushbutton,'String',[tmp2{tmp} ' Settings'])
+        if strcmpi(rapidObject.experimentSettings.solverMode,'simulink') % initialize radio buttons here
+            tmp1=1;
+        else
+            tmp1=0;
+        end
+        set(handles.simulinkselector,'Value',tmp1);
+        set(handles.odeselector,'Value',~tmp1);
+        
+    else
+        warning('Something went wrong, check the format of the container!')
     end
-else
-    warning('Something went wrong, check the format of the container!')
+catch err
+    disp(err.message)
 end
-
 
 % --- Executes on button press in LastResult_pushbutton.
 function LastResult_pushbutton_Callback(hObject, eventdata, handles)
@@ -464,9 +360,9 @@ function LastResult_pushbutton_Callback(hObject, eventdata, handles)
 
 try
     sol=evalin('base','sol');      
-    RaPIdObject=getappdata(handles.MainRaPiDWindow,'RaPIdObject');
+    rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
     fprintf('The best parameters,given in workspace variable %s, are:\n','sol')
-    fprintf(' %15s',RaPIdObject.parameterNames{:});
+    fprintf(' %15s',rapidObject.parameterNames{:});
     fprintf('\n');
     fprintf(' %15.4e', sol);
     fprintf('\n');
@@ -485,103 +381,7 @@ function ModelSettings_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to ModelSettings_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-modelSettings
-
-function MeasuredOutputPath_EditableTextfield_Callback(hObject, eventdata, handles)
-% hObject    handle to MeasuredOutputPath_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of MeasuredOutputPath_EditableTextfield as text
-%        str2double(get(hObject,'String')) returns contents of MeasuredOutputPath_EditableTextfield as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function MeasuredOutputPath_EditableTextfield_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to MeasuredOutputPath_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on button press in MeasuredInputSelection_pushbutton.
-function MeasuredInputSelection_pushbutton_Callback(hObject, eventdata, handles)
-% hObject    handle to MeasuredInputSelection_pushbutton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-[filename, pathname] = uigetfile();
-set(handles.PathToInputData_EditableTextfield,'String',strcat(pathname,filename));
-
-
-function InputArrayExpression_EditableTextfield_Callback(hObject, eventdata, handles)
-% hObject    handle to InputArrayExpression_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of InputArrayExpression_EditableTextfield as text
-%        str2double(get(hObject,'String')) returns contents of InputArrayExpression_EditableTextfield as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function InputArrayExpression_EditableTextfield_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to InputArrayExpression_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-function InputTimeVectorExpression_EditableTextfield_Callback(hObject, eventdata, handles)
-% hObject    handle to InputTimeVectorExpression_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of InputTimeVectorExpression_EditableTextfield as text
-%        str2double(get(hObject,'String')) returns contents of InputTimeVectorExpression_EditableTextfield as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function InputTimeVectorExpression_EditableTextfield_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to InputTimeVectorExpression_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-function InputDataArrayexpression_EditableTextfield_Callback(hObject, eventdata, handles)
-% hObject    handle to InputArrayExpression_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of InputArrayExpression_EditableTextfield as text
-%        str2double(get(hObject,'String')) returns contents of InputArrayExpression_EditableTextfield as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function InputDataArrayexpression_EditableTextfield_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to InputArrayExpression_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+simulinkSettings
 
 
 % --- Executes during object creation, after setting all properties.
@@ -589,28 +389,6 @@ function MainRaPiDWindow_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to MainRaPiDWindow (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-
-
-function PathToInputData_EditableTextfield_Callback(hObject, eventdata, handles)
-% hObject    handle to PathToInputData_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of PathToInputData_EditableTextfield as text
-%        str2double(get(hObject,'String')) returns contents of PathToInputData_EditableTextfield as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function PathToInputData_EditableTextfield_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to PathToInputData_EditableTextfield (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -636,11 +414,11 @@ set(hObject,'Visible','on');
 % --- Handle toggling between different solver method
 function selcbk(source,eventdata) 
 handle2main=getappdata(0,'HandleMainGUI');
-RaPIdObject=getappdata(handle2main,'RaPIdObject');
+rapidObject=getappdata(handle2main,'rapidObject');
 if strcmp(get(get(source,'SelectedObject'),'String'),'Simulink')
-    RaPIdObject.experimentSettings.solverMode='Simulink';
+    rapidObject.experimentSettings.solverMode='Simulink';
 else
-    RaPIdObject.experimentSettings.solverMode='ODE';
+    rapidObject.experimentSettings.solverMode='ODE';
 end
 
 
