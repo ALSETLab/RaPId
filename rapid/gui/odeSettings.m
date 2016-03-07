@@ -75,7 +75,7 @@ else
     tmp1=dummy;
 end
 
-tmp7=num2cell(rapidObject.experimentSettings.objective_weights);
+tmp7=(rapidObject.experimentSettings.objective_weights);
 
 maxAlloc=max([length(tmp1),length(rapidObject.fmuOutputNames),length(rapidObject.parameterNames)])+1; %allocate space for the longest vector and and an extra editable field
 dataAlloc=cell(7,maxAlloc);
@@ -91,7 +91,7 @@ end
 if ~isempty(rapidObject.experimentSettings.p_min)
     dataAlloc(6,1:length(rapidObject.experimentSettings.p_0))=num2cell(rapidObject.experimentSettings.p_0);
 end
-dataAlloc(7,1:length(tmp7))=tmp7;
+dataAlloc(7,1:length(tmp7))=num2cell(tmp7);
 set(handles.uitable1,'Data',dataAlloc);
 set(handles.uitable1,'ColumnEditable',true(ones(1,maxAlloc)));
 tmp7=num2cell(max(2+max(cellfun(@(x)length(x),dataAlloc)),10)); % max width + 2 per col. or 10
@@ -333,7 +333,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 % --- Executes when entered data in editable cell(s) in uitable1.
-function InputNames_CellEditCallback(hObject, eventdata, handles)
+function uitable1_CellEditCallback(hObject, eventdata, handles)
 % hObject    handle to uitable1 (see GCBO)
 % eventdata  structure with the following fields (see UITABLE)
 %	Indices: row and column indices of the cell(s) edited
@@ -349,11 +349,12 @@ parameterData=theData(3:end,:);
 % for some reason the table wants to convert to num often?? Taking care of
 % it below
 %if non-empty string entered
+
 if  ~isempty(eventdata.EditData) % enter data
     if indices(1)<3
         inoutData(indices(1),indices(2))={eventdata.EditData};
     elseif indices(1)==3;
-        parameterData(indices(1)-2,indices(2))={eventdata.EditData};
+        parameterData(indices(1)-2,indices(2))={ eventdata.EditData};
     else
         if ~isnumeric (eventdata.NewData)
             tempData=str2double(eventdata.NewData);
@@ -601,25 +602,25 @@ function closeModelSettings_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handle2main=getappdata(0,'HandleMainGUI');
 rapidObject=getappdata(handle2main,'rapidObject');
-settings2.ts = eval(get(handles.timeStep_edit,'String'));
-settings2.tf = eval(get(handles.simLength_edit,'String'));
-settings2.verbose = get(handles.verbose_togglebutton,'Value');
-settings2.cost_type = str2num(get(handles.costType_edit,'String'));
-settings2.integrationMethod = get(handles.intMethod_edit,'String');
-settings2.maxIterations = str2double(get(handles.maxIterations_edit,'String'));
-settings2.t_fitness_start = (get(handles.waitUntilFitness_edit,'String'));
-settings2.timeOut = str2double(get(handles.timeOut_edit,'String'));
-settings2.saveHist=get(handles.history_togglebutton,'Value');
+subsettings.ts = str2double(get(handles.timeStep_edit,'String'));
+subsettings.tf = str2double(get(handles.simLength_edit,'String'));
+subsettings.verbose = get(handles.verbose_togglebutton,'Value');
+subsettings.cost_type = str2num(get(handles.costType_edit,'String'));
+subsettings.integrationMethod = get(handles.intMethod_edit,'String');
+subsettings.maxIterations = str2double(get(handles.maxIterations_edit,'String'));
+subsettings.t_fitness_start = (get(handles.waitUntilFitness_edit,'String'));
+subsettings.timeOut = str2double(get(handles.timeOut_edit,'String'));
+subsettings.saveHist=get(handles.history_togglebutton,'Value');
 tmp=get(handles.uitable1,'Data');
 % Make sure that everything is 
 rapidObject.fmuInputNames = tmp(1,~cellfun(@isempty,tmp(1,:)));
 rapidObject.fmuOutputNames = tmp(2,~cellfun(@isempty,tmp(2,:)));
 rapidObject.parameterNames = tmp(3,~cellfun(@isempty,tmp(3,:)));
-settings2.p_min = cell2mat(tmp(4,~cellfun(@isempty,tmp(4,:)))); 
-settings2.p_max = cell2mat(tmp(5,~cellfun(@isempty,tmp(5,:))));
-settings2.p_0 =   cell2mat(tmp(6,~cellfun(@isempty,tmp(6,:))));
-settings2.objective_weights = cell2mat(tmp(7,~cellfun(@isempty,tmp(7,:))));
-rapidObject.experimentSettings = setstructfields(rapidObject.experimentSettings,settings2);
+subsettings.p_min = cell2mat(tmp(4,~cellfun(@isempty,tmp(4,:)))); 
+subsettings.p_max = cell2mat(tmp(5,~cellfun(@isempty,tmp(5,:))));
+subsettings.p_0 =   cell2mat(tmp(6,~cellfun(@isempty,tmp(6,:))));
+subsettings.objective_weights = cell2mat(tmp(7,~cellfun(@isempty,tmp(7,:))));
+rapidObject.experimentSettings = setstructfields(rapidObject.experimentSettings,subsettings);
 rapidObject.experimentData.expressionReferenceTime = get(handles.measuredTime_edit,'String');
 rapidObject.experimentData.expressionReferenceData = get(handles.measuredOutputData_edit,'String');
 rapidObject.experimentData.pathToReferenceData = get(handles.measuredOutputPath_edit,'String');
