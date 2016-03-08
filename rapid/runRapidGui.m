@@ -1,7 +1,7 @@
 function runRapidGui
-%% RUNRAPIDGUI launches the RaPId GUI.
+%% RUNRAPIDGUI launches the RaPId GUI by calling the function rapidMainWindow.
 %
-% See also: RAPID, RAPIDCLASS
+% See also: RAPID, RAPIDCLASS, RAPIDMAINWINDOW
 
 % Copyright 2015-2016 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 

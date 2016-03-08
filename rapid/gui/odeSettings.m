@@ -1,26 +1,38 @@
 function varargout = odeSettings(varargin)
-%ODESETTINGS M-file for odeSettings.fig
+%ODESETTINGS is the GUI to view and modify the settings used when using the Matlab-based ODE-solvers in
+% the RaPId Toolbox. It is, and should only, be called from the function rapidMainWindow.
+%
 %      ODESETTINGS, by itself, creates a new ODESETTINGS or raises the existing
-%      singleton*.
-%
-%      H = ODESETTINGS returns the handle to a new ODESETTINGS or the handle to
-%      the existing singleton*.
-%
-%      ODESETTINGS('Property','Value',...) creates a new ODESETTINGS using the
-%      given property value pairs. Unrecognized properties are passed via
-%      varargin to odeSettings_OpeningFcn.  This calling syntax produces a
-%      warning when there is an existing singleton*.
+%      singleton.
 %
 %      ODESETTINGS('CALLBACK') and ODESETTINGS('CALLBACK',hObject,...) call the
-%      local function named CALLBACK in ODESETTINGS.M with the given input
+%      local function named CALLBACK in ODESETTINGS.m with the given input
 %      arguments.
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
-%
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% See also: RAPID, SIMULINKSETTINGS, RAPIDMAINWINDOW, GUIDE
 
-% Edit the above text to modify the response to help odeSettings
+%% <Rapid Parameter Identification is a toolbox for automated parameter identification>
+%
+% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
+% Francisco Gomez-Lopez
+% 
+% The authors can be contacted by email: luigiv at kth dot se
+% 
+% This file is part of Rapid Parameter Identification ("RaPId") .
+% 
+% RaPId is free software: you can redistribute it and/or modify
+% it under the terms of the GNU Lesser General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+% 
+% RaPId is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU Lesser General Public License for more details.
+% 
+% You should have received a copy of the GNU Lesser General Public License
+% along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
 % Last Modified by GUIDE v2.5 03-Mar-2016 20:50:13
 
@@ -344,64 +356,52 @@ function uitable1_CellEditCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 indices=eventdata.Indices;
 theData=get(hObject,'Data');
-inoutData=theData(1:2,:);
-parameterData=theData(3:end,:);
 % for some reason the table wants to convert to num often?? Taking care of
 % it below
 %if non-empty string entered
-
 if  ~isempty(eventdata.EditData) % enter data
     if indices(1)<3
-        inoutData(indices(1),indices(2))={eventdata.EditData};
+        theData{indices(1),indices(2)}=eventdata.EditData;
     elseif indices(1)==3;
-        parameterData(indices(1)-2,indices(2))={ eventdata.EditData};
+        theData{indices(1),indices(2)}=eventdata.EditData;
     else
         if ~isnumeric (eventdata.NewData)
-            tempData=str2double(eventdata.NewData);
+            theData{indices(1),indices(2)}=str2double(eventdata.NewData);
             if isnan(eventdata.NewData)
-                warning Please enter a numeric value
+                warning('Please enter a numeric value')
             end
         else
-            tempData = eventdata.NewData;
+            theData{indices(1),indices(2)} = eventdata.NewData;
         end
-        parameterData(indices(1)-2,indices(2))={tempData};
+    end
+    if indices(2)==size(theData,2)
+        theData(:,indices(2)+1)=cell(size(theData,1),1);
     end
 else  %delete data
     if indices(1)<3 
-        inoutData(indices(1),indices(2))=cell(1,1);
-        if all(cellfun(@isempty,inoutData(:,indices(2))))
-            inoutData(:,indices(2))=[];
+        theData(indices(1),indices(2))=cell(1,1);
+        if all(cellfun(@isempty,theData(:,indices(2)))) &&  indices(2)~=size(theData,2)
+            theData(:,indices(2))=[];
         end
     elseif indices(1)==3
-        parameterData(indices(1)-2,indices(2))=cell(1,1);
-        if cellfun(@isempty,parameterData(:,indices(2)))
-            parameterData(:,find(all(cellfun(@isempty,parameterData))))='';
+        theData(indices(1),indices(2))=cell(1,1);
+        if all(cellfun(@isempty,theData(:,indices(2)))) &&  indices(2)~=size(theData,2)
+            theData(:,indices(2))=[];
         end
     else
-        parameterData(indices(1)-2,indices(2))=cell(1,1);
-        if cellfun(@isempty,parameterData(:,indices(2)))
-            parameterData(:,find(all(cellfun(@isempty,parameterData))))=[];
+        theData(indices(1),indices(2))=cell(1,1);
+        if all(cellfun(@isempty,theData(:,indices(2)))) &&  indices(2)~=size(theData,2)
+            theData(:,indices(2))=[];
         end
     end
  
 end
-if size(inoutData,2)>size(parameterData,2)
-    tmp=size(inoutData,2)+1-all(cellfun(@isempty,inoutData(:,end)));
-elseif size(inoutData,2)<size(parameterData,2)
-    tmp=size(parameterData,2)+1-all(cellfun(@isempty,parameterData(:,end)));
-else
-    tmp=size(parameterData,2)+1-(all(cellfun(@isempty,inoutData(:,end)))&& all(cellfun(@isempty,parameterData(:,end))));
-end
-theData=cell(7,tmp);
-tmp=size(inoutData,2);
-theData(1:2,1:tmp)=inoutData;
-theData(3:7,1:size(parameterData,2))=parameterData;
 set(hObject,'Data',theData);
 set(hObject,'ColumnEditable',true(ones(1,size(theData,2)))); 
 tmp7=num2cell(max(2+max(cellfun(@(x)length(x),theData)),10)); % max width + 2 per col. or 10
 fontsize=0.65*get(handles.uitable1,'Fontsize'); % assume width is ~65% of height
 set(handles.uitable1,'ColumnWidth',cellfun(@(x)(x*fontsize),tmp7,'UniformOutput', false));  
-tmp2=cell([1,tmp]);
+tmp2=cell([1,size(theData,2)]);
 set(handles.uitable1,'ColumnFormat',cellfun(@(x){'char'},tmp2));
 
 % --- Executes when selected cell(s) is changed in uitable1.
@@ -605,7 +605,7 @@ rapidObject=getappdata(handle2main,'rapidObject');
 subsettings.ts = str2double(get(handles.timeStep_edit,'String'));
 subsettings.tf = str2double(get(handles.simLength_edit,'String'));
 subsettings.verbose = get(handles.verbose_togglebutton,'Value');
-subsettings.cost_type = str2num(get(handles.costType_edit,'String'));
+subsettings.cost_type = str2double(get(handles.costType_edit,'String'));
 subsettings.integrationMethod = get(handles.intMethod_edit,'String');
 subsettings.maxIterations = str2double(get(handles.maxIterations_edit,'String'));
 subsettings.t_fitness_start = (get(handles.waitUntilFitness_edit,'String'));

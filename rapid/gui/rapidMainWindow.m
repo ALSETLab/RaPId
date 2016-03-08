@@ -1,6 +1,26 @@
+function varargout = rapidMainWindow(varargin)
+% RAPIDMAINWINDOW is the main GUI Window for the RaPId Toolbox. It can be
+% called directly or by calling the function runRapidGui.
+%      rapidMainWindow, by itself, creates a new rapidMainWindow or raises the existing
+%      singleton.
+%
+%      H = rapidMainWindow returns the handle to a new rapidMainWindow or the handle to
+%      the existing singleton.
+%
+%      rapidMainWindow('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in rapidMainWindow.m with the given input arguments.
+%
+%      rapidMainWindow('Property','Value',...) creates a new rapidMainWindow or raises the
+%      existing singleton*.  Starting from the left, property value pairs are
+%      applied to the GUI before main_OpeningFcn gets called.  An
+%      unrecognized property name or invalid value makes property application
+%      stop.  All inputs are passed to main_OpeningFcn via varargin.
+%
+% See also: RUNRAPIDGUI, RAPID, GUIDE
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
 % Francisco Gomez-Lopez
 % 
@@ -20,31 +40,6 @@
 % 
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
-
-
-function varargout = rapidMainWindow(varargin)
-% RAPIDMAINWINDOW MATLAB code for rapidMainWindow.fig
-%      rapidMainWindow, by itself, creates a new rapidMainWindow or raises the existing
-%      singleton*.
-%
-%      H = rapidMainWindow returns the handle to a new rapidMainWindow or the handle to
-%      the existing singleton*.
-%
-%      rapidMainWindow('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in MAIN.M with the given input arguments.
-%
-%      rapidMainWindow('Property','Value',...) creates a new MAIN or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before main_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to main_OpeningFcn via varargin.
-%
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
-%
-% See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help main
 
 % Last Modified by GUIDE v2.5 01-Mar-2016 17:45:57
 
