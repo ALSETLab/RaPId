@@ -1,3 +1,15 @@
+function res = rapid_ODEsolve(newParameters,RaPIdObject)
+%RAPID_ODESOLVE Function simulating the FMU by solving it using one of
+%the ODE solvers of Matlab (without using Simulink).
+%
+%  RES = RAPID_ODESOLVE(PARAMETERVECTOR, RAPIDOBJECT) outputs an array RES
+%  given the PARAMETERVECTOR and the RAPIDOBJECT as inputs, where
+%  RES: array of width == #outputs and height == #(interpolated) samples,
+%  PARAMETERVECTOR is a vector of parameters, and
+%  RAPIDOBJECT is an instance of the RaPIdClass (or equivalent struct)
+%
+%   See also: FUNC, RAPID, RAPID_SIMUSYSTEM, RAPID_INTERPOLATE
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
 % Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
@@ -20,27 +32,6 @@
 % 
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
-
-function [res] = rapid_ODEsolve(newParameters,RaPIdObject)
-%RAPID_SIMUSYSTEM Function simulating the FMU by solving it using one of
-%the ODE solvers of Matlab.
-%
-% The settings struct must include:
-%   parameterNames: cell of strings with all the names of the parameters
-%       ordered in a way agreeing to the the parameter vector part.p
-%   
-%   blockName: string containing the name of the FMU_ME block in the
-%   simulink model
-%   scopeName: name of the variable created by the to workspace object
-%   blockName: name of the FMUme block preceded of the simulink model name
-%   and of the character "/", example: 'variable/FMUme'
-%   scopeName: name of the variable created by a "To Workspace" component
-%   in the simulink model. The To Workspace component must be set to
-%   generate a structure with time and takes as an input a vector (from a
-%   mux) containing all outputs.
-% This function should never be called, the function FUNC does all the job
-% for you
-% --------> See the help for FUNC
 persistent inputconf outconf postprocessing parameterNames options fmupath
 
 if isempty(inputconf) % will run once
