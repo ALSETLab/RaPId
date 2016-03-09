@@ -1,26 +1,39 @@
 function varargout = simulinkSettings(varargin)
-%SIMULINKSETTINGS M-file for simulinkSettings.fig
+%SIMULINKSETTINGS is the GUI to view and modify the Simulink-related settings in
+% the RaPId Toolbox. It is, and should only, be called from the function rapidMainWindow.
+%
 %      SIMULINKSETTINGS, by itself, creates a new SIMULINKSETTINGS or raises the existing
-%      singleton*.
-%
-%      H = SIMULINKSETTINGS returns the handle to a new SIMULINKSETTINGS or the handle to
-%      the existing singleton*.
-%
-%      SIMULINKSETTINGS('Property','Value',...) creates a new SIMULINKSETTINGS using the
-%      given property value pairs. Unrecognized properties are passed via
-%      varargin to simulinkSettings_OpeningFcn.  This calling syntax produces a
-%      warning when there is an existing singleton*.
+%      singleton.
 %
 %      SIMULINKSETTINGS('CALLBACK') and SIMULINKSETTINGS('CALLBACK',hObject,...) call the
-%      local function named CALLBACK in SIMULINKSETTINGS.M with the given input
+%      local function named CALLBACK in SIMULINKSETTINGS.m with the given input
 %      arguments.
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% See also: RAPID, ODESETTINGS, RAPIDMAINWINDOW, GUIDE
 
-% Edit the above text to modify the response to help simulinkSettings
+%% <Rapid Parameter Identification is a toolbox for automated parameter identification>
+%
+% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
+% Francisco Gomez-Lopez
+% 
+% The authors can be contacted by email: luigiv at kth dot se
+% 
+% This file is part of Rapid Parameter Identification ("RaPId") .
+% 
+% RaPId is free software: you can redistribute it and/or modify
+% it under the terms of the GNU Lesser General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+% 
+% RaPId is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU Lesser General Public License for more details.
+% 
+% You should have received a copy of the GNU Lesser General Public License
+% along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
 % Last Modified by GUIDE v2.5 03-Mar-2016 18:57:16
 
@@ -89,7 +102,7 @@ else
     tmp1=dummy;
 end
 
-tmp7=num2cell(rapidObject.experimentSettings.objective_weights);
+tmp7=rapidObject.experimentSettings.objective_weights;
 
 maxAlloc=max([length(tmp1),length(rapidObject.fmuOutputNames),length(rapidObject.parameterNames)])+1; %allocate space for the longest vector and and an extra editable field
 dataAlloc=cell(7,maxAlloc);
@@ -97,7 +110,8 @@ dataAlloc(1,1:length(tmp1))=tmp1;
 dataAlloc(2,1:length(rapidObject.fmuOutputNames))=rapidObject.fmuOutputNames;
 dataAlloc(3,1:length(rapidObject.parameterNames))=rapidObject.parameterNames;
 if ~isempty(rapidObject.experimentSettings.p_min)
-    dataAlloc(4,1:length(rapidObject.experimentSettings.p_min))=num2cell(rapidObject.experimentSettings.p_min);
+   
+    dataAlloc(4,1:length(rapidObject.experimentSettings.p_min))=num2cell( rapidObject.experimentSettings.p_min);
 end
 if ~isempty(rapidObject.experimentSettings.p_min)
     dataAlloc(5,1:length(rapidObject.experimentSettings.p_max))=num2cell(rapidObject.experimentSettings.p_max);
@@ -105,7 +119,7 @@ end
 if ~isempty(rapidObject.experimentSettings.p_min)
     dataAlloc(6,1:length(rapidObject.experimentSettings.p_0))=num2cell(rapidObject.experimentSettings.p_0);
 end
-dataAlloc(7,1:length(tmp7))=tmp7;
+dataAlloc(7,1:length(tmp7))=num2cell(tmp7);
 set(handles.uitable1,'Data',dataAlloc);
 set(handles.uitable1,'ColumnEditable',true(ones(1,maxAlloc)));
 tmp7=num2cell(max(2+max(cellfun(@(x)length(x),dataAlloc)),10)); % max width + 2 per col. or 10
@@ -431,7 +445,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 % --- Executes when entered data in editable cell(s) in uitable1.
-function InputNames_CellEditCallback(hObject, eventdata, handles)
+function uitable1_CellEditCallback(hObject, eventdata, handles)
 % hObject    handle to uitable1 (see GCBO)
 % eventdata  structure with the following fields (see UITABLE)
 %	Indices: row and column indices of the cell(s) edited
@@ -442,67 +456,56 @@ function InputNames_CellEditCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 indices=eventdata.Indices;
 theData=get(hObject,'Data');
-inoutData=theData(1:2,:);
-parameterData=theData(3:end,:);
 % for some reason the table wants to convert to num often?? Taking care of
 % it below
 %if non-empty string entered
 if  ~isempty(eventdata.EditData) % enter data
     if indices(1)<3
-        inoutData(indices(1),indices(2))={eventdata.EditData};
+        theData{indices(1),indices(2)}=eventdata.EditData;
     elseif indices(1)==3;
-        parameterData(indices(1)-2,indices(2))={eventdata.EditData};
+        theData{indices(1),indices(2)}=eventdata.EditData;
     else
         if ~isnumeric (eventdata.NewData)
-            tempData=str2double(eventdata.NewData);
+            theData{indices(1),indices(2)}=str2double(eventdata.NewData);
             if isnan(eventdata.NewData)
-                warning Please enter a numeric value
+                warning('Please enter a numeric value')
             end
         else
-            tempData = eventdata.NewData;
+            theData{indices(1),indices(2)} = eventdata.NewData;
         end
-        parameterData(indices(1)-2,indices(2))={tempData};
+    end
+    if indices(2)==size(theData,2)
+        theData(:,indices(2)+1)=cell(size(theData,1),1);
     end
 else  %delete data
     if indices(1)<3 
-        inoutData(indices(1),indices(2))=cell(1,1);
-        if all(cellfun(@isempty,inoutData(:,indices(2))))
-            inoutData(:,indices(2))=[];
+        theData(indices(1),indices(2))=cell(1,1);
+        if all(cellfun(@isempty,theData(:,indices(2)))) &&  indices(2)~=size(theData,2)
+            theData(:,indices(2))=[];
         end
     elseif indices(1)==3
-        parameterData(indices(1)-2,indices(2))=cell(1,1);
-        if cellfun(@isempty,parameterData(:,indices(2)))
-            parameterData(:,find(all(cellfun(@isempty,parameterData))))='';
+        theData(indices(1),indices(2))=cell(1,1);
+        if all(cellfun(@isempty,theData(:,indices(2)))) &&  indices(2)~=size(theData,2)
+            theData(:,indices(2))=[];
         end
     else
-        parameterData(indices(1)-2,indices(2))=cell(1,1);
-        if cellfun(@isempty,parameterData(:,indices(2)))
-            parameterData(:,find(all(cellfun(@isempty,parameterData))))=[];
+        theData(indices(1),indices(2))=cell(1,1);
+        if all(cellfun(@isempty,theData(:,indices(2)))) &&  indices(2)~=size(theData,2)
+            theData(:,indices(2))=[];
         end
     end
  
 end
-if size(inoutData,2)>size(parameterData,2)
-    tmp=size(inoutData,2)+1-all(cellfun(@isempty,inoutData(:,end)));
-elseif size(inoutData,2)<size(parameterData,2)
-    tmp=size(parameterData,2)+1-all(cellfun(@isempty,parameterData(:,end)));
-else
-    tmp=size(parameterData,2)+1-(all(cellfun(@isempty,inoutData(:,end)))&& all(cellfun(@isempty,parameterData(:,end))));
-end
-theData=cell(7,tmp);
-tmp=size(inoutData,2);
-theData(1:2,1:tmp)=inoutData;
-theData(3:7,1:size(parameterData,2))=parameterData;
 set(hObject,'Data',theData);
 set(hObject,'ColumnEditable',true(ones(1,size(theData,2)))); 
 tmp7=num2cell(max(2+max(cellfun(@(x)length(x),theData)),10)); % max width + 2 per col. or 10
 fontsize=0.65*get(handles.uitable1,'Fontsize'); % assume width is ~65% of height
 set(handles.uitable1,'ColumnWidth',cellfun(@(x)(x*fontsize),tmp7,'UniformOutput', false));  
-tmp2=cell([1,tmp]);
+tmp2=cell([1,size(theData,2)]);
 set(handles.uitable1,'ColumnFormat',cellfun(@(x){'char'},tmp2));
 
 % --- Executes when selected cell(s) is changed in uitable1.
-function InputNames_CellSelectionCallback(hObject, eventdata, handles)
+function uitable1_CellSelectionCallback(hObject, eventdata, handles)
 % hObject    handle to uitable1 (see GCBO)
 % eventdata  structure with the following fields (see UITABLE)
 %	Indices: row and column indices of the cell(s) currently selecteds
@@ -717,25 +720,29 @@ open_system(rapidObject.experimentSettings.pathToSimulinkModel)
 function saveAll(handles)
 handle2main=getappdata(0,'HandleMainGUI');
 rapidObject=getappdata(handle2main,'rapidObject');
-settings2.ts = eval(get(handles.timeStep_edit,'String'));
-settings2.tf = eval(get(handles.simLength_edit,'String'));
-settings2.verbose = get(handles.verbose_togglebutton,'Value');
-settings2.cost_type = str2num(get(handles.costType_edit,'String'));
-settings2.integrationMethod = get(handles.intMethod_edit,'String');
-settings2.maxIterations = str2double(get(handles.maxIterations_edit,'String'));
-settings2.t_fitness_start = (get(handles.waitUntilFitness_edit,'String'));
-settings2.timeOut = str2double(get(handles.timeOut_edit,'String'));
-settings2.saveHist=get(handles.history_togglebutton,'Value');
+subsettings.pathToSimulinkModel = get(handles.Simulink_modelpath_edit,'String');
+subsettings.modelName = get(handles.simulinkModelName_edit,'String');
+subsettings.blockName = get(handles.FMUBlockName_edit,'String');
+subsettings.scopeName = get(handles.scopeName_edit,'String');
+subsettings.ts = str2double(get(handles.timeStep_edit,'String'));
+subsettings.tf = str2double(get(handles.simLength_edit,'String'));
+subsettings.verbose = get(handles.verbose_togglebutton,'Value');
+subsettings.cost_type = str2double(get(handles.costType_edit,'String'));
+subsettings.integrationMethod = get(handles.intMethod_edit,'String');
+subsettings.maxIterations = str2double(get(handles.maxIterations_edit,'String'));
+subsettings.t_fitness_start = (get(handles.waitUntilFitness_edit,'String'));
+subsettings.timeOut = str2double(get(handles.timeOut_edit,'String'));
+subsettings.saveHist=get(handles.history_togglebutton,'Value');
 tmp=get(handles.uitable1,'Data');
 % Make sure that everything is 
 rapidObject.fmuInputNames = tmp(1,~cellfun(@isempty,tmp(1,:)));
 rapidObject.fmuOutputNames = tmp(2,~cellfun(@isempty,tmp(2,:)));
 rapidObject.parameterNames = tmp(3,~cellfun(@isempty,tmp(3,:)));
-settings2.p_min = cell2mat(tmp(4,~cellfun(@isempty,tmp(4,:)))); 
-settings2.p_max = cell2mat(tmp(5,~cellfun(@isempty,tmp(5,:))));
-settings2.p_0 =   cell2mat(tmp(6,~cellfun(@isempty,tmp(6,:))));
-settings2.objective_weights = cell2mat(tmp(7,~cellfun(@isempty,tmp(7,:))));
-rapidObject.experimentSettings = setstructfields(rapidObject.experimentSettings,settings2);
+subsettings.p_min = cell2mat(tmp(4,~cellfun(@isempty,tmp(4,:)))); 
+subsettings.p_max = cell2mat(tmp(5,~cellfun(@isempty,tmp(5,:))));
+subsettings.p_0 =   cell2mat(tmp(6,~cellfun(@isempty,tmp(6,:))));
+subsettings.objective_weights = cell2mat(tmp(7,~cellfun(@isempty,tmp(7,:))));
+rapidObject.experimentSettings = setstructfields(rapidObject.experimentSettings,subsettings);
 rapidObject.experimentData.expressionReferenceTime = get(handles.measuredTime_edit,'String');
 rapidObject.experimentData.expressionReferenceData = get(handles.measuredOutputData_edit,'String');
 rapidObject.experimentData.pathToReferenceData = get(handles.measuredOutputPath_edit,'String');
