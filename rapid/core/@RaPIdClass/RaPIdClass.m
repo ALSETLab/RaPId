@@ -1,3 +1,7 @@
+classdef  RaPIdClass <handle
+    %RAPIDCLASS defines a handle object to store and send settings and data in RaPId
+    % without too much overhead
+       
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
 % Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette,
@@ -20,11 +24,6 @@
 %
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
-
-classdef  RaPIdClass <handle
-    %RAPIDCLASS defines a handle object to store and send settings and data in RaPId
-    % without too much overhead
-    
     properties
         psoSettings
         gaSettings

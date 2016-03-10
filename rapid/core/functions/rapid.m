@@ -180,7 +180,7 @@ switch lower(rapidObject.experimentSettings.optimizationAlgorithm) % use lower c
     otherwise
         errorWrongMethodName
 end
-
+rapidObject.resultData.parametersFound=sol;
 %% Cleaning up after the optimization
 switch rapidObject.experimentSettings.solverMode
     case 'Simulink'

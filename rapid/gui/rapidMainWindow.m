@@ -41,7 +41,7 @@ function varargout = rapidMainWindow(varargin)
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-% Last Modified by GUIDE v2.5 01-Mar-2016 17:45:57
+% Last Modified by GUIDE v2.5 09-Mar-2016 13:55:03
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -147,7 +147,7 @@ try
         % mySettings.realData = transpose(eval(mySettings.dataY));
        % mySettings.realTime = eval(mySettings.dataT);
 catch err
-    disp err
+    disp(err);
 end
 
 
@@ -188,49 +188,54 @@ function OpenPlot_pushbutton_Callback(hObject, eventdata, handles)
 rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
 
 % Most stuff below should be inside rapid.m or methods of rapidObject
-try
-    sol=evalin('base','sol');
-    bestparameters = sol;
-    switch lower(rapidObject.experimentSettings.solverMode) % use lower case
-        case 'simulink'
-            if strcmp(gcs,rapidObject.experimentSettings.modelName) % check if model already loaded
-                %NOP
-            else
-                clear rapid_simuSystem
-                tmp=[];
-                if exist(rapidObject.experimentSettings.pathToSimulinkModel,'file')
-                    tmp=rapidObject.experimentSettings.pathToSimulinkModel;
-                elseif ~exist(rapidObject.experimentSettings.pathToSimulinkModel,'file') && exist(fullfile(evalin('base','pwd'),rapidObject.experimentSettings.pathToSimulinkModel),'file')
-                    tmp=fullfile(evalin('base','pwd'),rapidObject.experimentSettings.pathToSimulinkModel);
-                end
-                load_system(tmp);
-            end
-            res = rapid_simuSystem(bestparameters,rapidObject);
-            if ~isempty(res)
-                
-            else
-                error('Failed to simulate');
-            end
-        case 'ode'
-            res = rapid_ODEsolve(bestparameters,rapidObject);
-            if ~isempty(res)
-                for i = 1:length(rapidObject.fmuOutputNames);  %this should be changed maybe, since FMUoutput is not necessarily what we used for fitness-function
-                    figure, hold on %For now, plot each comparison i new figure.
-                    plot(rapidObject.experimentData.referenceTime,rapidObject.experimentData.referenceOutdata(:,i))
-                    hold on
-                    plot(rapidObject.experimentData.referenceTime,res(:,i),'--r')
-                    title(rapidObject.fmuOutputNames{i})
-                    legend('Reference system:', 'Calibrated system:')
-                end
-            else
-                error('Failed to simulate');
-            end
-    end
-    
-catch err
-    disp(err.message)
-    warning('Functionality not yet implemented / No Data to plot...')
+
+if isfield(rapidObject.resultData,'parametersFound')
+    bestparameters=rapidObject.resultData.parametersFound;
+else
+    disp('No simulation has been run, plotting the result for parameter start values');
+    bestparameters=rapidObject.experimentSettings.p_0;
 end
+switch lower(rapidObject.experimentSettings.solverMode) % use lower case
+    case 'simulink'
+        if strcmp(gcs,rapidObject.experimentSettings.modelName) % check if model already loaded
+            %NOP
+        else
+            clear rapid_simuSystem
+            tmp=[];
+            if exist(rapidObject.experimentSettings.pathToSimulinkModel,'file')
+                tmp=rapidObject.experimentSettings.pathToSimulinkModel;
+            elseif ~exist(rapidObject.experimentSettings.pathToSimulinkModel,'file') && exist(fullfile(evalin('base','pwd'),rapidObject.experimentSettings.pathToSimulinkModel),'file')
+                tmp=fullfile(evalin('base','pwd'),rapidObject.experimentSettings.pathToSimulinkModel);
+            end
+            load_system(tmp);
+        end
+        res = rapid_simuSystem(bestparameters,rapidObject);
+        if ~isempty(res)
+            plot(handles.rapidMainWindowPlot,rapidObject.experimentData.referenceTime,res)
+            hold on
+            plot(handles.rapidMainWindowPlot,rapidObject.experimentData.referenceTime,rapidObject.experimentData.referenceOutdata,'--r')
+            hold off
+        else
+            error('Failed to simulate');
+        end
+    case 'ode'
+        res = rapid_ODEsolve(bestparameters,rapidObject);
+        if ~isempty(res)
+            for i = 1:length(rapidObject.fmuOutputNames);  %this should be changed maybe, since FMUoutput is not necessarily what we used for fitness-function
+                figure, hold on %For now, plot each comparison i new figure.
+                plot(rapidObject.experimentData.referenceTime,rapidObject.experimentData.referenceOutdata(:,i))
+                hold on
+                plot(rapidObject.experimentData.referenceTime,res(:,i),'--r')
+                title(rapidObject.fmuOutputNames{i})
+                legend('Reference system:', 'Calibrated system:')
+            end
+        else
+            error('Failed to simulate');
+        end
+end
+
+    
+
 
 
 % --- Executes on button press in GeneralSettings_pushbutton.
@@ -283,9 +288,7 @@ function SaveContainer_pushbutton_Callback(hObject, eventdata, handles)
 rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
 try
     [filename, pathname, success] = uiputfile('*.mat');
-    if  success && exist('sol','var')
-        save(strcat(pathname,filename),'rapidObject','sol','hist');
-    elseif success
+    if  success 
         save(strcat(pathname,filename),'rapidObject')
     else
         disp('User did not save file.');
@@ -422,3 +425,12 @@ function statusText_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to statusText (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
+
+
+% --- Executes during object creation, after setting all properties.
+function rapidMainWindowPlot_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to rapidMainWindowPlot (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: place code in OpeningFcn to populate rapidMainWindowPlot
