@@ -6,79 +6,80 @@ oldFolder=cd(str);
 
 %% ==========Reference data settings==========
 
-% Create a RaPIdObject (optional but recommended - will work with just a structure)
-RaPIdObject=RaPIdClass();
+% Create a rapidSettings (optional but recommended - will work with just a structure)
+rapidSettings=RaPIdClass();
 
 %Output data
-RaPIdObject.experimentData.pathToReferenceData = 'measuredDataO.mat'; %Data file name
-RaPIdObject.experimentData.expressionReferenceTime = 'time'; %Time variable name
-RaPIdObject.experimentData.expressionReferenceData = 'signal'; %Data variable name
+rapidSettings.experimentData.pathToReferenceData = 'measuredDataO.mat'; %Data file name
+rapidSettings.experimentData.expressionReferenceTime = 'time'; %Time variable name
+rapidSettings.experimentData.expressionReferenceData = 'signal'; %Data variable name
 
 %Input data
-RaPIdObject.experimentData.pathToInData = '';
+rapidSettings.experimentData.pathToInData = '';
 
 %% ==========Experiment settings==========
 
 %General settings 
-RaPIdObject.experimentSettings.tf = 50; %Simulation length
-RaPIdObject.experimentSettings.ts = 0.01; %Sampling time
-RaPIdObject.experimentSettings.t_fitness_start = 4; %Start calculating fintess function after t_fintess_start
-RaPIdObject.experimentSettings.timeOut = 2; %Seconds before simulation timeout
-RaPIdObject.experimentSettings.integrationMethod = 'ode45'; %Solver selection
-RaPIdObject.experimentSettings.solverMode = 'Simulink';
-RaPIdObject.experimentSettings.optimizationAlgorithm = 'pso'; %Selection of optimization algorithm
-RaPIdObject.experimentSettings.maxIterations = 100; %Maximum number of estimation iterations
-RaPIdObject.experimentSettings.verbose = 1; %Can trigger more data for debugging
-RaPIdObject.experimentSettings.saveHist = 0; %Don't save history
+rapidSettings.experimentSettings.tf = 50; %Simulation length
+rapidSettings.experimentSettings.ts = 0.01; %Sampling time
+rapidSettings.experimentSettings.t_fitness_start = 4; %Start calculating fintess function after t_fintess_start
+rapidSettings.experimentSettings.timeOut = 2; %Seconds before simulation timeout
+rapidSettings.experimentSettings.integrationMethod = 'ode45'; %Solver selection
+rapidSettings.experimentSettings.solverMode = 'Simulink';
+rapidSettings.experimentSettings.optimizationAlgorithm = 'pso'; %Selection of optimization algorithm
+rapidSettings.experimentSettings.maxIterations = 100; %Maximum number of estimation iterations
+rapidSettings.experimentSettings.verbose = 1; %Can trigger more data for debugging
+rapidSettings.experimentSettings.saveHist = 0; %Don't save history
 
 %Model related settings
-RaPIdObject.experimentSettings.pathToSimulinkModel = 'variable_rafael.mdl'; %Simulink model file name
-RaPIdObject.experimentSettings.pathToFMUModel = 'Rafael_0original_0estimated.fmu'; %FMU file name
-RaPIdObject.experimentSettings.modelName = 'variable_rafael'; %Simulink model name
-RaPIdObject.experimentSettings.blockName = 'variable_rafael/Rafael_original_estimated'; %FMU name
-RaPIdObject.experimentSettings.scopeName = 'simout'; %Result sink name
-RaPIdObject.experimentSettings.displayMode = 'Show';
+rapidSettings.experimentSettings.pathToSimulinkModel = 'variable_rafael.mdl'; %Simulink model file name
+rapidSettings.experimentSettings.pathToFMUModel = 'Rafael_0original_0estimated.fmu'; %FMU file name
+rapidSettings.experimentSettings.modelName = 'variable_rafael'; %Simulink model name
+rapidSettings.experimentSettings.blockName = 'variable_rafael/Rafael_original_estimated'; %FMU name
+rapidSettings.experimentSettings.scopeName = 'simout'; %Result sink name
+rapidSettings.experimentSettings.displayMode = 'Show';
 
 %Estimation parameter settings
-RaPIdObject.experimentSettings.p_0 = [0.3, 4.1, 1.7, 1.1]; %Initial parameter guess
-RaPIdObject.experimentSettings.p_min = [0.1, 3.9, 1.5, 1.1]; %Minimum values of parameters
-RaPIdObject.experimentSettings.p_max = [1, 4.2, 1.7, 1.5]; %Maximum values of parameters
+rapidSettings.experimentSettings.p_0 = [0.3, 4.1, 1.7, 1.1]; %Initial parameter guess
+rapidSettings.experimentSettings.p_min = [0.1, 3.9, 1.5, 1.1]; %Minimum values of parameters
+rapidSettings.experimentSettings.p_max = [1, 4.2, 1.7, 1.5]; %Maximum values of parameters
 
 %Fitness function settings
-RaPIdObject.experimentSettings.cost_type = 1; %Fitness function selection
-RaPIdObject.experimentSettings.objective_weights = 1; %Weights of the output signals for fitness function
+rapidSettings.experimentSettings.cost_type = 1; %Fitness function selection
+rapidSettings.experimentSettings.objective_weights = 1; %Weights of the output signals for fitness function
 
 %% ==========Optimization Algorithm settings==========
 
-switch lower(RaPIdObject.experimentSettings.optimizationAlgorithm) % use lower to add robustness
+switch lower(rapidSettings.experimentSettings.optimizationAlgorithm) % use lower to add robustness
     case 'pso'
-        RaPIdObject.psoSettings.w = 0.25; %Particle inertia weight
-        RaPIdObject.psoSettings.self_coeff = 0.25; %Self recognition coefficient
-        RaPIdObject.psoSettings.social_coeff = 0.25; %Social coefficient
-        RaPIdObject.psoSettings.limit = 0.25; %Iteration limit
-        RaPIdObject.psoSettings.nRandMin = 8; %Minimum number of random particles 
-        RaPIdObject.psoSettings.nb_particles = 8; %Number of particles
-        RaPIdObject.psoSettings.fitnessStopRatio = 1e-5; %Fitness stop ratio
-        RaPIdObject.psoSettings.kick_multiplier = 0.002; %Kick multiplier
-        RaPIdObject.psoSettings.method = 'PSO';
+        rapidSettings.psoSettings.w = 0.25; %Particle inertia weight
+        rapidSettings.psoSettings.self_coeff = 0.25; %Self recognition coefficient
+        rapidSettings.psoSettings.social_coeff = 0.25; %Social coefficient
+        rapidSettings.psoSettings.limit = 0.25; %Iteration limit
+        rapidSettings.psoSettings.nRandMin = 8; %Minimum number of random particles 
+        rapidSettings.psoSettings.nb_particles = 8; %Number of particles
+        rapidSettings.psoSettings.fitnessStopRatio = 1e-5; %Fitness stop ratio
+        rapidSettings.psoSettings.kick_multiplier = 0.002; %Kick multiplier
+        rapidSettings.psoSettings.method = 'PSO';
 end
 
 %% ==========FMU parameters, inputs and outputs==========
 
-RaPIdObject.parameterNames = {'transferFunction.b[1]','transferFunction.a[1]','transferFunction.a[2]','transferFunction.a[3]'};
-RaPIdObject.fmuInputNames = {};
-RaPIdObject.fmuOutputNames = {'y1'}; %Output variable names
+rapidSettings.parameterNames = {'transferFunction.b[1]','transferFunction.a[1]','transferFunction.a[2]','transferFunction.a[3]'};
+rapidSettings.fmuInputNames = {};
+rapidSettings.fmuOutputNames = {'y1'}; %Output variable names
 
 %% ==========Running the computation==========
 
 %Opening simulink model
-open_system(RaPIdObject.experimentSettings.pathToSimulinkModel); %Opening the simulink model
-open_system(strcat(RaPIdObject.experimentSettings.modelName,'/Scope')); %Opening the scope in the model to observe estimation process
+open_system(rapidSettings.experimentSettings.pathToSimulinkModel); %Opening the simulink model
+open_system(strcat(rapidSettings.experimentSettings.modelName,'/Scope')); %Opening the scope in the model to observe estimation process
 pause(1); %Waiting one second for scope to initialize
 %%
-
+% Create the object which carries out the work
+rapidObject=Rapid(RapidSettings);
 %Starting the estimation process
-[sol, hist] = rapid(RaPIdObject);
+[sol, hist] = rapidObject.runIdentifcation();
 sprintf('Vector of estimated parameters is: %s',mat2str(sol,3)) 
 %Restoring workspace
 cd(oldFolder);

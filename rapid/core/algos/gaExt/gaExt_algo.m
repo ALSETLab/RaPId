@@ -1,6 +1,16 @@
+function [ sol, other] = gaExt_algo(rapidSettings)
+%GAEXT_ALGO applying matlab ga function to compute the minimum of the 
+% objective function defined by the parameter identification problem
+% settings must contain:
+%     - p0, initial guess for the value of the parameter vector
+%     - p_min, vector containing the minimal values of all parameters
+%     - p_max, vector containing the maximal values of all parameters
+%     - gaExtOptions, string containing a command providing an optimset for
+%       the matlab ga function, see the doc for the ga function
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
 % Francisco Gomez-Lopez
 % 
@@ -21,34 +31,24 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-function [ sol, other] = gaExt_algo(RaPIdObject)
-%GAEXT_ALGO applying matlab ga function to compute the minimum of the 
-% objective function defined by the parameter identification problem
-% settings must contain:
-%     - p0, initial guess for the value of the parameter vector
-%     - p_min, vector containing the minimal values of all parameters
-%     - p_max, vector containing the maximal values of all parameters
-%     - gaExtOptions, string containing a command providing an optimset for
-%       the matlab ga function, see the doc for the ga function
-
-
+%%
 %     options = psooptimset();
 %        ga(@rastr,2,                  [],[],[],[],[],            [],[],options)
 %     sol = ga(@func,length(settings.p0),[],[],[],[],settings.p_min,settings.p_max);
-options = eval(RaPIdObject.gaExtOptions);
-sol = ga(@(x)func(x,RaPIdObject),length(RaPIdObject.experimentSettings.p_0),[],[],[],[],RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,[],options);
+options = eval(rapidSettings.gaExtOptions);
+sol = ga(@(x)func(x,rapidSettings),length(rapidSettings.experimentSettings.p_0),[],[],[],[],rapidSettings.experimentSettings.p_min,rapidSettings.experimentSettings.p_max,[],options);
 other = [];
-if RaPIdObject.experimentSettings.verbose
-    part.p = RaPIdObject.experimentSettings.p_0;
-    [simuRes] = rapid_simuSystem( part,RaPIdObject);
+if rapidSettings.experimentSettings.verbose
+    part.p = rapidSettings.experimentSettings.p_0;
+    [simuRes] = rapid_simuSystem( part,rapidSettings);
     for k=1:size(simuRes,2)
-        fitness=fitness+rapid_objectiveFunction(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
+        fitness=fitness+rapid_objectiveFunction(rapidSettings.experimentData.realData(i_s,k),simuRes(:,k),rapidSettings,1);
     end
     other.beginning =fitness;
     part.p = sol;
-    [simuRes] = rapid_simuSystem( part,RaPIdObject);
+    [simuRes] = rapid_simuSystem( part,rapidSettings);
     for k=1:size(simuRes,2)
-        fitness=fitness+rapid_objectiveFunction(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
+        fitness=fitness+rapid_objectiveFunction(rapidSettings.experimentData.realData(i_s,k),simuRes(:,k),rapidSettings,1);
     end
     other.end = fitness;
 end

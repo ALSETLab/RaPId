@@ -4,7 +4,7 @@ classdef  RaPIdClass <handle
        
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette,
+% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette,
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera,
 % Francisco Gomez-Lopez
 %
@@ -75,6 +75,7 @@ classdef  RaPIdClass <handle
                 end
             elseif isa(varargin{1},'RaPIdClass') && varargin{1}.version==1.41 
                 %NOP, up to date
+                obj=varargin{1};
             else  % Old version, try to update
                 obj=RaPIdClass(); % New object
                 obj=obj.updateRapidObj(varargin{1}); % update old object

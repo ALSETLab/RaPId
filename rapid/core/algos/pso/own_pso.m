@@ -1,27 +1,4 @@
-%% <Rapid Parameter Identification is a toolbox for automated parameter identification>
-%
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette,
-% Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera,
-% Francisco Gomez-Lopez
-%
-% The authors can be contacted by email: luigiv at kth dot se
-%
-% This file is part of Rapid Parameter Identification ("RaPId") .
-%
-% RaPId is free software: you can redistribute it and/or modify
-% it under the terms of the GNU Lesser General Public License as published by
-% the Free Software Foundation, either version 3 of the License, or
-% (at your option) any later version.
-%
-% RaPId is distributed in the hope that it will be useful,
-% but WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-% GNU Lesser General Public License for more details.
-%
-% You should have received a copy of the GNU Lesser General Public License
-% along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
-
-function [sol, historic] = own_pso(RaPIdObject,func)
+function [sol, historic] = own_pso(rapidSettings,func)
 %OWN_PSO Applies the particle swar optimisation function OWN_PSO and
 %applies it to the parameter identification problem specified.
 %   Takes as argument the settings struct in which the data to be matched
@@ -62,47 +39,71 @@ function [sol, historic] = own_pso(RaPIdObject,func)
 %       - saveHist, boolean allowing to store all the best fitness and
 %       particles at every iterations (get's big very quickly)
 
-w = RaPIdObject.psoSettings.w;
-self_coeff = RaPIdObject.psoSettings.self_coeff;
-social_coeff = RaPIdObject.psoSettings.social_coeff;
-limit = RaPIdObject.experimentSettings.maxIterations;
-if RaPIdObject.experimentSettings.saveHist %pre-allocate for speed
+%% <Rapid Parameter Identification is a toolbox for automated parameter identification>
+%
+% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette,
+% Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera,
+% Francisco Gomez-Lopez
+%
+% The authors can be contacted by email: luigiv at kth dot se
+%
+% This file is part of Rapid Parameter Identification ("RaPId") .
+%
+% RaPId is free software: you can redistribute it and/or modify
+% it under the terms of the GNU Lesser General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% RaPId is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU Lesser General Public License for more details.
+%
+% You should have received a copy of the GNU Lesser General Public License
+% along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
+
+%% initialize settings
+w = rapidSettings.psoSettings.w;
+self_coeff = rapidSettings.psoSettings.self_coeff;
+social_coeff = rapidSettings.psoSettings.social_coeff;
+limit = rapidSettings.experimentSettings.maxIterations;
+if rapidSettings.experimentSettings.saveHist %pre-allocate for speed
     bestfitness_history = zeros(limit,1); % pre-allocate vector (guesstimate size)
-    bestparameters_history = zeros(limit,length(RaPIdObject.experimentSettings.p_0)); % pre-allocate some array (guesstimate size)
+    bestparameters_history = zeros(limit,length(rapidSettings.experimentSettings.p_0)); % pre-allocate some array (guesstimate size)
     improved_at_iterations=bestfitness_history; % pre-allocate vector (guesstimate size)
 end
 debugging=0; % set to 1 for troubleshooting the code
-bestfitness = func(RaPIdObject.experimentSettings.p_0, RaPIdObject); % calculate fitness for initial parameter guess
+bestfitness = func(rapidSettings.experimentSettings.p_0, rapidSettings); % calculate fitness for initial parameter guess
 bestfitness_history(1)=bestfitness; % save fitness history
-bestparameters=RaPIdObject.experimentSettings.p_0; % best current parameters
+bestparameters=rapidSettings.experimentSettings.p_0; % best current parameters
 bestparameters_history(1)=bestfitness; % save best parameter history
 improved_at_iterations(1)=0;  % save at which iterations the fitness & best parameters were saved
 
 %% Init the swarm: give positions to all particles
-list = generateOrganisedSwarm( RaPIdObject.psoSettings.nb_particles, RaPIdObject.psoSettings.nRandMin,RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,RaPIdObject.experimentSettings.p_0);
+list = generateOrganisedSwarm( rapidSettings.psoSettings.nb_particles, rapidSettings.psoSettings.nRandMin,rapidSettings.experimentSettings.p_min,rapidSettings.experimentSettings.p_max,rapidSettings.experimentSettings.p_0);
 for k = 1:size(list,1)
-    swarm{k} = particle(RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,list{k});
+    swarm{k} = particle(rapidSettings.experimentSettings.p_min,rapidSettings.experimentSettings.p_max,list{k});
 end
-for k = size(list,1)+1:RaPIdObject.psoSettings.nb_particles
-    swarm{k} = particle(RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,[]);
+for k = size(list,1)+1:rapidSettings.psoSettings.nb_particles
+    swarm{k} = particle(rapidSettings.experimentSettings.p_min,rapidSettings.experimentSettings.p_max,[]);
 end
 % we should modify this to include the possibility of having a grid along
 % with the randomly drawn particles
 try
     %% initialize the algorithm, set the best position and fitness to every particle
     % and to the overall best
-    verbose=RaPIdObject.experimentSettings.verbose; % used to decide if displaying progress
+    verbose=rapidSettings.experimentSettings.verbose; % used to decide if displaying progress
     for k = 1:length(swarm)
         if debugging&&mod(k,10)==0 % debug info display
             sprintf(strcat('init particle ',int2str(k),' in pso'));
         end
-        fitness = func(swarm{k}.p, RaPIdObject); % calculate fitness of particle k
+        fitness = func(swarm{k}.p, rapidSettings); % calculate fitness of particle k
         swarm{k} = swarm{k}.setBest(fitness); % save fitness in particle k
         if fitness < bestfitness % new best fitness?
             bestfitness = fitness; % update best fitness
             bestparameters = swarm{k}.p; % and corresponding parameters
             bestfitness_history(1) = bestfitness;
-            if RaPIdObject.experimentSettings.saveHist
+            if rapidSettings.experimentSettings.saveHist
                 bestparameters_history(1,:) = bestparameters;
                 improved_at_iterations(1) = 1;
             else
@@ -114,7 +115,7 @@ try
         end
     end
     initial_fitness=bestfitness_history(1);
-    target_fitness=initial_fitness*RaPIdObject.psoSettings.fitnessStopRatio;
+    target_fitness=initial_fitness*rapidSettings.psoSettings.fitnessStopRatio;
     %% Algorithm's main body
     for iteration=1:limit  
         if debugging&&mod(iteration,10) == 0 %info display if debugging
@@ -126,13 +127,13 @@ try
                 sprintf(strcat('particle ',int2str(iteration)));
             end
             swarm{k}.updateSpeed(w * rand * swarm{k}.v + self_coeff*rand(1,length(swarm{k}.p)).*(swarm{k}.bestPos - swarm{k}.p) + social_coeff*rand(1,length(swarm{k}.p)).*(bestparameters - swarm{k}.p)); % update the particle's speed
-            if norm(swarm{k}.v) < norm(swarm{k}.v_max)*RaPIdObject.psoSettings.kick_multiplier % kicks the particle when it's starting to get stuck (position converges)
+            if norm(swarm{k}.v) < norm(swarm{k}.v_max)*rapidSettings.psoSettings.kick_multiplier % kicks the particle when it's starting to get stuck (position converges)
                 r = 2*rand(1,length(swarm{k}.p))-1;
                 swarm{k}.updateSpeed((r + swarm{k}.v)*norm(swarm{k}.v_max)/norm(r+swarm{k}.v));
             end
             
             swarm{k}.updatePart(); % change the position according to the speed update and update best fitness and best position
-            fitness = func(swarm{k}.p, RaPIdObject); %calculate fitness
+            fitness = func(swarm{k}.p, rapidSettings); %calculate fitness
             swarm{k}.setBest(fitness);
             
             if fitness < bestfitness % new best fitness?
@@ -142,7 +143,7 @@ try
                 if verbose
                     disp(['i = ' num2str(iteration) '. Best parameters: ' num2str(swarm{k}.p) ' with fitness = ' num2str(fitness)])
                 end
-                if RaPIdObject.experimentSettings.saveHist
+                if rapidSettings.experimentSettings.saveHist
                     bestparameters_history(iteration,:) = bestparameters;
                     improved_at_iterations(iteration) = iteration;
                 else
@@ -160,7 +161,7 @@ catch err % error handling
     % the future, for now we just clear the error 
 end
 %% Finish and return results
-if ~RaPIdObject.experimentSettings.saveHist
+if ~rapidSettings.experimentSettings.saveHist
     bestfitness_history=bestfitness;
     bestparameters_history=bestparameters;
 end

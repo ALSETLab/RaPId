@@ -1,3 +1,15 @@
+function [ sol, other] = nm_algo(rapidSettings)
+%NM_ALGO applies the FMINSEARCH matlab function to compute the minimum of
+%the objective function defined by the parameter identification problem.
+%   settings contain the fields:
+%   	- p0, vector representing the initial guess for the vector of
+%   	parameters
+%       - nmOptions, a string which, when evaluated, provides an optimset
+%       to be provided to FMINSEARCH, see the documentation for the
+%       aforementioned function.
+%       - verbose, verbose can be anything other than 0 if debuf info is
+%       needed in console
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
 % Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
@@ -21,34 +33,23 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-function [ sol, other] = nm_algo(RaPIdObject)
-%NM_ALGO applies the FMINSEARCH matlab function to compute the minimum of
-%the objective function defined by the parameter identification problem.
-%   settings contain the fields:
-%   	- p0, vector representing the initial guess for the vector of
-%   	parameters
-%       - nmOptions, a string which, when evaluated, provides an optimset
-%       to be provided to FMINSEARCH, see the documentation for the
-%       aforementioned function.
-%       - verbose, verbose can be anything other than 0 if debuf info is
-%       needed in console
+%%
+options = eval(rapidSettings.nmSettings);
+options.MaxFunEvals=rapidSettings.experimentSettings.nbMaxIterations;
 
-options = eval(RaPIdObject.nmSettings);
-options.MaxFunEvals=RaPIdObject.experimentSettings.nbMaxIterations;
-
-[sol, other] = fminsearch(@func,RaPIdObject.experimentSettings.p_0,options);
+[sol, other] = fminsearch(@func,rapidSettings.experimentSettings.p_0,options);
 %other = [];
-if RaPIdObject.experimentSettings.verbose
-    part.p = RaPIdObject.experimentSettings.p_0;
-    [simuRes] = rapid_simuSystem( part,RaPIdObject);
+if rapidSettings.experimentSettings.verbose
+    part.p = rapidSettings.experimentSettings.p_0;
+    [simuRes] = rapid_simuSystem( part,rapidSettings);
     for k=1:size(simuRes,2)
-        fitness=fitness+rapid_objectiveFunction(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
+        fitness=fitness+rapid_objectiveFunction(rapidSettings.experimentData.realData(i_s,k),simuRes(:,k),rapidSettings,1);
     end
     other.beginning =fitness;
     part.p = sol;
-    [simuRes] = rapid_simuSystem( part,RaPIdObject);
+    [simuRes] = rapid_simuSystem( part,rapidSettings);
     for k=1:size(simuRes,2)
-        fitness=fitness+rapid_objectiveFunction(RaPIdObject.experimentData.realData(i_s,k),simuRes(:,k),RaPIdObject,1);
+        fitness=fitness+rapid_objectiveFunction(rapidSettings.experimentData.realData(i_s,k),simuRes(:,k),rapidSettings,1);
     end
     other.end = fitness;
 end

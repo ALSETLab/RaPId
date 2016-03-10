@@ -68,7 +68,7 @@ function simulinkSettings_OpeningFcn(hObject, eventdata, handles, varargin)
 
 handles.output = hObject;
 handle2main=getappdata(0,'HandleMainGUI');
-rapidObject=getappdata(handle2main,'rapidObject');
+rapidSettings=getappdata(handle2main,'rapidSettings');
 guidata(hObject, handles);% Update handles structure
 string = mfilename('fullpath');
 string = string(1:end-length(mfilename)-5);
@@ -76,13 +76,13 @@ path = strcat(string,'\model');
 set(handles.Simulink_modelpath_edit,'String',path);
 set(handles.simulinkModelName_edit,'String','test.mdl');
 set(handles.FMUBlockName_edit,'String','FMUme');
-set(handles.timeStep_edit,'String',rapidObject.experimentSettings.ts);
-set(handles.simLength_edit,'String',rapidObject.experimentSettings.tf);
-set(handles.timeOut_edit,'String',rapidObject.experimentSettings.timeOut);
-set(handles.intMethod_edit,'String',rapidObject.experimentSettings.integrationMethod);
-set(handles.history_togglebutton,'Value',rapidObject.experimentSettings.saveHist);
-set(handles.costType_edit,'String',num2str(rapidObject.experimentSettings.cost_type));
-tmp=rapidObject.experimentSettings;
+set(handles.timeStep_edit,'String',rapidSettings.experimentSettings.ts);
+set(handles.simLength_edit,'String',rapidSettings.experimentSettings.tf);
+set(handles.timeOut_edit,'String',rapidSettings.experimentSettings.timeOut);
+set(handles.intMethod_edit,'String',rapidSettings.experimentSettings.integrationMethod);
+set(handles.history_togglebutton,'Value',rapidSettings.experimentSettings.saveHist);
+set(handles.costType_edit,'String',num2str(rapidSettings.experimentSettings.cost_type));
+tmp=rapidSettings.experimentSettings;
 if isfield(tmp,'pathToSimulinkModel')
     set(handles.Simulink_modelpath_edit,'String',tmp.pathToSimulinkModel);
 end
@@ -96,28 +96,28 @@ if isfield(tmp,'scopeName')
     set(handles.scopeName_edit,'String',tmp.scopeName);
 end
 dummy=cellstr(['';'']); %make sure that we have no empty cell arrays
-if ~isempty(rapidObject.fmuInputNames)
-    tmp1=(rapidObject.fmuInputNames);
+if ~isempty(rapidSettings.fmuInputNames)
+    tmp1=(rapidSettings.fmuInputNames);
 else
     tmp1=dummy;
 end
 
-tmp7=rapidObject.experimentSettings.objective_weights;
+tmp7=rapidSettings.experimentSettings.objective_weights;
 
-maxAlloc=max([length(tmp1),length(rapidObject.fmuOutputNames),length(rapidObject.parameterNames)])+1; %allocate space for the longest vector and and an extra editable field
+maxAlloc=max([length(tmp1),length(rapidSettings.fmuOutputNames),length(rapidSettings.parameterNames)])+1; %allocate space for the longest vector and and an extra editable field
 dataAlloc=cell(7,maxAlloc);
 dataAlloc(1,1:length(tmp1))=tmp1;
-dataAlloc(2,1:length(rapidObject.fmuOutputNames))=rapidObject.fmuOutputNames;
-dataAlloc(3,1:length(rapidObject.parameterNames))=rapidObject.parameterNames;
-if ~isempty(rapidObject.experimentSettings.p_min)
+dataAlloc(2,1:length(rapidSettings.fmuOutputNames))=rapidSettings.fmuOutputNames;
+dataAlloc(3,1:length(rapidSettings.parameterNames))=rapidSettings.parameterNames;
+if ~isempty(rapidSettings.experimentSettings.p_min)
    
-    dataAlloc(4,1:length(rapidObject.experimentSettings.p_min))=num2cell( rapidObject.experimentSettings.p_min);
+    dataAlloc(4,1:length(rapidSettings.experimentSettings.p_min))=num2cell( rapidSettings.experimentSettings.p_min);
 end
-if ~isempty(rapidObject.experimentSettings.p_min)
-    dataAlloc(5,1:length(rapidObject.experimentSettings.p_max))=num2cell(rapidObject.experimentSettings.p_max);
+if ~isempty(rapidSettings.experimentSettings.p_min)
+    dataAlloc(5,1:length(rapidSettings.experimentSettings.p_max))=num2cell(rapidSettings.experimentSettings.p_max);
 end
-if ~isempty(rapidObject.experimentSettings.p_min)
-    dataAlloc(6,1:length(rapidObject.experimentSettings.p_0))=num2cell(rapidObject.experimentSettings.p_0);
+if ~isempty(rapidSettings.experimentSettings.p_min)
+    dataAlloc(6,1:length(rapidSettings.experimentSettings.p_0))=num2cell(rapidSettings.experimentSettings.p_0);
 end
 dataAlloc(7,1:length(tmp7))=num2cell(tmp7);
 set(handles.uitable1,'Data',dataAlloc);
@@ -133,7 +133,7 @@ if (get(handles.history_togglebutton,'Value'))==1
 else
     set(handles.history_togglebutton,'String','Save History: Off')
 end
-if rapidObject.experimentSettings.verbose==1
+if rapidSettings.experimentSettings.verbose==1
     tmp2=1;
 else
     tmp2=0;
@@ -145,20 +145,20 @@ else
     set(handles.verbose_togglebutton,'String','Verbose: Off')
 end
 try
-    set(handles.maxIterations_edit,'String',int2str(rapidObject.experimentSettings.maxIterations))
+    set(handles.maxIterations_edit,'String',int2str(rapidSettings.experimentSettings.maxIterations))
 end
 
 try
-    set(handles.waitUntilFitness_edit,'String',num2str(rapidObject.experimentSettings.t_fitness_start));
+    set(handles.waitUntilFitness_edit,'String',num2str(rapidSettings.experimentSettings.t_fitness_start));
 end
-if isprop(rapidObject,'experimentData') && isfield(rapidObject.experimentData, 'pathToReferenceData')  %we take care of Data settings pane in the next few lines
-        set(handles.measuredOutputPath_edit,'String',rapidObject.experimentData.pathToReferenceData);
-        set(handles.measuredTime_edit,'String',rapidObject.experimentData.expressionReferenceTime);
-        set(handles.measuredOutputData_edit,'String',rapidObject.experimentData.expressionReferenceData);
-        if isfield(rapidObject.experimentData,'pathToInData')
-            set(handles.inputPath_edit,'String',rapidObject.experimentData.pathToInData);
-            set(handles.inputTime_edit,'String',rapidObject.experimentData.expressionInDataTime);
-            set(handles.inputData_edit,'String',rapidObject.experimentData.expressionInData);
+if isprop(rapidSettings,'experimentData') && isfield(rapidSettings.experimentData, 'pathToReferenceData')  %we take care of Data settings pane in the next few lines
+        set(handles.measuredOutputPath_edit,'String',rapidSettings.experimentData.pathToReferenceData);
+        set(handles.measuredTime_edit,'String',rapidSettings.experimentData.expressionReferenceTime);
+        set(handles.measuredOutputData_edit,'String',rapidSettings.experimentData.expressionReferenceData);
+        if isfield(rapidSettings.experimentData,'pathToInData')
+            set(handles.inputPath_edit,'String',rapidSettings.experimentData.pathToInData);
+            set(handles.inputTime_edit,'String',rapidSettings.experimentData.expressionInDataTime);
+            set(handles.inputData_edit,'String',rapidSettings.experimentData.expressionInData);
         end
 end
 
@@ -712,14 +712,14 @@ function openSimulink_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 saveAll(handles)
 handle2main=getappdata(0,'HandleMainGUI');
-rapidObject=getappdata(handle2main,'rapidObject');
-open_system(rapidObject.experimentSettings.pathToSimulinkModel)
+rapidSettings=getappdata(handle2main,'rapidSettings');
+open_system(rapidSettings.experimentSettings.pathToSimulinkModel)
 % TODO add so that it is runnable!
 
 
 function saveAll(handles)
 handle2main=getappdata(0,'HandleMainGUI');
-rapidObject=getappdata(handle2main,'rapidObject');
+rapidSettings=getappdata(handle2main,'rapidSettings');
 subsettings.pathToSimulinkModel = get(handles.Simulink_modelpath_edit,'String');
 subsettings.modelName = get(handles.simulinkModelName_edit,'String');
 subsettings.blockName = get(handles.FMUBlockName_edit,'String');
@@ -735,17 +735,17 @@ subsettings.timeOut = str2double(get(handles.timeOut_edit,'String'));
 subsettings.saveHist=get(handles.history_togglebutton,'Value');
 tmp=get(handles.uitable1,'Data');
 % Make sure that everything is 
-rapidObject.fmuInputNames = tmp(1,~cellfun(@isempty,tmp(1,:)));
-rapidObject.fmuOutputNames = tmp(2,~cellfun(@isempty,tmp(2,:)));
-rapidObject.parameterNames = tmp(3,~cellfun(@isempty,tmp(3,:)));
+rapidSettings.fmuInputNames = tmp(1,~cellfun(@isempty,tmp(1,:)));
+rapidSettings.fmuOutputNames = tmp(2,~cellfun(@isempty,tmp(2,:)));
+rapidSettings.parameterNames = tmp(3,~cellfun(@isempty,tmp(3,:)));
 subsettings.p_min = cell2mat(tmp(4,~cellfun(@isempty,tmp(4,:)))); 
 subsettings.p_max = cell2mat(tmp(5,~cellfun(@isempty,tmp(5,:))));
 subsettings.p_0 =   cell2mat(tmp(6,~cellfun(@isempty,tmp(6,:))));
 subsettings.objective_weights = cell2mat(tmp(7,~cellfun(@isempty,tmp(7,:))));
-rapidObject.experimentSettings = setstructfields(rapidObject.experimentSettings,subsettings);
-rapidObject.experimentData.expressionReferenceTime = get(handles.measuredTime_edit,'String');
-rapidObject.experimentData.expressionReferenceData = get(handles.measuredOutputData_edit,'String');
-rapidObject.experimentData.pathToReferenceData = get(handles.measuredOutputPath_edit,'String');
-rapidObject.experimentData.expressionInDataTime = get(handles.inputTime_edit,'String');
-rapidObject.experimentData.expressionInData = get(handles.inputData_edit,'String');
-rapidObject.experimentData.pathToInData = get(handles.inputPath_edit,'String');
+rapidSettings.experimentSettings = setstructfields(rapidSettings.experimentSettings,subsettings);
+rapidSettings.experimentData.expressionReferenceTime = get(handles.measuredTime_edit,'String');
+rapidSettings.experimentData.expressionReferenceData = get(handles.measuredOutputData_edit,'String');
+rapidSettings.experimentData.pathToReferenceData = get(handles.measuredOutputPath_edit,'String');
+rapidSettings.experimentData.expressionInDataTime = get(handles.inputTime_edit,'String');
+rapidSettings.experimentData.expressionInData = get(handles.inputData_edit,'String');
+rapidSettings.experimentData.pathToInData = get(handles.inputPath_edit,'String');

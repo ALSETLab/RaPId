@@ -1,3 +1,12 @@
+function [ sol, other ] = cg_algo(rapidSettings)
+%CG_ALGO applying fminunc to compute the minimum of the objective function
+%defined by the parameter identification problem settings must contain the
+%fields:
+%       - settings.p0, initial guess for the vector of parameters 
+%       - settings.cgOptions, string containing a command providing the
+%       optimset for the matlab function fminunc, can please refer to the
+%       doc fminunc
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
 % Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
@@ -21,15 +30,7 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-function [ sol, other ] = cg_algo(RaPIdObject)
-%CG_ALGO applying fminunc to compute the minimum of the objective function
-%defined by the parameter identification problem settings must contain the
-%fields:
-%       - settings.p0, initial guess for the vector of parameters 
-%       - settings.cgOptions, string containing a command providing the
-%       optimset for the matlab function fminunc, can please refer to the
-%       doc fminunc
-options = eval(RaPIdObject.cgOptions);
-sol = fminunc(@func,RaPIdObject.experimentSettings.p_0,options);
+options = eval(rapidSettings.cgOptions);
+sol = fminunc(@func,rapidSettings.experimentSettings.p_0,options);
 other = [];
 end

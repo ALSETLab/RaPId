@@ -1,6 +1,21 @@
+function [sol,other]  = naive_algo(rapidSettings)
+%NAIVE_ALGO applies iteratively 1D gradient methods in n = card{vector of
+%parameters} perpendicular directions until a certain fitness or a number
+%of iterations is reached, the settings struct should contain:
+%   - naive_options.tolerance1, minimal bound for the ratio
+%   currentFitness/initialFitness, when this value is reached, the
+%   algorithm stops
+%   - naive_options.tolerance2, minimal bound for the ratio
+%   currentFitness/initialFitness, when this value is reached, the
+%   algorithm stops, second loop
+%   - naive_options.iterations,2,3 number maximal of iterations for three
+%   different levels of loops
+%   - verbose, should be anything other than 0 only if debug info needs to
+%   be displayed in console
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
 % Francisco Gomez-Lopez
 % 
@@ -21,21 +36,8 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-function [sol,other]  = naive_algo(RaPIdObject)
-%NAIVE_ALGO applies iteratively 1D gradient methods in n = card{vector of
-%parameters} perpendicular directions until a certain fitness or a number
-%of iterations is reached, the settings struct should contain:
-%   - naive_options.tolerance1, minimal bound for the ratio
-%   currentFitness/initialFitness, when this value is reached, the
-%   algorithm stops
-%   - naive_options.tolerance2, minimal bound for the ratio
-%   currentFitness/initialFitness, when this value is reached, the
-%   algorithm stops, second loop
-%   - naive_options.iterations,2,3 number maximal of iterations for three
-%   different levels of loops
-%   - verbose, should be anything other than 0 only if debug info needs to
-%   be displayed in console
-    [sol,other] = naive(RaPIdObject, @func);
+%%
+    [sol,other] = naive(rapidSettings, @func);
 end
 
 

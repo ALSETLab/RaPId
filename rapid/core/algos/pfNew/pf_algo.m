@@ -1,3 +1,12 @@
+function [ sol, historic] = pf_algo(rapidSettings)
+%Particle Filter
+%
+%   settings should include a struct field name pso_options containing:
+%       - overall best position to the next sample of the speed
+%       - nb_particles: number of particles in the swarm
+%       - storeData, boolean allowing to store all the best fitness and
+%       particles at every iterations (get's big very quickly)
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
 % Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
@@ -21,15 +30,8 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-function [ sol, historic] = pf_algo(RaPIdObject)
-%Particle Filter
-%
-%   settings should include a struct field name pso_options containing:
-%       - overall best position to the next sample of the speed
-%       - nb_particles: number of particles in the swarm
-%       - storeData, boolean allowing to store all the best fitness and
-%       particles at every iterations (get's big very quickly)
-[ sol, historic] = pfNew(RaPIdObject,@func);
+%%
+[ sol, historic] = pfNew(rapidSettings,@func);
 end
 
 

@@ -1,5 +1,6 @@
-function  obj = initRapidObj(obj)
-% INITRAPIDOBJ this function is meant to create a default rapidobject
+function  obj = initRapidSettings(obj)
+% INITRAPIDSETTINGS this function is meant to create a default
+% RAPIDSETTINGS object
 %   Detailed explanation goes here
 obj.experimentSettings=struct('tf',1,'ts',0.1,'p_min',[],'p_max',[],'p_0',[],...
     'cost_type',1,'objective_weights',1,'t_fitness_start',0,...

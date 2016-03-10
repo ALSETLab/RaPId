@@ -1,6 +1,9 @@
+function [sol, historic] = pfNew(rapidSettings,func)
+% PFNEW description TODO
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
 % Francisco Gomez-Lopez
 % 
@@ -21,35 +24,32 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-function [sol, historic] = pfNew(RaPIdObject,func)
+%%
+min_value=rapidSettings.experimentSettings.p_min; %min_value = [0, 0];
+max_value=rapidSettings.experimentSettings.p_max; %max_value = [2, 2];
+num_params = length(rapidSettings.experimentSettings.p_min); %2;
 
-
-
-min_value=RaPIdObject.experimentSettings.p_min; %min_value = [0, 0];
-max_value=RaPIdObject.experimentSettings.p_max; %max_value = [2, 2];
-num_params = length(RaPIdObject.experimentSettings.p_min); %2;
-
-num_epochs = RaPIdObject.experimentSettings.maxIterations; %10;
-if isempty(RaPIdObject.pfSettings)
-    RaPIdObject.pfSettings.nb_particles=100;
-    RaPIdObject.pfSettings.prune_threshold=0.1;
-    RaPIdObject.pfSettings.kernel_sigma=1;
+num_epochs = rapidSettings.experimentSettings.maxIterations; %10;
+if isempty(rapidSettings.pfSettings)
+    rapidSettings.pfSettings.nb_particles=100;
+    rapidSettings.pfSettings.prune_threshold=0.1;
+    rapidSettings.pfSettings.kernel_sigma=1;
     
 end
-num_particles = RaPIdObject.pfSettings.nb_particles; %100;
-threshold = RaPIdObject.pfSettings.prune_threshold; %0.1;
-sigma = RaPIdObject.pfSettings.kernel_sigma; %1;
+num_particles = rapidSettings.pfSettings.nb_particles; %100;
+threshold = rapidSettings.pfSettings.prune_threshold; %0.1;
+sigma = rapidSettings.pfSettings.kernel_sigma; %1;
 max_tries=10000;
 
 
-if RaPIdObject.experimentSettings.saveHist
+if rapidSettings.experimentSettings.saveHist
     particles_H=zeros(num_epoch*num_particles, num_params);
 end
 
 figure_handle=figure;
 
 particles=zeros(num_particles,num_params);
-particles(1,:)=RaPIdObject.experimentSettings.p_0;
+particles(1,:)=rapidSettings.experimentSettings.p_0;
 for k=2:num_params
     particles(:,num_params) = unifrnd(min_value(k), max_value(k), num_particles, 1);
 end
@@ -70,7 +70,7 @@ for epoch=1:num_epochs
     
     %Weight particles
 
-    [weights,~] = pfWeighting(RaPIdObject,particles, func);
+    [weights,~] = pfWeighting(rapidSettings,particles, func);
 
     % Prune particles
 
@@ -95,7 +95,7 @@ for epoch=1:num_epochs
     
 
     
-    if RaPIdObject.experimentSettings.saveHist
+    if rapidSettings.experimentSettings.saveHist
         particles_H(((epoch-1)*num_particles + 1:num_particles ),num_params) = newParticles;
     end
     
@@ -107,7 +107,7 @@ end
 
 %Define the best particle
 
-[weights,fitness] = pfWeighting(RaPIdObject,particles,func);
+[weights,fitness] = pfWeighting(rapidSettings,particles,func);
 
 [~, I] = sort(weights, 'descend');
 
@@ -117,7 +117,3 @@ disp(fitness(I(1), :));
 historic.particles_H=particles_H;
 
 end
-
-
-
-

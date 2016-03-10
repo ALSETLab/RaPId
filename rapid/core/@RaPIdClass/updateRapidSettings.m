@@ -1,8 +1,8 @@
-function  obj = updateRapidObj(obj,oldThing)
+function  obj = updateRapidSettings(obj,oldThing)
 % UPDATERAPIDOBJ this function will update old rapid-objects
 %   Detailed explanation goes here
 objversion=oldThing.version; %old version number
-%% This part takes care of updating old structs to rapidobjects
+%% This part takes care of updating old structs to rapidSettingss
 if isstruct(oldThing) && objversion==0 %to convert some very old mySettings-structs
     obj.psoSettings = oldThing.pso_options;
     obj.naiveSettings = oldThing.naive_options;
