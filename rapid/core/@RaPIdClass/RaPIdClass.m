@@ -68,21 +68,23 @@ classdef  RaPIdClass <handle
     methods
         function obj = RaPIdClass(varargin) %Constructor
             if nargin == 0 %Create a new object of the latest version
-                try
-                    obj=initRapidObj(obj);
-                catch 
-                    %NOP, will still give a an object 
-                end
+                obj=initRapidSettings(obj);
             elseif isa(varargin{1},'RaPIdClass') && varargin{1}.version==1.41 
                 %NOP, up to date
                 obj=varargin{1};
             else  % Old version, try to update
                 obj=RaPIdClass(); % New object
-                obj=obj.updateRapidObj(varargin{1}); % update old object
+                try
+                    obj=obj.updateRapidSettings(varargin{1}); % update old object
+                catch err
+                    disp(err)
+                    warning('Your settings could not be loaded updated! Using defaults for some properties!')
+                end
             end
         end
         function obj = saveobj(obj)
-            
+            % Not implemented, possible remove some stuff that needn't be
+            % saved
         end
     end   
 end
