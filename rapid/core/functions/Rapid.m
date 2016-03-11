@@ -61,10 +61,8 @@ classdef Rapid <handle
         end
         function obj=prepareData(obj)% Check and set the in-data to the model
             if ~isempty(obj.rapidSettings.experimentData.pathToInData)
-                if exist(obj.rapidSettings.experimentData.pathToInData,'file') % Indata exist on absolute path
+                if exist(obj.rapidSettings.experimentData.pathToInData,'file') % Indata exists
                     load(obj.rapidSettings.experimentData.pathToInData);
-                elseif exist(fullfile(evalin('base','pwd'),obj.rapidSettings.experimentData.pathToInData),'file') %File exist on relative path
-                    load(fullfile(evalin('base','pwd'),obj.rapidSettings.experimentData.pathToInData));
                 else
                     error('In-data file could not be found! Use an empty string if no in-data should be loaded!')
                 end
@@ -92,10 +90,8 @@ classdef Rapid <handle
             
             %% Check and set the reference data which will be used for fitness-calculation
             if ~isempty(obj.rapidSettings.experimentData.pathToReferenceData)
-                if exist(obj.rapidSettings.experimentData.pathToReferenceData,'file') % Reference data file exist on absolute path
+                if exist(obj.rapidSettings.experimentData.pathToReferenceData,'file') % Reference data file exists
                     load(obj.rapidSettings.experimentData.pathToReferenceData);
-                elseif exist(fullfile(evalin('base','pwd'),obj.rapidSettings.experimentData.pathToReferenceData),'file') %Reference data file exist on relative path
-                    load(fullfile(evalin('base','pwd'),obj.rapidSettings.experimentData.pathToReferenceData));
                 else
                     error('No reference file could be found!')
                 end
@@ -113,7 +109,7 @@ classdef Rapid <handle
                     else
                         error('Check consistency of output data.'); %Something is bad with the data
                     end
-                    [timeOutputT, i_t]=unique(timeOutputT); % remove double time-stamps
+                    [timeOutputT, i_t]=unique(timeOutputT); % remove repeated time-stamps
                     outputT = outputT(i_t,:);
                     dataMeasuredS = [timeOutputT,outputT];
                     obj.rapidSettings.experimentData.referenceTime=dataMeasuredS(:,1);
@@ -130,8 +126,6 @@ classdef Rapid <handle
                     tmp=[];
                     if exist(obj.rapidSettings.experimentSettings.pathToSimulinkModel,'file')
                         tmp=obj.rapidSettings.experimentSettings.pathToSimulinkModel;
-                    elseif ~exist(obj.rapidSettings.experimentSettings.pathToSimulinkModel,'file') && exist(fullfile(evalin('base','pwd'),obj.rapidSettings.experimentSettings.pathToSimulinkModel),'file')
-                        tmp=fullfile(evalin('base','pwd'),obj.rapidSettings.experimentSettings.pathToSimulinkModel);
                     end
                     if strcmpi(obj.rapidSettings.experimentSettings.displayMode, 'hide')
                         if strcmp(gcs,obj.rapidSettings.experimentSettings.blockName) % check if model already loaded
@@ -149,10 +143,8 @@ classdef Rapid <handle
                     obj.fmuLoaded=false;
                 case 'ODE'
                     try
-                        if exist(obj.rapidSettings.experimentSettings.pathToFmuModel,'file') % FMU exist on absolute path
+                        if exist(obj.rapidSettings.experimentSettings.pathToFmuModel,'file') % FMU exists
                             fmu = FMUModelME1(obj.rapidSettings.experimentSettings.pathToFmuModel,'Loglevel','warning'); % or change to loadFMU?
-                        elseif ~exist(obj.rapidSettings.experimentSettings.pathToFmuModel,'file') && exist(fullfile(evalin('base','pwd'),obj.rapidSettings.experimentSettings.pathToFmuModel),'file') %FMU exist on relative path
-                            fmu = FMUModelME1(fullfile(evalin('base','pwd'),obj.rapidSettings.experimentSettings.pathToFmuModel),'Loglevel','warning'); % or change to loadFMU?
                         else
                             error('FMU file could not be found!')
                         end

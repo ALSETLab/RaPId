@@ -242,7 +242,9 @@ rapidSettings=getappdata(handles.MainRaPiDWindow,'rapidSettings');
 try
     [filename, pathname, success] = uiputfile('*.mat');
     if  success 
+        rapidSettings.makePathsRelative(pathname)
         save(strcat(pathname,filename),'rapidSettings')
+        cd(pathname); %paths are now relative to this container
     else
         disp('User did not save file.');
     end
@@ -292,6 +294,7 @@ try
             tmp1=0;
         end
         rapidObject=Rapid(rapidSettings);
+        setappdata(handles.MainRaPiDWindow,'rapidSettings',rapidSettings);
         setappdata(handles.MainRaPiDWindow,'rapidObject',rapidObject);
         set(handles.simulinkselector,'Value',tmp1);
         set(handles.odeselector,'Value',~tmp1);

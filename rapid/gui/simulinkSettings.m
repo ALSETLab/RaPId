@@ -70,12 +70,6 @@ handles.output = hObject;
 handle2main=getappdata(0,'HandleMainGUI');
 rapidSettings=getappdata(handle2main,'rapidSettings');
 guidata(hObject, handles);% Update handles structure
-string = mfilename('fullpath');
-string = string(1:end-length(mfilename)-5);
-path = strcat(string,'\model');
-set(handles.Simulink_modelpath_edit,'String',path);
-set(handles.simulinkModelName_edit,'String','test.mdl');
-set(handles.FMUBlockName_edit,'String','FMUme');
 set(handles.timeStep_edit,'String',rapidSettings.experimentSettings.ts);
 set(handles.simLength_edit,'String',rapidSettings.experimentSettings.tf);
 set(handles.timeOut_edit,'String',rapidSettings.experimentSettings.timeOut);
@@ -301,6 +295,7 @@ function measuredOutputButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [filename, pathname] = uigetfile();
+
 set(handles.measuredOutputPath_edit,'String',strcat(pathname,filename));
 
 
