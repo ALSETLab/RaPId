@@ -1,6 +1,17 @@
+function [ sol, other] = fmincon_algo(rapidSettings)
+%FMINCON_ALGO applying fmincon to compute the minimum of the objective
+%function defined by the parameter identification problem settings must
+%contain the fields:
+%       - settings.p0, initial guess for the vector of parameters 
+%       - settings.p_min, vector of minimum values for all parameters; 
+%       - settings.p_max, vector of maximum values for all parameters; 
+%       - settings.fminconOptions, string representing a command setting the
+%       options for the matlab function fminunc, can consist of the
+%       optimset function, please refer to doc fmincon
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
 % Francisco Gomez-Lopez
 % 
@@ -21,23 +32,14 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-function [ sol, other] = fmincon_algo(RaPIdObject)
-%FMINCON_ALGO applying fmincon to compute the minimum of the objective
-%function defined by the parameter identification problem settings must
-%contain the fields:
-%       - settings.p0, initial guess for the vector of parameters 
-%       - settings.p_min, vector of minimum values for all parameters; 
-%       - settings.p_max, vector of maximum values for all parameters; 
-%       - settings.fminconOptions, string representing a command setting the
-%       options for the matlab function fminunc, can consist of the
-%       optimset function, please refer to doc fmincon
-options = eval(RaPIdObject.fminconSettings);
-funcwrapper = @(x) func(x, RaPIdObject);
+%%
+options = eval(rapidSettings.fminconSettings);
+funcwrapper = @(x) func(x, rapidSettings);
 
 if isempty(options)
-    sol = fmincon(funcwrapper,RaPIdObject.experimentSettings.p_0,[],[],[],[],RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max);
+    sol = fmincon(funcwrapper,rapidSettings.experimentSettings.p_0,[],[],[],[],rapidSettings.experimentSettings.p_min,rapidSettings.experimentSettings.p_max);
 else
-    sol = fmincon(funcwrapper,RaPIdObject.experimentSettings.p_0,[],[],[],[],RaPIdObject.experimentSettings.p_min,RaPIdObject.experimentSettings.p_max,[],options);
+    sol = fmincon(funcwrapper,rapidSettings.experimentSettings.p_0,[],[],[],[],rapidSettings.experimentSettings.p_min,rapidSettings.experimentSettings.p_max,[],options);
 end
 other = [];
 

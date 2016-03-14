@@ -1,3 +1,6 @@
+function [weights,fitness] = pfWeighting(rapidSettings,particles,func)
+%PFWEIGHTING description TODO
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
 % Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
@@ -20,16 +23,15 @@
 % 
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
-
-function [weights,fitness] = pfWeighting(RaPIdObject,particles,func)
-
 % mean = [1 1];
 % sigma = 0.6;
 % cum_sum=0;
+
+%%
 weights = zeros(length(particles(:,1)),1);
 fitness=zeros(length(particles(:,1)),1);
 for k=1:length(fitness)
-    fitness(k) = func(particles(k,:),RaPIdObject);  % dangerous since func could possibly leave []
+    fitness(k) = func(particles(k,:),rapidSettings);  % dangerous since func could possibly leave []
 %   diff = particles(i,:)-mean;
 % 	sq_diff = diff*diff';
 % 	weights = [weights; 1/sqrt(2*pi*sigma^2)*exp(-sq_diff/(2*sigma^2))];
@@ -40,7 +42,3 @@ cum_sum=sum(fitness);
 for k=1:length(fitness)
     weights(k)=1-(fitness(k)/cum_sum);
 end
-
-
-
-	

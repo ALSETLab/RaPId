@@ -1,27 +1,3 @@
-%% <Rapid Parameter Identification is a toolbox for automated parameter identification>
-%
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
-% Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
-% Francisco Gomez-Lopez
-% 
-% The authors can be contacted by email: luigiv at kth dot se
-% 
-% This file is part of Rapid Parameter Identification ("RaPId") .
-% 
-% RaPId is free software: you can redistribute it and/or modify
-% it under the terms of the GNU Lesser General Public License as published by
-% the Free Software Foundation, either version 3 of the License, or
-% (at your option) any later version.
-% 
-% RaPId is distributed in the hope that it will be useful,
-% but WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-% GNU Lesser General Public License for more details.
-% 
-% You should have received a copy of the GNU Lesser General Public License
-% along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
-
-
 function varargout = psoSettings(varargin)
 % PSOSETTINGS MATLAB code for psoSettings.fig
 %      PSOSETTINGS, by itself, creates a new PSOSETTINGS or raises the existing
@@ -44,7 +20,28 @@ function varargout = psoSettings(varargin)
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help psoSettings
+%% <Rapid Parameter Identification is a toolbox for automated parameter identification>
+%
+% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
+% Francisco Gomez-Lopez
+% 
+% The authors can be contacted by email: luigiv at kth dot se
+% 
+% This file is part of Rapid Parameter Identification ("RaPId") .
+% 
+% RaPId is free software: you can redistribute it and/or modify
+% it under the terms of the GNU Lesser General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+% 
+% RaPId is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU Lesser General Public License for more details.
+% 
+% You should have received a copy of the GNU Lesser General Public License
+% along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
 % Last Modified by GUIDE v2.5 04-Feb-2016 22:34:19
 
@@ -76,7 +73,7 @@ function psoSettings_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to psoSettings (see VARARGIN)
 handle2main=getappdata(0,'HandleMainGUI');
-rapidObject=getappdata(handle2main,'rapidObject');
+rapidSettings=getappdata(handle2main,'rapidSettings');
 % Choose default command line output for psoSettings
 handles.output = hObject;
 
@@ -86,8 +83,8 @@ guidata(hObject, handles);
 % UIWAIT makes psoSettings wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
-if isprop(rapidObject,'psoSettings')
-    tmp=rapidObject.psoSettings;
+if isprop(rapidSettings,'psoSettings')
+    tmp=rapidSettings.psoSettings;
     set(handles.edit1,'String',tmp.w);
     set(handles.edit2,'String',tmp.self_coeff);
     set(handles.edit3,'String',tmp.social_coeff);
@@ -291,7 +288,7 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handle2main=getappdata(0,'HandleMainGUI');
-rapidObject=getappdata(handle2main,'rapidObject');
+rapidSettings=getappdata(handle2main,'rapidSettings');
 pso_options.w = eval(get(handles.edit1,'String'));
 pso_options.self_coeff = eval(get(handles.edit2,'String'));
 pso_options.social_coeff = eval(get(handles.edit3,'String'));
@@ -304,7 +301,7 @@ pso_options.w_max = eval(get(handles.edit19,'String'));
 tmp=get(handles.popupmenu1,'String');
 tmp_ind=get(handles.popupmenu1,'Value');
 pso_options.method =tmp{tmp_ind};
-rapidObject.psoSettings = pso_options;
+rapidSettings.psoSettings = pso_options;
 close(gcf)
 
 

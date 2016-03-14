@@ -42,7 +42,7 @@ oldFolder = cd(pathname);
 contentOfContainer=who('-file',strcat(pathname,containerFile));
 if any(strcmp(contentOfContainer,'mySettings'))
         try
-            RaPIdObject=RaPIdClass(mySettings);
+            rapidSettings=RaPIdClass(mySettings);
             disp('Converted old container to new, please save this new container');
         catch err
             disp(err.message)
@@ -50,17 +50,17 @@ if any(strcmp(contentOfContainer,'mySettings'))
 end
 
 % We can either use Simulink or Matlab's ODE solver directly.
-switch RaPIdObject.experimentSettings.solverMode
+switch rapidSettings.experimentSettings.solverMode
     case 'ode'
         
     case 'simulink'
         
 end
-RaPIdObject.experimentSettings.solverMode='ODE';
+rapidSettings.experimentSettings.solverMode='ODE';
 %% This part contains example of settings that can changed at will if needed
 ChangeLoadedSettings=0;
 if ChangeLoadedSettings
-    switch lower(RaPIdObject.experimentSettings.optimizationAlgorithm)
+    switch lower(rapidSettings.experimentSettings.optimizationAlgorithm)
         case 'pso'
             pso_options.w = 0.5/(0.5+1+0.8);
             pso_options.w_min = 0.01;
@@ -75,7 +75,7 @@ if ChangeLoadedSettings
             pso_options.p0s = psoSettings.p0;
             pso_options.storeData = 0;
             pso_options.method = 'PSO';
-            RaPIdObject.psoSettings = pso_options;
+            rapidSettings.psoSettings = pso_options;
         case 'ga'
             ga_options.nbCromosomes = 40;
             ga_options.nRandMin = 3;
@@ -91,7 +91,7 @@ if ChangeLoadedSettings
             ga_options.headSize3 = ceil(ga_options.nbMutations/3);
             ga_options.nbReinjection = 5;
             ga_options.storeData = 0;
-            RaPIdObject.gaSettings = ga_options;
+            rapidSettings.gaSettings = ga_options;
         case 'naive'
             naive_options.tolerance1 = 1e-4;
             naive_options.tolerance2 = 1e-7;
@@ -99,38 +99,40 @@ if ChangeLoadedSettings
             naive_options.iterations2 = 2;
             naive_options.iterations3 = 2;
 
-            RaPIdObject.naiveSettings = naive_options;
+            rapidSettings.naiveSettings = naive_options;
         case 'fmincon'
-            RaPIdObject.fminconSettings = 'optimset(''FinDiffRelStep'',0.1)';
+            rapidSettings.fminconSettings = 'optimset(''FinDiffRelStep'',0.1)';
         case 'cg'
-            RaPIdObject.cgSettings = 'optimset(optimset(''fminunc''),''FinDiffType'',''central'',''TolX'',1e-6,''LargeScale'',''off'')';
+            rapidSettings.cgSettings = 'optimset(optimset(''fminunc''),''FinDiffType'',''central'',''TolX'',1e-6,''LargeScale'',''off'')';
         case 'nm'
-            RaPIdObject.nmSettings = 'optimset(''fminsearch'')';
+            rapidSettings.nmSettings = 'optimset(''fminsearch'')';
         case 'pf'
             pf_options.nb_particles = 10;
             pf_options.nb_iterations = 2;
             pf_options.prune_threshold = 0.2;
             pf_options.kernel_sigma = 0.5;
             pf_options.storeData = 0;
-            RaPIdObject.pfSettings = pf_options;
+            rapidSettings.pfSettings = pf_options;
         case 'combi'
-            RaPIdObject.combiSettings.firstMethod = 'pf';
-            RaPIdObject.combiSettings.secondMethod = 'naive';
+            rapidSettings.combiSettings.firstMethod = 'pf';
+            rapidSettings.combiSettings.secondMethod = 'naive';
         case 'psoext'
             addpath(genpath(strcat(getPathToRapid,'\psopt'))); % change this path if needed
-            RaPIdObject.psoExtSettings = 'optimset(psooptimset,''TolFun'',1e-2)';
+            rapidSettings.psoExtSettings = 'optimset(psooptimset,''TolFun'',1e-2)';
         case 'gaext'
-            RaPIdObject.gaExtSettings = 'gaoptimset';
+            rapidSettings.gaExtSettings = 'gaoptimset';
         case 'knitro'
-            RaPIdObject.knitroSettings.path2Knitro = 'P:\Program Files\Ziena\knitro';
-            RaPIdObject.experimentSettings.p_0 = [0.35 0.4];
-            RaPIdObject.knitroSettings.knOptions = 'optimset(''Algorithm'',''interior-point'')';
-            RaPIdObject.knitroSettings.knOptionsFile = [];
+            rapidSettings.knitroSettings.path2Knitro = 'P:\Program Files\Ziena\knitro';
+            rapidSettings.experimentSettings.p_0 = [0.35 0.4];
+            rapidSettings.knitroSettings.knOptions = 'optimset(''Algorithm'',''interior-point'')';
+            rapidSettings.knitroSettings.knOptionsFile = [];
     end
 end
+% Create the Object which does all the work
+rapidObject=Rapid(rapidSettings);
 % run the computation
 tic
-[sol, hist] = rapid(RaPIdObject);
+[sol, hist] = rapidObject.runIdentification();
 toc
 sprintf('vector of parameter found:')
 sol

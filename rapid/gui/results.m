@@ -83,14 +83,14 @@ handles.output = hObject;
 guidata(hObject, handles);
 
 handle2main=getappdata(0,'HandleMainGUI');
-rapidObject=getappdata(handle2main,'rapidObject');
+rapidSettings=getappdata(handle2main,'rapidSettings');
 
 str = [];
 for i = evalin('base' , 'sol')
     str = strcat(str,', ',num2str(i));
 end
 set(handles.edit1,'String',str(2:end))
-set(handles.text6,'String',rapidObject.experimentSettings.optimizationAlgorithm)
+set(handles.text6,'String',rapidSettings.experimentSettings.optimizationAlgorithm)
 % UIWAIT makes results wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 

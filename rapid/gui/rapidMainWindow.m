@@ -41,7 +41,7 @@ function varargout = rapidMainWindow(varargin)
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-% Last Modified by GUIDE v2.5 09-Mar-2016 13:55:03
+% Last Modified by GUIDE v2.5 09-Mar-2016 16:46:41
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -77,13 +77,10 @@ handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
 setappdata(0,'HandleMainGUI',hObject);
-try
-    rapidObject=RaPIdClass();
-    setappdata(handles.MainRaPiDWindow,'rapidObject',rapidObject);
-catch err
-    disp err;
-    rethrow(err);
-end
+rapidSettings=RaPIdClass();
+rapidObject=Rapid(rapidSettings);
+setappdata(handles.MainRaPiDWindow,'rapidObject',rapidObject);
+setappdata(handles.MainRaPiDWindow,'rapidSettings',rapidSettings);
 
 
 % --- Outputs from this function are returned to the command line.
@@ -107,8 +104,8 @@ function OptimMethodSelect_popupmenu_Callback(hObject, eventdata, handles)
 %        contents{get(hObject,'Value')} returns selected item from OptimMethodSelect_popupmenu
 str = get(handles.OptimMethodSelect_popupmenu,'String');
 rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
-rapidObject.experimentSettings.optimizationAlgorithm = str{get(handles.OptimMethodSelect_popupmenu,'Value')};
-set(handles.SelectedAlgorithmSettings_pushbutton,'String',[rapidObject.experimentSettings.optimizationAlgorithm ' Settings'])
+rapidObject.rapidSettings.experimentSettings.optimizationAlgorithm = str{get(handles.OptimMethodSelect_popupmenu,'Value')};
+set(handles.SelectedAlgorithmSettings_pushbutton,'String',[rapidObject.rapidSettings.experimentSettings.optimizationAlgorithm ' Settings'])
 
 
 % --- Executes during object creation, after setting all properties.
@@ -163,7 +160,7 @@ rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
 
 try
     tic
-    [sol, hist] = rapid(rapidObject);
+    [sol, hist] = rapidObject.runIdentification();
     assignin('base','sol',sol);
     assignin('base','hist',hist);
     toc
@@ -186,55 +183,11 @@ function OpenPlot_pushbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
+signals=rapidObject.plotBestTracking(handles.rapidMainWindowPlot);
+set(handles.plotselect_pop,'String',num2cell(signals))
+set(handles.plotselect_pop,'Value',1)
+set(hObject,'Enable','on');
 
-% Most stuff below should be inside rapid.m or methods of rapidObject
-
-if isfield(rapidObject.resultData,'parametersFound')
-    bestparameters=rapidObject.resultData.parametersFound;
-else
-    disp('No simulation has been run, plotting the result for parameter start values');
-    bestparameters=rapidObject.experimentSettings.p_0;
-end
-switch lower(rapidObject.experimentSettings.solverMode) % use lower case
-    case 'simulink'
-        if strcmp(gcs,rapidObject.experimentSettings.modelName) % check if model already loaded
-            %NOP
-        else
-            clear rapid_simuSystem
-            tmp=[];
-            if exist(rapidObject.experimentSettings.pathToSimulinkModel,'file')
-                tmp=rapidObject.experimentSettings.pathToSimulinkModel;
-            elseif ~exist(rapidObject.experimentSettings.pathToSimulinkModel,'file') && exist(fullfile(evalin('base','pwd'),rapidObject.experimentSettings.pathToSimulinkModel),'file')
-                tmp=fullfile(evalin('base','pwd'),rapidObject.experimentSettings.pathToSimulinkModel);
-            end
-            load_system(tmp);
-        end
-        res = rapid_simuSystem(bestparameters,rapidObject);
-        if ~isempty(res)
-            plot(handles.rapidMainWindowPlot,rapidObject.experimentData.referenceTime,res)
-            hold on
-            plot(handles.rapidMainWindowPlot,rapidObject.experimentData.referenceTime,rapidObject.experimentData.referenceOutdata,'--r')
-            hold off
-        else
-            error('Failed to simulate');
-        end
-    case 'ode'
-        res = rapid_ODEsolve(bestparameters,rapidObject);
-        if ~isempty(res)
-            for i = 1:length(rapidObject.fmuOutputNames);  %this should be changed maybe, since FMUoutput is not necessarily what we used for fitness-function
-                figure, hold on %For now, plot each comparison i new figure.
-                plot(rapidObject.experimentData.referenceTime,rapidObject.experimentData.referenceOutdata(:,i))
-                hold on
-                plot(rapidObject.experimentData.referenceTime,res(:,i),'--r')
-                title(rapidObject.fmuOutputNames{i})
-                legend('Reference system:', 'Calibrated system:')
-            end
-        else
-            error('Failed to simulate');
-        end
-end
-
-    
 
 
 
@@ -252,7 +205,7 @@ function SelectedAlgorithmSettings_pushbutton_Callback(hObject, eventdata, handl
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
-switch lower(rapidObject.experimentSettings.optimizationAlgorithm)
+switch lower(rapidObject.rapidSettings.experimentSettings.optimizationAlgorithm)
     case 'pso'
         psoSettings;
     case 'ga'
@@ -285,11 +238,13 @@ function SaveContainer_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to SaveContainer_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
+rapidSettings=getappdata(handles.MainRaPiDWindow,'rapidSettings');
 try
     [filename, pathname, success] = uiputfile('*.mat');
     if  success 
-        save(strcat(pathname,filename),'rapidObject')
+        rapidSettings.makePathsRelative(pathname)
+        save(strcat(pathname,filename),'rapidSettings')
+        cd(pathname); %paths are now relative to this container
     else
         disp('User did not save file.');
     end
@@ -313,33 +268,34 @@ try
     containerFileString=strcat(pathname,filename);
     contentOfContainer=whos('-file',containerFileString);
     if length(contentOfContainer)==1  % typical case
-        rapidObject=importdata(containerFileString);
+        rapidSettings=importdata(containerFileString);
     else
         warning('Something went wrong, check the format of the container!')
     end
-    if isstruct(rapidObject) % old container
+    if isstruct(rapidSettings) % old container
         try
-            rapidObject=RaPIdClass(mySettings);
+            rapidSettings=RaPIdClass(mySettings);
             disp('Converted old container to new, please save this new container');
         catch err
             disp(err.message)
         end
     end
-    if exist('rapidObject','var') && isa(rapidObject,'RaPIdClass') % everything is good
-        
-        setappdata(handles.MainRaPiDWindow,'rapidObject',rapidObject);
-        if ~isfield(rapidObject.experimentSettings,'optimizationAlgorithm') % if no algorithm set
-            rapidObject.experimentSettings.optimizationAlgorithm='pso';%default to pso
+    if exist('rapidSettings','var') && isa(rapidSettings,'RaPIdClass') % everything is good
+        if ~isfield(rapidSettings.experimentSettings,'optimizationAlgorithm') % if no algorithm set
+            rapidSettings.experimentSettings.optimizationAlgorithm='pso';%default to pso
         end
-        tmp=find(strcmpi(cellstr(get(handles.OptimMethodSelect_popupmenu,'String')),rapidObject.experimentSettings.optimizationAlgorithm)); % find which one in the list it is
+        tmp=find(strcmpi(cellstr(get(handles.OptimMethodSelect_popupmenu,'String')),rapidSettings.experimentSettings.optimizationAlgorithm)); % find which one in the list it is
         set(handles.OptimMethodSelect_popupmenu,'Value',tmp); %set selected item in list to reflect choice of algorithm
         tmp2=get(handles.OptimMethodSelect_popupmenu,'String');
         set(handles.SelectedAlgorithmSettings_pushbutton,'String',[tmp2{tmp} ' Settings'])
-        if strcmpi(rapidObject.experimentSettings.solverMode,'simulink') % initialize radio buttons here
+        if strcmpi(rapidSettings.experimentSettings.solverMode,'simulink') % initialize radio buttons here
             tmp1=1;
         else
             tmp1=0;
         end
+        rapidObject=Rapid(rapidSettings);
+        setappdata(handles.MainRaPiDWindow,'rapidSettings',rapidSettings);
+        setappdata(handles.MainRaPiDWindow,'rapidObject',rapidObject);
         set(handles.simulinkselector,'Value',tmp1);
         set(handles.odeselector,'Value',~tmp1);
         
@@ -360,7 +316,7 @@ try
     sol=evalin('base','sol');      
     rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
     fprintf('The best parameters,given in workspace variable %s, are:\n','sol')
-    fprintf(' %15s',rapidObject.parameterNames{:});
+    fprintf(' %15s',rapidObject.rapidSettings.parameterNames{:});
     fprintf('\n');
     fprintf(' %15.4e', sol);
     fprintf('\n');
@@ -414,9 +370,9 @@ function selcbk(source,eventdata)
 handle2main=getappdata(0,'HandleMainGUI');
 rapidObject=getappdata(handle2main,'rapidObject');
 if strcmp(get(get(source,'SelectedObject'),'String'),'Simulink')
-    rapidObject.experimentSettings.solverMode='Simulink';
+    rapidObject.rapidSettings.experimentSettings.solverMode='Simulink';
 else
-    rapidObject.experimentSettings.solverMode='ODE';
+    rapidObject.rapidSettings.experimentSettings.solverMode='ODE';
 end
 
 
@@ -434,3 +390,35 @@ function rapidMainWindowPlot_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 
 % Hint: place code in OpeningFcn to populate rapidMainWindowPlot
+
+
+% --- Executes on selection change in plotselect_pop.
+function plotselect_pop_Callback(hObject, eventdata, handles)
+% hObject    handle to plotselect_pop (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+contents = cellstr(get(hObject,'String'));
+val=get(hObject,'Value');
+if val~=0
+rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
+plot(handles.rapidMainWindowPlot,rapidObject.resultData.res(:,val), rapidObject.experimentData.referenceTime);
+hold(handles.rapidMainWindowPlot, 'on')
+plot(handles.rapidMainWindowPlot,rapidObject.experimentData.referenceOutdata(:,val), rapidObject.experimentData.referenceTime,'r')
+hold(handles.rapidMainWindowPlot, 'off')
+end
+
+% --- Executes during object creation, after setting all properties.
+function plotselect_pop_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to plotselect_pop (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+set(hObject,'Value',1)
+set(hObject,'Enable','inactive');
+
