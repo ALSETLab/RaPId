@@ -1,9 +1,13 @@
 function  obj = updateRapidSettings(obj,oldThing)
 % UPDATERAPIDOBJ this function will update old rapid-objects
 %   Detailed explanation goes here
-objversion=oldThing.version; %old version number
+if isfield(oldThing,'version') || isprop(oldThing,'version')
+    objversion=oldThing.version; %old version number
+else % we are dealing with a struct with no version, probably user forgot this
+    objversion=1.41; % we assume that we conform to latest version 
+end
 %% This part takes care of updating old structs to rapidSettingss
-if isstruct(oldThing) && objversion==0 %to convert some very old mySettings-structs
+if isstruct(oldThing) && objversion==0 %to convert some legacy mySettings-structs
     obj.psoSettings = oldThing.pso_options;
     obj.naiveSettings = oldThing.naive_options;
     obj.gaSettings = oldThing.ga_options;
@@ -51,10 +55,13 @@ if isstruct(oldThing) && objversion==0 %to convert some very old mySettings-stru
     objversion=1; % ver should now be according to 1
 end
 %% Copy settings to new object
-names=properties(obj);
-ii=find(~strcmp(names,'version'));
-for k=1:length(ii)
-    obj.(names{ii(k)})=oldThing.(names{ii(k)});
+
+oldnames=fieldnames(oldThing);  % should work for both objs/structs
+oldnames=oldnames(~strcmp(oldnames,'version')); % dont copy version
+for k=1:length(oldnames)
+    if isprop(obj,oldnames{k})  
+        obj.(oldnames{k})=oldThing.(oldnames{k}); %only copy correct stuff
+    end
 end
 %% We can now be sure that the object has the right properties copied, time to update the last changes to make objects up to date to 1.41
 if objversion<1.4  %Make sure everythings is up to date to 1.4
