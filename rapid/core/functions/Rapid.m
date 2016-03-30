@@ -129,9 +129,13 @@ classdef Rapid <handle
                     end
                     if strcmpi(obj.rapidSettings.experimentSettings.displayMode, 'hide')
                         if strcmp(gcs,obj.rapidSettings.experimentSettings.blockName) % check if model already loaded
-                            tmp_name=tempfile;
-                            close_system(gcs, fullfile(pwd,tmp_name)) % save it as back-up
-                            disp(strcat('Saved opened Simulink model to', fullfile(pwd,tmp_name)))
+                            if strcmp(get_param(gcs, 'Dirty'), 'on')
+                                tmp_name='tempfile';
+                                close_system(gcs, tmp_name) % save it as back-up
+                                disp(strcat('Saved opened Simulink model to', fullfile(pwd,tmp_name)))
+                            else
+                                close_system(gcs);
+                            end
                         end
                         load_system(tmp);
                     elseif strcmp(obj.rapidSettings.experimentSettings.displayMode, 'show') && strcmp(gcs,obj.rapidSettings.experimentSettings.blockName) % check if model already loaded
