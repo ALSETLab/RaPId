@@ -1,3 +1,6 @@
+function [dep_list] = check_dependencies
+%% Check Rapid dependencies and return list
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
 % Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
@@ -21,27 +24,18 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-function [dep_list] = check_dependancies
+%% function body
 curr = pwd;
-flist = list_structure(curr); 
-dep_list(1) = {'MATLAB'};
-dep_inst = ver;
-dep_inst = struct2cell(dep_inst); 
-for (i=1:length(flist))
-   dep_temp = dependencies.toolboxDependencyAnalysis(flist(i));
-for (k=1:length(dep_temp)) 
-  if cellfun(@isempty,strfind(dep_list,dep_temp{k}))
-    dep_list(end+1) = dep_temp(k); 
-  end
-end
-end
-%%
-disp('RaPId Toolbox dependancies are: ');
-for (i=1:length(dep_list))
-    disp(dep_list{i});
-    if  ~sum(ismember(dep_inst(1,1,:),dep_list(i)))
-        warning(strcat(dep_list{i},' -- not installed!'));
+flist = list_structure(curr);  %list files of Matlab-types
+tmp = ver;
+toolboxes_installed = {tmp.Name};
+dep_list = dependencies.toolboxDependencyAnalysis(flist);
+%%% Display results
+disp('RaPId Toolbox dependencies are: ');
+for i=1:length(dep_list)
+    disp(dep_list{i});  %List all dependencies
+    if  ~ismember(dep_list(i),toolboxes_installed)  % if not installed
+        warning(strcat(dep_list{i},' -- not installed!')); % display warning
     end
 end
-
 end
