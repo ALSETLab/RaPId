@@ -1,12 +1,16 @@
 classdef Particle < matlab.mixin.Copyable
-%Particle - class representing a particle, an entity of the parameter 
-% space. 
-% The particle is characterised by its position, speed (parameters) and fitness and is able to
-% be attracted to the best position of particles (including self)
+%% Particle - class representing a particle, an entity of the parameter 
+%    space.
 % 
-%   p_min,p_max: limits to the search space
+%   A particle has a position, speed (parameters) and fitness and is 
+%   attracted to the best position of particles (including self) in the
+%   search space.
+% 
+%   p_min, p_max: respectively, lower/upper limits to the search space.
 %   p: the position of the particle, i.e. a vector of parameters
 %   fitness: objective function evaluated at position p
+%
+% See also: PARTICLEARRAY, RAPID, OWN_CFAPSO
     
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %

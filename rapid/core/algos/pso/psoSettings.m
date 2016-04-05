@@ -1,24 +1,12 @@
 function varargout = psoSettings(varargin)
-% PSOSETTINGS MATLAB code for psoSettings.fig
+% PSOSETTINGS MATLAB code for psoSettings.fig - a GUI in RaPId
 %      PSOSETTINGS, by itself, creates a new PSOSETTINGS or raises the existing
 %      singleton*.
 %
 %      H = PSOSETTINGS returns the handle to a new PSOSETTINGS or the handle to
 %      the existing singleton*.
 %
-%      PSOSETTINGS('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in PSOSETTINGS.M with the given input arguments.
-%
-%      PSOSETTINGS('Property','Value',...) creates a new PSOSETTINGS or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before psoSettings_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to psoSettings_OpeningFcn via varargin.
-%
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
-%
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% See also: GUIDE, RAPID, RAPIDMAINWINDOW
 
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
