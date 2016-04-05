@@ -350,8 +350,11 @@ function Logo_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to axis1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-axes(hObject)
-imshow(fullfile(getPathToRapid,'gui','logoz.png'))
+axes(hObject) %make axes current
+img=imread(fullfile(getPathToRapid,'gui','logoz.png')); %load
+image(img);
+axis off        
+axis image 
 % Hint: place code in OpeningFcn to populate axis1
 
 

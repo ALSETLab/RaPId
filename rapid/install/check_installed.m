@@ -22,20 +22,22 @@
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
 %Load list of dependencies
-load('dependancy_list.mat');
+fid = fopen('rapid_dep_list.txt');
+tmp1=textscan(fid,'%s','Delimiter', '\n');
+fclose(fid);
+dep_list=tmp1{:};
 
-dep_inst = ver;
-dep_inst = struct2cell(dep_inst);
+tmp = ver;
+toolboxes_installed = {tmp.Name};
 check = false;
  
 %List the dependencies (with -- not installed! if not installed)
-disp('RaPId Toolbox dependancies are: ');
-for (i=1:length(dep_list))
-    if  ~sum(ismember(dep_inst(1,1,:),dep_list(i)))
-        warning(strcat(dep_list{i},' -- not installed!'));
-        check = check || true;
-    else
-        disp(strcat(dep_list{i}, ' -- OK !'));
+disp('RaPId Toolbox dependencies are: ');
+for i=1:length(dep_list)
+    disp(dep_list{i});  %List all dependencies
+    if  ~ismember(dep_list(i),toolboxes_installed)  % if not installed
+        warning(strcat(dep_list{i},' -- not installed!')); % display warning
+        check=true; 
     end
 end
 
@@ -44,4 +46,4 @@ if check
     warning('Not all dependencies are installed, Keep this in mind if you receive error-messages while using RaPId.');
 end
     
-clear dep_inst dep_list i check
+clear dep_inst dep_list i check tmp tmp1
