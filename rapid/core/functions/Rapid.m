@@ -1,38 +1,38 @@
 classdef Rapid <handle
-    %RAPID is a class which carries out the tasks (including the parameter identification) in the RaPId Toolbox.
-    %   RAPIDOBJECT = RAPID(RAPIDSETTINGS) creates a new object, see
-    %   METHODS for specifications.
-    %   Ex. [SOL,HISTORY,RAPIDSETTINGS] = RAPIDOBJECT.runIdentification()
-    %   returns a vector SOL of the identified parameters,
-    %   and a struct HISTORY containg the history of the parameter identification, given the settings specified in RAPIDSETTINGS which is
-    %   an instance of the RaPIdClass (or a struct in legacy-mode). See
-    %   METHODS of the RAPID-CLASS by typing methods(Rapid).
-    % See also: RUNRAPIDGUI, RAPIDCLASS
-    %
-    % Examples: see Examples-folder.
+%RAPID is a class which carries out the tasks (including the parameter identification) in the RaPId Toolbox.
+%   RAPIDOBJECT = RAPID(RAPIDSETTINGS) creates a new object, see
+%   METHODS for specifications.
+%   Ex. [SOL,HISTORY,RAPIDSETTINGS] = RAPIDOBJECT.runIdentification()
+%   returns a vector SOL of the identified parameters,
+%   and a struct HISTORY containg the history of the parameter identification, given the settings specified in RAPIDSETTINGS which is
+%   an instance of the RaPIdClass (or a struct in legacy-mode). See
+%   METHODS of the RAPID-CLASS by typing methods(Rapid).
+% See also: RUNRAPIDGUI, RAPIDCLASS
+%
+% Examples: see Examples-folder.
     
-    % Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette,
-    % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera,
-    % Francisco Gomez-Lopez
-    %
-    % The authors can be contacted by email: luigiv at kth dot se
-    %
-    % This file is part of Rapid Parameter Identification ("RaPId") .
-    %
-    % RaPId is free software: you can redistribute it and/or modify
-    % it under the terms of the GNU Lesser General Public License as published by
-    % the Free Software Foundation, either version 3 of the License, or
-    % (at your option) any later version.
-    %
-    % RaPId is distributed in the hope that it will be useful,
-    % but WITHOUT ANY WARRANTY; without even the implied warranty of
-    % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    % GNU Lesser General Public License for more details.
-    %
-    % You should have received a copy of the GNU Lesser General Public License
-    % along with RaPId. If not, see <a href="matlab:web('http://www.gnu.org/licenses/')">
-    % http://www.gnu.org/licenses/</a>.
-    
+%% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette,
+% Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera,
+% Francisco Gomez-Lopez
+%
+% The authors can be contacted by email: luigiv at kth dot se
+%
+% This file is part of Rapid Parameter Identification ("RaPId") .
+%
+% RaPId is free software: you can redistribute it and/or modify
+% it under the terms of the GNU Lesser General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% RaPId is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU Lesser General Public License for more details.
+%
+% You should have received a copy of the GNU Lesser General Public License
+% along with RaPId. If not, see <a href="matlab:web('http://www.gnu.org/licenses/')">
+% http://www.gnu.org/licenses/</a>.
+%% 
     properties (SetAccess = private)
         dataSet=false;
         simulinkLoaded=false;
@@ -57,9 +57,11 @@ classdef Rapid <handle
             end
         end
         function obj=loadSettings(obj, rapidSettings)
-            obj=Rapid(rapidSettings); % loading new stuff so we cannot be sure everything is ready for runIdentification
+            % Load settings specified in input RAPIDSETTINGS
+            obj=Rapid(rapidSettings); 
         end
-        function obj=prepareData(obj)% Check and set the in-data to the model
+        function obj=prepareData(obj)
+            % Checks and sets the in-data necssary to run the model
             if ~isempty(obj.rapidSettings.experimentData.pathToInData)
                 if exist(obj.rapidSettings.experimentData.pathToInData,'file') % Indata exists
                     load(obj.rapidSettings.experimentData.pathToInData);
@@ -172,7 +174,7 @@ classdef Rapid <handle
             end
         end
         function [sol, historic, rapidSettings]=runIdentification(obj)
-            %% Check everything OK, if not fix things up
+            % Run the parameter identification task
             if obj.dataSet==false
                 obj.prepareData();
             end
@@ -250,6 +252,8 @@ classdef Rapid <handle
             end
         end
         function varargout=plotBestTracking(obj,ax, selection)
+            %Plot the output when executing the model with the best
+            %parameters found
             if ~obj.hasDataToPlot
                 obj.simulateOnce()
             end

@@ -1,6 +1,7 @@
 function varargout = rapidMainWindow(varargin)
 % RAPIDMAINWINDOW is the main GUI Window for the RaPId Toolbox. It can be
 % called directly or by calling the function runRapidGui.
+%
 %      rapidMainWindow, by itself, creates a new rapidMainWindow or raises the existing
 %      singleton.
 %
