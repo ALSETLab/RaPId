@@ -51,12 +51,8 @@ classdef  RaPIdClass <handle
             try
                 if ~isprop(s, 'version') || isempty(s.version) % if no version -> assign version=1
                     s.version=double(~isempty(isprop(s, 'version'))); % 0 if really old, else 1 - old
-                    obj = RaPIdClass(s); % update object
-                elseif s.version <1.41 % check if latest ver
-                    obj = RaPIdClass(s); % update object
-                else
-                    obj=s; % everything is up to date
                 end
+                    obj = RaPIdClass(s); % make sure settings up-to-date
             catch err
                 disp(err)
                 disp(struct2table(err.stack))
@@ -67,13 +63,11 @@ classdef  RaPIdClass <handle
     
     methods
         function obj = RaPIdClass(varargin) %Constructor
-            if nargin == 0 %Create a new object of the latest version
-                obj=initRapidSettings(obj);
-            elseif isa(varargin{1},'RaPIdClass') && varargin{1}.version==1.41 
-                %NOP, up to date
-                obj=varargin{1};
-            else  % Old version, try to update
-                obj=RaPIdClass(); % New object
+            obj=initRapidSettings(obj); % Create new settings object
+            if nargin == 0
+                 %return object
+            else
+                % Make sure it is updated, by copying and updating props/fields
                 try
                     obj=obj.updateRapidSettings(varargin{1}); % update old object
                 catch err
@@ -92,14 +86,14 @@ classdef  RaPIdClass <handle
                     oldfull=obj.(a{k,1}).(a{k,1+j});
                     [success,fileinfo]=fileattrib(oldfull); % get full path
                     if success && ~isempty(oldfull)
-                        oldfull=fileinfo.Name
+                        oldfull=fileinfo.Name;
                         [oldpath,filestr,extstr]=fileparts(oldfull);
                         if isempty(oldpath) || ispc && pathstr(1) ~= oldpath(1)
                             % we cannot traverse to other drive on PC
                         elseif strcmp(oldpath,pathstr) %same folder
                             obj.(a{k,1}).(a{k,1+j})=fullfile(strcat(filestr,extstr));
                         elseif any(strfind(oldpath,pathstr)) %old path is a subfolder)
-                            m=fullfile(oldpath(length(pathstr)+1:end),strcat(filestr,extstr))
+                            m=fullfile(oldpath(length(pathstr)+1:end),strcat(filestr,extstr));
                             obj.(a{k,1}).(a{k,1+j})=m;%fullfile(oldpath(length(pathstr)+1),strcat(filestr,extstr));
                         else %new path is on subfolder
                             buildingrel='./../'; %one level up

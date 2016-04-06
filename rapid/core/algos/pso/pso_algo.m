@@ -40,6 +40,8 @@ function [sol, historic] = pso_algo(rapidSettings)
 switch rapidSettings.psoSettings.method
     case 'CFA-PSO'
         [ sol, historic] = own_cfapso(rapidSettings,@func);
+    case 'PSOPC'
+        [ sol, historic] = own_psopc(rapidSettings,@func);
     otherwise
         [ sol, historic] = own_pso(rapidSettings,@func);
 end

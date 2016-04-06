@@ -80,11 +80,10 @@ if isprop(rapidSettings,'psoSettings')
     set(handles.edit6,'String',tmp.fitnessStopRatio);
     set(handles.edit7,'String',tmp.kick_multiplier);
     set(handles.edit14,'String',tmp.nRandMin);
-    pso_methods={'PSO','CFA-PSO'};
+    pso_methods={'PSO','CFA-PSO','PSOPC'};
     set(handles.popupmenu1,'String',[tmp.method pso_methods(~strcmp(tmp.method,pso_methods))]);
     set(handles.edit18,'String',tmp.w_min);
     set(handles.edit19,'String',tmp.w_max);
-    
     set(handles.text1,'String','Particle inertia weight:');
     set(handles.text2,'String','Self recognition coefficient:');
     set(handles.text3,'String','Social coefficient:');

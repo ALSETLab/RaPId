@@ -1,4 +1,3 @@
-
 classdef ParticleArray < handle
 %% PARTICLEARRAY is a class to hold an array of particles for PSOs.
 %   See methods for further details.
@@ -30,19 +29,20 @@ classdef ParticleArray < handle
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
     properties 
-        ParticleList=Particle % the main Particle array
+        list=Particle % the main Particle array
         listOfUnfitted  % unused as of now
         n % size of non-empty Particle array
         globalbestvalue=Inf;
         globalbestpos
     end
     methods
-        %% Constructor which create the object and pre-allocates an array of Particles
-        function obj = ParticleArray(varargin)  % Pre-allocate Array
+        % Constructor create the object and pre-allocate array of Particles
+        function obj = ParticleArray(varargin)  
+            % Constructor of PARTICLEARRAY
             if nargin==1
                 k=varargin{1};
-                for ii=k:-1:1 % counting backwards for Memory pre-allocation
-                    obj.ParticleList(k)=Particle();
+                for ii=k:-1:1 % count backwards for Memory pre-allocation
+                    obj.list(k)=Particle();
                 end
             end
             obj.n=0;
@@ -50,34 +50,45 @@ classdef ParticleArray < handle
         function createParticle(obj,pmin,pmax,p) 
             % Create Particles with specified PMIN, PMAX, and P
             ii=obj.n+1;
-            obj.ParticleList(ii) = Particle(pmin,pmax,p);
+            obj.list(ii) = Particle(pmin,pmax,p);
             obj.n=obj.n+1;
         end
     
         function obj=sort(obj,varargin)
             %Sorts Parictles with respect to 'fitness' property
-            [~,idx]=sort([obj.ParticleList(1:(obj.n)).fitness],varargin{:});
-            obj.ParticleList(1:obj.n)=obj.ParticleList(idx);
+            [~,idx]=sort([obj.list(1:(obj.n)).fitness],varargin{:});
+            obj.list(1:obj.n)=obj.list(idx);
         end
 
         function duplicateParticle(obj, index)
             % Duplicate Particle specified by INDEX.
-            obj.ParticleList(obj.n+1)=copy(obj.ParticleList(index));
+            obj.list(obj.n+1)=copy(obj.list(index));
             obj.n=obj.n+1;
         end
-        function updateCFASpeed(obj,constriction,wt,self_coeff,social_coeff)
+        function updateCFASpeed(obj,constriction,wt,self_c,social_c)
             %update speed of Particles in array according to CFA-PSO.
             for ii=1:obj.n
-                obj.ParticleList(ii).updateSpeed(constriction*...
-                    (wt * obj.ParticleList(ii).v + ...
-                    self_coeff*rand*(obj.ParticleList(ii).bestPos - obj.ParticleList(ii).p) ... 
-                    + social_coeff*rand*(obj.globalbestpos - obj.ParticleList(ii).p)));
+                obj.list(ii).updateSpeed(constriction*...
+                    (wt * obj.list(ii).v  ...
+                    + self_c*rand*(obj.list(ii).bestPos-obj.list(ii).p) ... 
+                    + social_c*rand*(obj.globalbestpos-obj.list(ii).p)));
             end
         end
+        
+        function updatePSOPCSpeed(obj,wt,self_c,social_c,pass_c)
+            for ii=1:obj.n
+                Ri=obj.list(randi([1, obj.n])).p; % selects random particle
+                obj.list(ii).updateSpeed(wt * obj.list(ii).v  ...
+                    + self_c*rand*(obj.list(ii).bestPos-obj.list(ii).p) ...
+                    + social_c*rand*(obj.globalbestpos-obj.list(ii).p)...
+                    + pass_c*rand(Ri-obj.list(ii).p));
+            end
+        end
+        
         function positions=updatePositions(obj)
             %Update the positions of Particles in the array.
             for ii=1:obj.n
-                obj.ParticleList(ii).updatePosition();
+                obj.list(ii).updatePosition();
             end
         end
         
@@ -85,7 +96,7 @@ classdef ParticleArray < handle
             % Update the fitness of Particles in array using FUNC
             fitnesses=zeros(1,obj.n);
             for ii=1:obj.n
-                fitnesses(ii)=obj.ParticleList(ii).calculateFitness(func);
+                fitnesses(ii)=obj.list(ii).calculateFitness(func);
             end
             
         end
@@ -95,7 +106,7 @@ classdef ParticleArray < handle
             % particles
             newbestbool=0;
             for ii=1:obj.n
-                [pbestv,pbestp]=obj.ParticleList(ii).getParticlesBest();
+                [pbestv,pbestp]=obj.list(ii).getParticlesBest();
                 if pbestv<obj.globalbestvalue
                     obj.globalbestvalue=pbestv;
                     obj.globalbestpos=pbestp;
