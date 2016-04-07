@@ -42,6 +42,8 @@ switch rapidSettings.psoSettings.method
         [ sol, historic] = own_cfapso(rapidSettings,@func);
     case 'PSOPC'
         [ sol, historic] = own_psopc(rapidSettings,@func);
+    case 'PSOCA'
+        [ sol, historic] = own_psoca(rapidSettings,@func);
     otherwise
         [ sol, historic] = own_pso(rapidSettings,@func);
 end

@@ -1,14 +1,14 @@
-function [sol, historic] = own_psopc(rapidSettings,func)
-%% OWN_PSOPC performs Particle Swarm Optimization with Passive Congregation
+function [sol, historic] = own_psoca(rapidSettings,func)
+%% OWN_PSOPC performs Particle Swarm Optimization with Coordinated Aggregation (CA)
 %   on the parameter identification problem specified in RAPIDSETTINGS and
 %   using the fitness function FUNC.
 %   For more info see:
-%   S. He, Q.H. Wu, J.Y. Wen, J.R. Saunders, R.C. Paton
-%   "A particle swarm optimizer with passive congregation" in
-%   Biosystems, Volume 78, Issues 1–3, December 2004, Pages 135-147,
-%   http://dx.doi.org/10.1016/j.biosystems.2004.08.003
+%   "A Comparative Study on Particle Swarm Optimization for Optimal 
+%   Steady-State Performance of Power Systems" by John G. Vlachogiannis 
+%   and Kwang Y. Lee, IEEE Trans. on Power Systems, Vol. 21, No. 4, Nov 2006
+%  
 %   
-%   [SOL, HISTORIC] = OWN_PSOPC(RAPIDSETTINGS,FUNC)
+%   [SOL, HISTORIC] = OWN_PSOCA(RAPIDSETTINGS,FUNC)
 %   performs the PSO using the settings in RAPIDSETTINGS and the function
 %   FUNC which is a function that calculates the fitness of the parameters.
 %
@@ -74,7 +74,7 @@ wmin = rapidSettings.psoSettings.w_min;
 wmax = rapidSettings.psoSettings.w_max;
 self_coeff = rapidSettings.psoSettings.self_coeff;
 social_coeff = rapidSettings.psoSettings.social_coeff;
-pass_coeff=0.5;
+
 limit = rapidSettings.experimentSettings.maxIterations;
 nb_particles=rapidSettings.psoSettings.nb_particles;
 verbose=rapidSettings.experimentSettings.verbose; % used to decide if displaying progress
@@ -116,7 +116,7 @@ for iteration=1:limit
         sprintf(strcat('iteration ',int2str(iteration),' in pso body'));
     end
     wt=wmax-((wmax-wmin)*iteration/limit);   % calculate new inertia
-    swarm.updatePSOPCSpeed(wt,self_coeff,social_coeff, pass_coeff); % update the particles's speeds
+    swarm.updateSpeedPSOCA(wt,self_coeff,social_coeff, pass_coeff); % update the particles's speeds
     swarm.updatePositions(); % change the position
     fitnesses = swarm.calculateFitnesses(@(x)(func(x,rapidSettings))); %calculate fitnesses
     [global_best_fitness,global_best_pos,newbest]=swarm.updateGlobalBest();

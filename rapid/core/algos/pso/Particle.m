@@ -90,6 +90,7 @@ classdef Particle < matlab.mixin.Copyable
                obj.v=(obj.v_max - obj.v_min).*obj.kick*rand(obj.n,1)' + obj.v_min; %random
            end
        end
+       
         function updatePosition(obj)
             % update position after speed has been updated
             obj.p = obj.p + obj.v;

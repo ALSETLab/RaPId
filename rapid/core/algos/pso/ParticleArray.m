@@ -35,6 +35,9 @@ classdef ParticleArray < handle
         globalbestvalue=Inf;
         globalbestpos
     end
+    properties (Hidden=true)
+        currach;
+    end
     methods
         % Constructor create the object and pre-allocate array of Particles
         function obj = ParticleArray(varargin)  
@@ -52,6 +55,7 @@ classdef ParticleArray < handle
             ii=obj.n+1;
             obj.list(ii) = Particle(pmin,pmax,p);
             obj.n=obj.n+1;
+            obj.currach(obj.n)=Inf;
         end
     
         function obj=sort(obj,varargin)
@@ -82,6 +86,21 @@ classdef ParticleArray < handle
                     + self_c*rand*(obj.list(ii).bestPos-obj.list(ii).p) ...
                     + social_c*rand*(obj.globalbestpos-obj.list(ii).p)...
                     + pass_c*rand(Ri-obj.list(ii).p));
+            end
+        end
+        
+        function updateSpeedPSOCA(obj,wt)
+            currbest=find(min(obj.list(1:end).fitness));
+            for ii=1:obj.n
+                if any(ii==currbest)
+                    obj.list(ii).updateSpeed(wt*obj.list(ii).v + ...
+                        rand*(obj.list(randi([1, obj.n])).p-obj.list(ii).p));
+                else
+                    w=(obj.list(1:end).p-obj.list(ii).p);
+                    w=w/sum(w);
+                    ca_vec=(obj.list(1:end).p-repmat(obj.list(ii).p,1,obj.n))*(w.*rand(obj.n,1));
+                    obj.list(ii).updateSpeed(wt*obj.list(ii).v + ca_vec); 
+                end
             end
         end
         

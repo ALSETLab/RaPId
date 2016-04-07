@@ -53,8 +53,9 @@ If you use RaPId in your work or research, all we ask you in exchange is that yo
 </div>
 
 ## <div id="quickstart">iTesla RaPId - Quick Start </div>
-### <div id="demo">Demo Videos
+### <div id="demos">Demo Videos
 To see RaPId in action, you can find demonstration videos on Youtube:
+
 1. Demonstrating basic usage of RaPId:
   - [Using the GUI](https://www.youtube.com/watch?v=e7OkVEtcz6A)
   - [Using the CLI](https://www.youtube.com/watch?v=4qrPASIWdiY).

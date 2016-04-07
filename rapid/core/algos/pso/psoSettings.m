@@ -80,7 +80,7 @@ if isprop(rapidSettings,'psoSettings')
     set(handles.edit6,'String',tmp.fitnessStopRatio);
     set(handles.edit7,'String',tmp.kick_multiplier);
     set(handles.edit14,'String',tmp.nRandMin);
-    pso_methods={'PSO','CFA-PSO','PSOPC'};
+    pso_methods={'PSO','CFA-PSO','PSOPC','PSOCA'};
     set(handles.popupmenu1,'String',[tmp.method pso_methods(~strcmp(tmp.method,pso_methods))]);
     set(handles.edit18,'String',tmp.w_min);
     set(handles.edit19,'String',tmp.w_max);
