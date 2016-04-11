@@ -1,6 +1,11 @@
+function pathstring = getPathToRapid()
+%getPathToRapid returns the path to the root of the RaPId folder
+%
+% See also: RAPID
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
 % Francisco Gomez-Lopez
 % 
@@ -20,12 +25,8 @@
 % 
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
-
-function pathstring = getPathToRapid()
-%getPathToRapid returns the path to the root of the RaPId folder
-%   Detailed explanation goes here
 try
-    pathstring=fileparts(fileparts(mfilename('fullpath')));
+    pathstring=fileparts(fileparts(mfilename('fullpath'))); % will be one-level higher than this m-files' folder
 catch err
     disp(err.message);
     error('Check that RaPiD is installed correctly!');

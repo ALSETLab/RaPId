@@ -1,6 +1,7 @@
 function varargout = rapidMainWindow(varargin)
 % RAPIDMAINWINDOW is the main GUI Window for the RaPId Toolbox. It can be
 % called directly or by calling the function runRapidGui.
+%
 %      rapidMainWindow, by itself, creates a new rapidMainWindow or raises the existing
 %      singleton.
 %
@@ -116,6 +117,7 @@ function OptimMethodSelect_popupmenu_CreateFcn(hObject, eventdata, handles)
 
 % Hint: popupmenu controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
+set(hObject,'String',{'PSO','GA','Naive','CG','NM','Combi','PSOext','GAext','KNITRO','fmincon','pfNew'});
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end

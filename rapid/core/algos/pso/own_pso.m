@@ -1,43 +1,43 @@
 function [sol, historic] = own_pso(rapidSettings,func)
-%OWN_PSO Applies the particle swar optimisation function OWN_PSO and
-%applies it to the parameter identification problem specified.
-%   Takes as argument the settings struct in which the data to be matched
-%   by the parameter estimation was integrated by the function rapid.m It
-%   starts by generating nb_particle particles (value set in
-%   settings.pso_options). The initial particles are partly randomlu chosen
-%   and partly spans the parameter space, being regularly spaced out within
-%   the bounds specified by p_min and p_max the objective function is
-%   evaluated at every iterations, after each has been given a speed which
-%   is determined by random parameters and influenced by the position of
-%   the overall best solution found and the particle personal best position
-%   The function returns the historic of all the best position and best
-%   fitness at every iteration of the process and the swarm at final time
-%   if required.
+%%  OWN_PSO performs Particle Swarm Optimisation (with turbulence)
+%  on the parameter identification problem specified in RAPIDSETTINGS.
+%   
+%   [SOL, HISTORIC] = OWN_PSO(RAPIDSETTINGS,FUNC)
+%   performs the PSO using the settings in RAPIDSETTINGS and the function
+%   FUNC which is a function that calculates the fitness of the parameters.
 %
-%   settings should include a struct field name pso_options containing:
-%       - kick_multiplier: when the speed becomes lower than
-%           norm(v_max)*kick_multiplier, v_max being the speed (computed
-%           internally) which would lead the particle as far as possible
-%           inside the space defined by p_min/p_max
-%       - w: inertia weight - multiplier on the contribution of the last sample of the
-%            particle's speed to it's next sample
-%       - self_coeff: self-recognition coefficient - multiplier on the contribution of the distance to the
-%           particle's personal best position to the next sample of
-%           the speed
-%       - social_coeff: social coefficient - multiplier on the contribution of the distance to the swarm's
-%           overall best position to the next sample of the speed
-%       - limit: number maximal of iterations in the speeds updates
-%       - fitnessStopRatio: the algorithm stops if the best fitness reaches
-%           initialFitness*fitnessStopRatio
+%   It starts by generating nb_particle particles . The initial particles 
+%   are partly randomly chosen in parameter space, partly being regularly
+%   spaced out within the bounds specified by p_min and p_max 
+%   the objective function is evaluated at every iteration, whereupon each
+%   particle is given a speed which depends on random parameters and 
+%   1. the position of overall best solution found and 
+%   2. the particle personal best position
+%   The function returns in HISTORIC the history of best positions and best
+%   fitness for every iteration of the process and solution SOL.
+%
+%   RAPIDSETTINGS: either, 1) an instance of the RaPIdClass 
+%   or 2) a struct, both of which must contain fields as specified below.
+%   In field/property psoSettings:
+%       - w: inertia weight - scales the influence of the particles current
+%           speed to it's future speed.
+%       - self_coeff: self-recognition coefficient - scales the influence
+%           particle's personal best position to the particle's speed
+%       - social_coeff: social coefficient - scales the influence
+%           of swarm's overall best position to the particle's speed.
 %       - nb_particles: number of particles in the swarm
-%       - nRandMin, minimum of initial particles to be generated
-%       randomly, restricts the number of particles to be set on a grid
-%       regularly spaced out in the parameter space, see function
-%       generateOrganisedSwarm
-%       - p0s, matrix whose rows are different initial guesses for the
-%       vector of parameters
-%       - saveHist, boolean allowing to store all the best fitness and
-%       particles at every iterations (get's big very quickly)
+%   In field/property experimentSettings
+%       - limit: number maximal of position updates
+%       - fitnessStopRatio: stop PSO if fitness improves by this factor
+%       - nRandMin: minimum of initial particles to be randomized,
+%           see function generateOrganisedSwarm:
+%       - p0: initial guess of vector of parameters
+%       - saveHist: toggles storing all history in PSO (gets big very fast)
+%
+%   FUNC: a function to calculate the scalar fitness value for a vector of
+%   parameters. See FUNC below for more info.
+%
+%   See also: RAPID, OWN_CFAPSO, FUNC, GENERATEORGANISEDSWARM, RAPIDCLASS
 
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %

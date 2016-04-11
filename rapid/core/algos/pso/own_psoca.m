@@ -1,8 +1,14 @@
-function [sol, historic] = own_cfapso(rapidSettings,func)
-%%  OWN_CFAPSO performs Constriction Factor Particle Swarm Optimisation
-%  on the parameter identification problem specified in RAPIDSETTINGS.
+function [sol, historic] = own_psoca(rapidSettings,func)
+%% OWN_PSOPC performs Particle Swarm Optimization with Coordinated Aggregation (CA)
+%   on the parameter identification problem specified in RAPIDSETTINGS and
+%   using the fitness function FUNC.
+%   For more info about CA see:
+%   [1]: "A Comparative Study on Particle Swarm Optimization for Optimal 
+%   Steady-State Performance of Power Systems" by John G. Vlachogiannis 
+%   and Kwang Y. Lee, IEEE Trans. on Power Systems, Vol. 21, No. 4, Nov 2006
+%   This function performs a slightly modified version of the algorithm in [1]. 
 %   
-%   [SOL, HISTORIC] = OWN_CFAPSO(RAPIDSETTINGS,FUNC)
+%   [SOL, HISTORIC] = OWN_PSOCA(RAPIDSETTINGS,FUNC)
 %   performs the PSO using the settings in RAPIDSETTINGS and the function
 %   FUNC which is a function that calculates the fitness of the parameters.
 %
@@ -37,7 +43,7 @@ function [sol, historic] = own_cfapso(rapidSettings,func)
 %   FUNC: a function to calculate the scalar fitness value for a vector of
 %   parameters. See FUNC below for more info.
 %
-%   See also: RAPID, OWN_PSO, FUNC, GENERATEORGANISEDSWARM, RAPIDCLASS
+%   See also: RAPID, OWN_PSO, OWN_CFAPSO FUNC, GENERATEORGANISEDSWARM, RAPIDCLASS
 
 
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
@@ -68,6 +74,7 @@ wmin = rapidSettings.psoSettings.w_min;
 wmax = rapidSettings.psoSettings.w_max;
 self_coeff = rapidSettings.psoSettings.self_coeff;
 social_coeff = rapidSettings.psoSettings.social_coeff;
+
 limit = rapidSettings.experimentSettings.maxIterations;
 nb_particles=rapidSettings.psoSettings.nb_particles;
 verbose=rapidSettings.experimentSettings.verbose; % used to decide if displaying progress
@@ -77,12 +84,13 @@ if rapidSettings.experimentSettings.saveHist %pre-allocate for speed
     best_parameters_history = zeros(limit,length(rapidSettings.experimentSettings.p_0)); % pre-allocate array
     improved_at_iterations=best_fitness_history; % pre-allocate vector 
 end
-if social_coeff+self_coeff <4 %the acceleration coefficients should be over 4 to guarantee stability
-   self_coeff=1.55+rand;  %random number between 1.55 and 2.55
-   social_coeff=4.1-self_coeff; %number between 1.55 and 2.55  
-end
-phi=social_coeff+self_coeff;    
-constriction=2/abs(2-phi-sqrt(phi^2 - 4*phi));   %constriction factor 
+% if social_coeff+self_coeff <4 %the acceleration coefficients should be over 4 to guarantee stability
+%    self_coeff=1.55+rand;  %random number between 1.55 and 2.55
+%    social_coeff=4.1-self_coeff; %number between 1.55 and 2.55  
+% end
+% phi=social_coeff+self_coeff;    
+% constriction=2/abs(2-phi-sqrt(phi^2 - 4*phi));   %constriction factor 
+
 %% Initalization of the swarm: give positions & fitness to all particles
 list = generateOrganisedSwarm( nb_particles, rapidSettings.psoSettings.nRandMin,rapidSettings.experimentSettings.p_min,rapidSettings.experimentSettings.p_max,rapidSettings.experimentSettings.p_0);
 swarm=ParticleArray(nb_particles);
@@ -108,7 +116,7 @@ for iteration=1:limit
         sprintf(strcat('iteration ',int2str(iteration),' in pso body'));
     end
     wt=wmax-((wmax-wmin)*iteration/limit);   % calculate new inertia
-    swarm.updateCFASpeed(constriction,wt,self_coeff,social_coeff); % update the particles's speeds
+    swarm.updateSpeedPSOCA(wt,self_coeff,social_coeff, pass_coeff); % update the particles's speeds
     swarm.updatePositions(); % change the position
     fitnesses = swarm.calculateFitnesses(@(x)(func(x,rapidSettings))); %calculate fitnesses
     [global_best_fitness,global_best_pos,newbest]=swarm.updateGlobalBest();
