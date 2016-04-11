@@ -129,7 +129,7 @@ function OpenSimulink_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to OpenSimulink_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-rapidObject=getappdata(handles.MainRaPiDWindow,'rapidObject');
+rapidObject=getappdata(handles.MainRaPiDWindow,'rapidSettings');
 set(handles.statusText,'String','Running and Visualizing Optimization.');
 %set(handles.statusText,'BackgroundColor','r');
 rapidObject.experimentSettings.solverMode='Simulink';

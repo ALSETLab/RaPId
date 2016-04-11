@@ -6,8 +6,10 @@
 str = '../../Examples/SecondOrder';
 oldFolder = cd(str);
 
+%% ==========Initializing a RaPId Object======
+% Construct the Settings object
+rapidSettings=RaPIdClass();
 %% ==========Reference data settings==========
-
 %Output data
 rapidSettings.experimentData.pathToReferenceData = 'measuredDataO.mat'; %Data file name
 rapidSettings.experimentData.expressionReferenceTime = 'time'; %Time variable name
@@ -77,6 +79,7 @@ rapidSettings.fmuOutputNames = {'y1'}; %Output variable names
 %% 
 % Construct the object which carries out the RaPId tasks
 rapidObject=Rapid(rapidSettings);
+
 %Starting the estimation process
 
 [sol, hist] = rapidObject.runIdentification;

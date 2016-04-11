@@ -1,6 +1,21 @@
+function  list  = generateOrganisedSwarm( nbParticles, nminRand,p_min,p_max,p0s )
+%GENERATEORGANISEDSWARM Create a list of particles to be given to the
+%constructor of chromosome or particle (depends on the algorithm in use)
+%   nbParticles: number total of particles to be created
+%   nminRand: number minimal of particles that will have to be generated
+%             randomly
+%   p0s: particles that have to be in the list (they might come from
+%   computations performed in other methods for example)
+%   this means that we'll try to generate a grid of nbParticles - nminRand -p0s
+%   regularly spaced particles in the parameter space
+%   we'll try to have a "cubical grid", that is to say, the discretisation
+%   of space will be the same on orthogonal directions (there are as
+%   many points to the grid between p_min(1) and p_max(1) as between p_min(i)
+%   and p_max(i))
+%
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% Copyright 2015-2016 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
 % Francisco Gomez-Lopez
 % 
@@ -21,21 +36,6 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
 
-function  list  = generateOrganisedSwarm( nbParticles, nminRand,p_min,p_max,p0s )
-%GENERATEORGANISEDSWARM Create a list of particles to be given to the
-%constructor of chromosome or particle (depends on the algorithm in use)
-%   nbParticles: number total of particles to be created
-%   nminRand: number minimal of particles that will have to be generated
-%             randomly
-%   p0s: particles that have to be in the list (they might come from
-%   computations performed in other methods for example)
-%   this means that we'll try to generate a grid of nbParticles - nminRand -p0s
-%   regularly spaced particles in the parameter space
-%   we'll try to have a "cubical grid", that is to say, the discretisation
-%   of space will be the same on orthogonal directions (there are as
-%   many points to the grid between p_min(1) and p_max(1) as between p_min(i)
-%   and p_max(i))
-%
 list = {p0s};
 n_a = floor(((nbParticles - nminRand)-size(p0s,1))^(1/length(p_min)));
 if n_a > 1
