@@ -10,8 +10,9 @@ classdef Rapid <handle
 % See also: RUNRAPIDGUI, RAPIDCLASS
 %
 % Examples: see Examples-folder.
-    
-%% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette,
+%% <Rapid Parameter Identification is a toolbox for automated parameter identification>
+%    
+% Copyright 2015-2016 Luigi Vanfretti, Achour Amazouz, Maxime Baudette,
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera,
 % Francisco Gomez-Lopez
 %
@@ -61,7 +62,7 @@ classdef Rapid <handle
             obj=Rapid(rapidSettings); 
         end
         function obj=prepareData(obj)
-            % Checks and sets the in-data necssary to run the model
+            % Checks and sets the in-data necessary to run the model
             if ~isempty(obj.rapidSettings.experimentData.pathToInData)
                 if exist(obj.rapidSettings.experimentData.pathToInData,'file') % Indata exists
                     load(obj.rapidSettings.experimentData.pathToInData);
