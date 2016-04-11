@@ -1,43 +1,17 @@
 function [sol, historic] = pso_algo(rapidSettings)
-%PSO_ALGO Applies the particle swar optimisation function OWN_PSO and
-%applies it to the parameter identification problem specified.
-%   Takes as argument the settings struct in which the data to be matched
-%   by the parameter estimation was integrated by the function rapid.m It
-%   starts by generating nb_particle particles (value set in
-%   settings.pso_options). The initial particles are partly randomlu chosen
-%   and partly spans the parameter space, being regularly spaced out within
-%   the bounds specified by p_min and p_max the objective function is
-%   evaluated at every iterations, after each has been given a speed which
-%   is determined by random parameters and influenced by the position of
-%   the overall best solution found and the particle personal best position
-%   The function returns the historic of all the best position and best
-%   fitness at every iteration of the process and the swarm at final time
-%   if required.
+%%PSO_ALGO function wrapper for Particle Swarm Optimization algorithms to
+%	solve parameter identification problem specified.
 %
-%   settings should include a struct field name pso_options containing:
-%       - kick_multiplier: when the speed becomes lower than
-%           norm(v_max)*kick_multiplier, v_max being the speed (computed
-%           internally) which would lead the particle as far as possible
-%           inside the space defined by p_min/p_max
-%       - w: multiplier on the contribution of the last sample of the
-%            particle's speed to it's next sample
-%       - self_coeff: multiplier on the contribution of the distance to the
-%           particle's personal best position to the next sample of
-%           the speed
-%       - social_coeff: multiplier on the contribution of the distance to the swarm's
-%           overall best position to the next sample of the speed
-%       - limit: number maximal of iterations in the speeds updates
-%       - fitnessStopRatio: the algorithm stops if the best fitness reaches
-%           initialFitness*fitnessStopRatio
-%       - nb_particles: number of particles in the swarm
-%       - nRandMin, minimum of initial particles to be generated
-%       randomly, restricts the number of particles to be set on a grid
-%       regularly spaced out in the parameter space, see function
-%       generateOrganisedSwarm
-%       - p0s, matrix whose rows are different initial guesses for the
-%       vector of parameters
-%       - storeData, boolean allowing to store all the best fitness and
-%       particles at every iterations (get's big very quickly)
+%   [SOL, HISTORIC] = PSO_ALGO(RAPIDSETTINGS) carries out the PSO specified
+%   in RAPIDSETTINGS and returns the best parameters in SOL and a history
+%   of the particle swarm in HISTORIC.
+%
+%   RAPIDSETTINGS: either, 1) an instance of the RaPIdClass 
+%   or 2) a struct with appropriate fields and structure. See OWN_PSO and
+%   OWN_CFAPSO for more details.
+%
+%
+%   See also: OWN_PSO, OWN_CFAPSO, RAPID, RAPIDCLASS
 
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
@@ -66,6 +40,10 @@ function [sol, historic] = pso_algo(rapidSettings)
 switch rapidSettings.psoSettings.method
     case 'CFA-PSO'
         [ sol, historic] = own_cfapso(rapidSettings,@func);
+    case 'PSOPC'
+        [ sol, historic] = own_psopc(rapidSettings,@func);
+    case 'PSOCA'
+        [ sol, historic] = own_psoca(rapidSettings,@func);
     otherwise
         [ sol, historic] = own_pso(rapidSettings,@func);
 end

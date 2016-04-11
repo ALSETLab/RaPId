@@ -32,12 +32,13 @@ toolboxes_installed = {tmp.Name};
 check = false;
  
 %List the dependencies (with -- not installed! if not installed)
-disp('RaPId Toolbox dependencies are: ');
+disp('Checking the RaPId Toolbox dependencies: ');
 for i=1:length(dep_list)
-    disp(dep_list{i});  %List all dependencies
     if  ~ismember(dep_list(i),toolboxes_installed)  % if not installed
-        warning(strcat(dep_list{i},' -- not installed!')); % display warning
+        warning(strcat(dep_list{i},'  -   not installed!')); % display warning
         check=true; 
+    else
+        disp(strcat(dep_list{i}, '   -   OK!'));
     end
 end
 

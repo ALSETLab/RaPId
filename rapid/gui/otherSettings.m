@@ -1,6 +1,19 @@
+function varargout = otherSettings(varargin)
+% OTHERSETTINGS is the GUI to view and modify miscellaneous settings in
+% RaPId.
+%
+%      OTHERSETTINGS, by itself, creates a new OTHERSETTINGS or raises the existing
+%      singleton*.
+%
+%      H = OTHERSETTINGS returns the handle to a new OTHERSETTINGS or the handle to
+%      the existing singleton*.
+%
+%
+% See also: RAPID, SIMULINKSETTINGS, ODESETTINGS, RAPIDMAINWINDOW, GUIDE
+
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
 % Francisco Gomez-Lopez
 % 
@@ -20,33 +33,6 @@
 % 
 % You should have received a copy of the GNU Lesser General Public License
 % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
-
-
-function varargout = otherSettings(varargin)
-% OTHERSETTINGS MATLAB code for otherSettings.fig
-%      OTHERSETTINGS, by itself, creates a new OTHERSETTINGS or raises the existing
-%      singleton*.
-%
-%      H = OTHERSETTINGS returns the handle to a new OTHERSETTINGS or the handle to
-%      the existing singleton*.
-%
-%      OTHERSETTINGS('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in OTHERSETTINGS.M with the given input arguments.
-%
-%      OTHERSETTINGS('Property','Value',...) creates a new OTHERSETTINGS or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before otherSettings_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to otherSettings_OpeningFcn via varargin.
-%
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
-%
-% See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help otherSettings
-
-% Last Modified by GUIDE v2.5 24-May-2013 12:05:46
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
