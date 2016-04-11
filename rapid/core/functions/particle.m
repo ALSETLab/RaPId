@@ -1,31 +1,8 @@
-%% <Rapid Parameter Identification is a toolbox for automated parameter identification>
-%
-% Copyright 2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
-% Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
-% Francisco Gomez-Lopez
-% 
-% The authors can be contacted by email: luigiv at kth dot se
-% 
-% This file is part of Rapid Parameter Identification ("RaPId") .
-% 
-% RaPId is free software: you can redistribute it and/or modify
-% it under the terms of the GNU Lesser General Public License as published by
-% the Free Software Foundation, either version 3 of the License, or
-% (at your option) any later version.
-% 
-% RaPId is distributed in the hope that it will be useful,
-% but WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-% GNU Lesser General Public License for more details.
-% 
-% You should have received a copy of the GNU Lesser General Public License
-% along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
-
 classdef particle < handle
-    %PARTICLE 
-    % Class representing a particle in the parameter space 
+    %PARTICLE
+    % Class representing a particle in the parameter space
     % The speed of the particle is given in increment (no sampling time involved)
-    % particle is characterized by its position 
+    % particle is characterized by its position
     %   p: position of the particle, i.e vector of parameters
     %   v: speed, give the next position
     %   p_min, p_max: vector defining the size of the parameter space,
@@ -45,6 +22,28 @@ classdef particle < handle
     %           of the method updatePart since the fitness computation is
     %           exterior to the particle
     
+    %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
+    %
+    % Copyright 2015-2016 Luigi Vanfretti, Achour Amazouz, Maxime Baudette,
+    % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera,
+    % Francisco Gomez-Lopez
+    %
+    % The authors can be contacted by email: luigiv at kth dot se
+    %
+    % This file is part of Rapid Parameter Identification ("RaPId") .
+    %
+    % RaPId is free software: you can redistribute it and/or modify
+    % it under the terms of the GNU Lesser General Public License as published by
+    % the Free Software Foundation, either version 3 of the License, or
+    % (at your option) any later version.
+    %
+    % RaPId is distributed in the hope that it will be useful,
+    % but WITHOUT ANY WARRANTY; without even the implied warranty of
+    % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    % GNU Lesser General Public License for more details.
+    %
+    % You should have received a copy of the GNU Lesser General Public License
+    % along with RaPId.  If not, see <http://www.gnu.org/licenses/>.
     properties
         v_min = 0;
         v_max = 0;
@@ -63,28 +62,28 @@ classdef particle < handle
     
     methods
         function obj = particle(varargin)
-            if nargin==3 
+            if nargin==3
                 pMin=varargin{1};
                 pMax=varargin{2};
                 parameters=varargin{3};
-            if length(pMax) ~= length(pMin) 
-                throw('wrong size for pmax or pmin');
-            end
-            obj.p_min = pMin;
-            obj.p_max = pMax;
-            obj.n = length(pMin);
-            if isempty(parameters)
-                obj.p = (obj.p_max - obj.p_min).*rand(obj.n,1)' + obj.p_min;
-            else
-                obj.p = parameters;
-            end
-            obj.v_max = (obj.p_max - obj.p);
-            obj.v_min = (obj.p_min - obj.p);
-            obj.v = (obj.v_max - obj.v_min).*rand(obj.n,1)' + obj.v_min;
-            obj.plot = false;
+                if length(pMax) ~= length(pMin)
+                    throw('wrong size for pmax or pmin');
+                end
+                obj.p_min = pMin;
+                obj.p_max = pMax;
+                obj.n = length(pMin);
+                if isempty(parameters)
+                    obj.p = (obj.p_max - obj.p_min).*rand(obj.n,1)' + obj.p_min;
+                else
+                    obj.p = parameters;
+                end
+                obj.v_max = (obj.p_max - obj.p);
+                obj.v_min = (obj.p_min - obj.p);
+                obj.v = (obj.v_max - obj.v_min).*rand(obj.n,1)' + obj.v_min;
+                obj.plot = false;
             else
                 % just return a particle with default properties
-            end 
+            end
         end
         
         function obj = particleV(pm,pM,verbose)
@@ -105,13 +104,13 @@ classdef particle < handle
             if all(obj.v==0) % we are stuck, bounce
                 v_limitfactor=rand;
                 obj.v=max(min(-v,v_limitfactor*obj.v_max),v_limitfactor*obj.v_min);
-%                 [indices,~]=sort(abs(v)); % find largest magnitude
-%                 for ii=1:obj.n
-%                     obj.v(indices(ii))= max(min(),)
-%                     if any(obj.v != 0)
-%                         break;
-%                     end
-%                 end
+                %                 [indices,~]=sort(abs(v)); % find largest magnitude
+                %                 for ii=1:obj.n
+                %                     obj.v(indices(ii))= max(min(),)
+                %                     if any(obj.v != 0)
+                %                         break;
+                %                     end
+                %                 end
             end
         end
         function obj = updatePart(obj)
@@ -127,8 +126,8 @@ classdef particle < handle
                 obj.bestValue = value;
             end
         end
-                
-            
+        
+        
         
     end
     

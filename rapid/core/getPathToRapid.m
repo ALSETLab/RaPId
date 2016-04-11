@@ -5,7 +5,7 @@ function pathstring = getPathToRapid()
 
 %% <Rapid Parameter Identification is a toolbox for automated parameter identification>
 %
-% Copyright 2016-2015 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
+% Copyright 2015-2016 Luigi Vanfretti, Achour Amazouz, Maxime Baudette, 
 % Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera, 
 % Francisco Gomez-Lopez
 % 
