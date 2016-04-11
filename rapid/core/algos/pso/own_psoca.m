@@ -2,11 +2,11 @@ function [sol, historic] = own_psoca(rapidSettings,func)
 %% OWN_PSOPC performs Particle Swarm Optimization with Coordinated Aggregation (CA)
 %   on the parameter identification problem specified in RAPIDSETTINGS and
 %   using the fitness function FUNC.
-%   For more info see:
-%   "A Comparative Study on Particle Swarm Optimization for Optimal 
+%   For more info about CA see:
+%   [1]: "A Comparative Study on Particle Swarm Optimization for Optimal 
 %   Steady-State Performance of Power Systems" by John G. Vlachogiannis 
 %   and Kwang Y. Lee, IEEE Trans. on Power Systems, Vol. 21, No. 4, Nov 2006
-%  
+%   This function performs a slightly modified version of the algorithm in [1]. 
 %   
 %   [SOL, HISTORIC] = OWN_PSOCA(RAPIDSETTINGS,FUNC)
 %   performs the PSO using the settings in RAPIDSETTINGS and the function

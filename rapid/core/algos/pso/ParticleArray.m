@@ -35,16 +35,13 @@ classdef ParticleArray < handle
         globalbestvalue=Inf;
         globalbestpos
     end
-    properties (Hidden=true)
-        currach;
-    end
     methods
         % Constructor create the object and pre-allocate array of Particles
         function obj = ParticleArray(varargin)  
             % Constructor of PARTICLEARRAY
             if nargin==1
-                k=varargin{1};
-                for ii=k:-1:1 % count backwards for Memory pre-allocation
+                nalloc=varargin{1};
+                for k=nalloc:-1:1 % count backwards for Memory pre-allocation
                     obj.list(k)=Particle();
                 end
             end
@@ -52,10 +49,9 @@ classdef ParticleArray < handle
         end
         function createParticle(obj,pmin,pmax,p) 
             % Create Particles with specified PMIN, PMAX, and P
-            ii=obj.n+1;
-            obj.list(ii) = Particle(pmin,pmax,p);
+            k=obj.n+1;
+            obj.list(k) = Particle(pmin,pmax,p);
             obj.n=obj.n+1;
-            obj.currach(obj.n)=Inf;
         end
     
         function obj=sort(obj,varargin)
@@ -71,51 +67,56 @@ classdef ParticleArray < handle
         end
         function updateCFASpeed(obj,constriction,wt,self_c,social_c)
             %update speed of Particles in array according to CFA-PSO.
-            for ii=1:obj.n
-                obj.list(ii).updateSpeed(constriction*...
-                    (wt * obj.list(ii).v  ...
-                    + self_c*rand*(obj.list(ii).bestPos-obj.list(ii).p) ... 
-                    + social_c*rand*(obj.globalbestpos-obj.list(ii).p)));
+            for k=1:obj.n
+                obj.list(k).updateSpeed(constriction*...
+                    (wt * obj.list(k).v  ...
+                    + self_c*rand*(obj.list(k).bestPos-obj.list(k).p) ... 
+                    + social_c*rand*(obj.globalbestpos-obj.list(k).p)));
             end
         end
         
         function updatePSOPCSpeed(obj,wt,self_c,social_c,pass_c)
-            for ii=1:obj.n
+            %Update speed according to Passive Congregation
+            for k=1:obj.n
                 Ri=obj.list(randi([1, obj.n])).p; % selects random particle
-                obj.list(ii).updateSpeed(wt * obj.list(ii).v  ...
-                    + self_c*rand*(obj.list(ii).bestPos-obj.list(ii).p) ...
-                    + social_c*rand*(obj.globalbestpos-obj.list(ii).p)...
-                    + pass_c*rand(Ri-obj.list(ii).p));
+                obj.list(k).updateSpeed(wt * obj.list(k).v  ...
+                    + self_c*rand*(obj.list(k).bestPos-obj.list(k).p) ...
+                    + social_c*rand*(obj.globalbestpos-obj.list(k).p)...
+                    + pass_c*rand(Ri-obj.list(k).p));
             end
         end
         
         function updateSpeedPSOCA(obj,wt)
-            currbest=find(min(obj.list(1:end).fitness));
-            for ii=1:obj.n
-                if any(ii==currbest)
-                    obj.list(ii).updateSpeed(wt*obj.list(ii).v + ...
-                        rand*(obj.list(randi([1, obj.n])).p-obj.list(ii).p));
-                else
-                    w=(obj.list(1:end).p-obj.list(ii).p);
-                    w=w/sum(w);
-                    ca_vec=(obj.list(1:end).p-repmat(obj.list(ii).p,1,obj.n))*(w.*rand(obj.n,1));
-                    obj.list(ii).updateSpeed(wt*obj.list(ii).v + ca_vec); 
+            %Update speed according to Coordinated Aggregation
+            achievements=obj.list(1:end).fitness;
+            currbest=find(min(achievements)); %current best position
+            for k=1:obj.n
+                if any(k==currbest) % if current best, use random coordinator
+                    obj.list(k).updateSpeed(wt*obj.list(k).v + ...
+                        rand*(obj.list(randi([1, obj.n])).p-obj.list(k).p));
+                else %Else coordinate with aggregator (best current position)
+                    w=(obj.list(1:end).fitness-obj.list(k).fitness); %weight
+                    w(find(w<0))=0;  % if worse achievement disregard influence
+                    w=w/sum(w); %normalizing weights to 1
+                    ca=(obj.list(1:end).p-repmat(obj.list(k).p,1,obj.n))*...
+                        (w.*rand(obj.n,1)); % vector, contribution from CA
+                    obj.list(k).updateSpeed(wt*obj.list(k).v + ca); 
                 end
             end
         end
         
-        function positions=updatePositions(obj)
+        function updatePositions(obj)
             %Update the positions of Particles in the array.
-            for ii=1:obj.n
-                obj.list(ii).updatePosition();
+            for k=1:obj.n
+                obj.list(k).updatePosition();
             end
         end
         
         function fitnesses=calculateFitnesses(obj,func)
             % Update the fitness of Particles in array using FUNC
             fitnesses=zeros(1,obj.n);
-            for ii=1:obj.n
-                fitnesses(ii)=obj.list(ii).calculateFitness(func);
+            for k=1:obj.n
+                fitnesses(k)=obj.list(k).calculateFitness(func);
             end
             
         end
@@ -124,8 +125,8 @@ classdef ParticleArray < handle
             % Update the best position and fitness value obtained by
             % particles
             newbestbool=0;
-            for ii=1:obj.n
-                [pbestv,pbestp]=obj.list(ii).getParticlesBest();
+            for k=1:obj.n
+                [pbestv,pbestp]=obj.list(k).getParticlesBest();
                 if pbestv<obj.globalbestvalue
                     obj.globalbestvalue=pbestv;
                     obj.globalbestpos=pbestp;
