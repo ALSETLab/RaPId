@@ -77,9 +77,9 @@ open_system(strcat(rapidSettings.experimentSettings.modelName,'/Scope')); %Openi
 pause(1); %Waiting one second for scope to initialize
 %%
 % Create the object which carries out the work
-rapidObject=Rapid(RapidSettings);
+rapidObject=Rapid(rapidSettings);
 %Starting the estimation process
-[sol, hist] = rapidObject.runIdentifcation();
+[sol, hist] = rapidObject.runIdentification();
 sprintf('Vector of estimated parameters is: %s',mat2str(sol,3)) 
 %Restoring workspace
 cd(oldFolder);
