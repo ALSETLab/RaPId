@@ -37,7 +37,7 @@ function [ sol, other] = nm_algo(rapidSettings)
 options = eval(rapidSettings.nmSettings);
 options.MaxFunEvals=rapidSettings.experimentSettings.maxIterations;
 
-[sol, other] = fminsearch(@func,rapidSettings.experimentSettings.p_0,options);
+[sol, other] = fminsearch(@func,rapidSettings.experimentSettings.p_0,options,rapidSettings);
 %other = [];
 if rapidSettings.experimentSettings.verbose
     part.p = rapidSettings.experimentSettings.p_0;
