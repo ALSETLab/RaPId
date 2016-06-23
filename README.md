@@ -78,7 +78,7 @@ Here is compiled a list of the required software packages to run the toolbox.
   * Global Optimization Toolbox
   * Statistics Toolbox
   * Signal Processing Toolbox
-- FMI Toolbox ([Modelon](http://www.modelon.com/products/fmi-toolbox-for-matlab/))
+- FMI Toolbox v2.1 and above ([Modelon](http://www.modelon.com/products/fmi-toolbox-for-matlab/))
 
 </div>
 ### <div id="install">Installation:
