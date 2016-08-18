@@ -47,7 +47,7 @@ What RaPId becomes in the future is up to you, the researcher or engineer that n
 ## <div id="cite">iTesla RaPId - Cite us in your Publications
 If you use RaPId in your work or research, all we ask you in exchange is that you cite the following papers. You are also welcome to submit your contributions (modifications to RaPId or examples) using GIT.
 
-- Luigi Vanfretti, Maxime Baudette, Achour Amazouz, Tetiana Bogodorova, Tin Rabuzin, Jan Lavenius and Francisco Gomez Lopez, "RaPId: A modular and extensible toolbox for parameter estimation of Modelica and FMI-complaint models - Part I: Software Architecture and Development," to be submitted, Elsevier Software X, 2015.
+- Luigi Vanfretti, Maxime Baudette, Achour Amazouz, Tetiana Bogodorova, Tin Rabuzin, Jan Lavenius and Francisco Gomez Lopez, "RaPId: A modular and extensible toolbox for parameter estimation of Modelica and FMI-complaint models," SoftwareX, accepted 26 July 2016. Download paper: [here](http://dx.doi.org/10.1016/j.softx.2016.07.004)
 - L. Vanfretti, T. Bogodorova, and M. Baudette, “Power System Model Identification Exploiting the Modelica Language and FMI Technologies,” 2014 IEEE International Conference on Intelligent Energy and Power Systems, June 2-6, 2014, Kyiv, Ukraine. Download paper [here](http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6874164).
 - L. Vanfretti, T. Bogodorova, and M. Baudette, “A Modelica Power System Component Library for Model Validation and Parameter Identification,” 10th International Modelica Conference 2014, Lund, Sweden, Mar. 10 – 12, 2014. Download paper [here](http://www.ep.liu.se/ecp_article/index.en.aspx?issue=96;article=126).
 </div>
@@ -63,8 +63,8 @@ To see RaPId in action, you can find demonstration videos on Youtube:
 2. Using RaPId to identify Power System Parameters
   - [Using RaPId to identify exciter parameters in the MOSTAR power plant:](https://www.youtube.com/watch?v=X8X89l1HBjo)
 
-3. Advanced features (TBA)
-  - Extended functionalities of RaPId for small-signal (linearized model) and time-domain (non-linear time domain) power system inter-area electromechanical mode model validation and calibration: [Inter-Area Mode Model-Validation LINK TO COME](Add link)
+3. Advanced features (Future! Release: TBA)
+  - Extended functionalities of RaPId for small-signal (linearized model) and time-domain (non-linear time domain) power system inter-area electromechanical mode model validation and calibration: [Inter-Area Mode Model-Validation](https://www.youtube.com/watch?v=5s34tjT9Cwk)
 
 **N.B.**  RaPId is continuously evolving, thus the GUI and source code is subject to change (usually improvements) compared to what is depicted in the videos.
 
