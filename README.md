@@ -47,7 +47,12 @@ What RaPId becomes in the future is up to you, the researcher or engineer that n
 ## <div id="cite">iTesla RaPId - Cite us in your Publications
 If you use RaPId in your work or research, all we ask you in exchange is that you cite the following papers. You are also welcome to submit your contributions (modifications to RaPId or examples) using GIT.
 
-- Luigi Vanfretti, Maxime Baudette, Achour Amazouz, Tetiana Bogodorova, Tin Rabuzin, Jan Lavenius and Francisco Gomez Lopez, "RaPId: A modular and extensible toolbox for parameter estimation of Modelica and FMI-complaint models," SoftwareX, accepted 26 July 2016. Download paper: [here](http://dx.doi.org/10.1016/j.softx.2016.07.004)
+If you only have space for one publication, our prefered citation is the following:
+
+- Luigi Vanfretti, Maxime Baudette, Achour Amazouz, Tetiana Bogodorova, Tin Rabuzin, Jan Lavenius, Francisco José Goméz-López, RaPId: A modular and extensible toolbox for parameter estimation of Modelica and FMI compliant models, SoftwareX, Available online 25 August 2016, ISSN 2352-7110, http://dx.doi.org/10.1016/j.softx.2016.07.004.
+Download paper: [here](http://www.sciencedirect.com/science/article/pii/S235271101630019X)
+
+If you only have space for additional publications, you can also cite the following papers:
 - L. Vanfretti, T. Bogodorova, and M. Baudette, “Power System Model Identification Exploiting the Modelica Language and FMI Technologies,” 2014 IEEE International Conference on Intelligent Energy and Power Systems, June 2-6, 2014, Kyiv, Ukraine. Download paper [here](http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6874164).
 - L. Vanfretti, T. Bogodorova, and M. Baudette, “A Modelica Power System Component Library for Model Validation and Parameter Identification,” 10th International Modelica Conference 2014, Lund, Sweden, Mar. 10 – 12, 2014. Download paper [here](http://www.ep.liu.se/ecp_article/index.en.aspx?issue=96;article=126).
 </div>
