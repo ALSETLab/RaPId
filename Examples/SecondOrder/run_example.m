@@ -27,7 +27,7 @@ rapidSettings.experimentSettings.timeOut = 2; %Seconds before simulation timeout
 rapidSettings.experimentSettings.integrationMethod = 'ode45'; %Solver selection
 rapidSettings.experimentSettings.solverMode = 'Simulink';
 rapidSettings.experimentSettings.optimizationAlgorithm = 'pso'; %Selection of optimization algorithm
-rapidSettings.experimentSettings.maxIterations = 100; %Maximum number of estimation iterations
+rapidSettings.experimentSettings.maxIterations = 5; %Maximum number of estimation iterations
 rapidSettings.experimentSettings.verbose = 1; %Can trigger more data for debugging
 rapidSettings.experimentSettings.saveHist = 0; %Don't save history
 
@@ -58,7 +58,7 @@ switch lower(rapidSettings.experimentSettings.optimizationAlgorithm) % use lower
         rapidSettings.psoSettings.limit = 0.25; %Iteration limit
         rapidSettings.psoSettings.nRandMin = 8; %Minimum number of random particles 
         rapidSettings.psoSettings.nb_particles = 8; %Number of particles
-        rapidSettings.psoSettings.fitnessStopRatio = 1e-5; %Fitness stop ratio
+        rapidSettings.psoSettings.fitnessStopRatio = 1e-2; %Fitness stop ratio
         rapidSettings.psoSettings.kick_multiplier = 0.002; %Kick multiplier
         rapidSettings.psoSettings.method = 'PSO';
 end
