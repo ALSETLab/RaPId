@@ -54,7 +54,7 @@ Download paper: [here](http://www.sciencedirect.com/science/article/pii/S2352711
 
 If you only have space for additional publications, you can also cite the following papers:
 - L. Vanfretti, T. Bogodorova, and M. Baudette, “Power System Model Identification Exploiting the Modelica Language and FMI Technologies,” 2014 IEEE International Conference on Intelligent Energy and Power Systems, June 2-6, 2014, Kyiv, Ukraine. Download paper [here](http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6874164).
-- L. Vanfretti, T. Bogodorova, and M. Baudette, “A Modelica Power System Component Library for Model Validation and Parameter Identification,” 10th International Modelica Conference 2014, Lund, Sweden, Mar. 10 – 12, 2014. Download paper [here](http://www.ep.liu.se/ecp_article/index.en.aspx?issue=96;article=126).
+- L. Vanfretti, T. Bogodorova, and M. Baudette, “A Modelica Power System Component Library for Model Validation and Parameter Identification,” 10th International Modelica Conference 2014, Lund, Sweden, Mar. 10 – 12, 2014. Download paper [here](https://www.modelica.org/events/modelica2014/proceedings/html/submissions/ECP140961195_VanfrettiBogodorovaBaudette.pdf).
 </div>
 
 ## <div id="quickstart">RaPId - Quick Start </div>
