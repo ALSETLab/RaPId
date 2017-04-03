@@ -72,9 +72,9 @@ To see RaPId in action, you can find demonstration videos on Youtube:
   - Extended functionalities of RaPId for small-signal (linearized model) and time-domain (non-linear time domain) power system inter-area electromechanical mode model validation and calibration: [Inter-Area Mode Model-Validation](https://www.youtube.com/watch?v=5s34tjT9Cwk)
 
 **N.B.**  RaPId is continuously evolving, thus the GUI and source code is subject to change (usually improvements) compared to what is depicted in the videos.
-
 </div>
-### <div id="reqs">Software requirements (dependencies):
+
+### <div id="reqs"> Software requirements (dependencies):
 Here is compiled a list of the required software packages to run the toolbox.
 - Matlab R2011b to R2014b ([MathWorks](http://se.mathworks.com/products/matlab/))
 - Simulink ([MathWorks](http://se.mathworks.com/products/matlab/))
@@ -86,7 +86,7 @@ Here is compiled a list of the required software packages to run the toolbox.
 - FMI Toolbox v2.1 and above ([Modelon](http://www.modelon.com/products/fmi-toolbox-for-matlab/))
 
 </div>
-### <div id="install">Installation:
+### <div id="install"> Installation:
 Provided that all the software required have been installed on your machine, the installation has been automated with an installation script.
 
 The first step of the installation is to procure the RaPId toolbox:
@@ -98,9 +98,9 @@ The rest of the installation will be executed in Matlab:
 2. Run the **'setupRapid.m'** script located in this sub-folder.
 3. Check that the dependency check didn't prompt any warning.
 4. The GUI of the toolbox will be launched upon successful installation.
-
 </div>
-### <div id="usage">Using the toolbox:
+
+### <div id="usage"> Using the toolbox:
 The best way to get familiar with the toolbox is to refer to the examples provided. Each example is delivered in a separate folder in the **./Examples/** folder, containing the necessary elements to use the toolbox:
 - the FMU containing the model to optimize
 - the Simulink model providing a wrapper for the FMU
@@ -115,11 +115,11 @@ Don't forget to save your container, after your modifications!
 More details is available in the [Documentation](https://github.com/SmarTS-Lab/iTesla_RaPId/wiki) in the form a Wiki.
 </div>
 
-### <div id="createfmu">Creating FMUs
+### <div id="createfmu"> Creating FMUs
 In principle, RaPId be used with any FMU generated from an [FMI Compliant tool](https://www.fmi-standard.org/tools). However, because RaPId depends on the FMI Toolbox for MATLAB/Simulink, the user needs to check if their tool has been supported and/or tested by the FMI Toolbox developers, [Modelon](http://www.modelon.com/products/supported-tools/).
 </div>
 
-### <div id="createpowerfmu">Creating FMUs for Power System Models
+### <div id="createpowerfmu"> Creating FMUs for Power System Models
 The development of RaPId was carried out in parallel to the development of the iTesla Power Systems Modelica Library ([iPSL](https://github.com/itesla/ipsl)), also within the iTesla project, to be able to validate and calibrate power system models.
 Currently, the developers have continued to develop the OpenIPSL library, as a fork of iPSL: [https://github.com/SmarTS-Lab/OpenIPSL](https://github.com/SmarTS-Lab/OpenIPSL)
 
