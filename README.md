@@ -57,8 +57,8 @@ If you only have space for additional publications, you can also cite the follow
 - L. Vanfretti, T. Bogodorova, and M. Baudette, “A Modelica Power System Component Library for Model Validation and Parameter Identification,” 10th International Modelica Conference 2014, Lund, Sweden, Mar. 10 – 12, 2014. Download paper [here](https://www.modelica.org/events/modelica2014/proceedings/html/submissions/ECP140961195_VanfrettiBogodorovaBaudette.pdf).
 </div>
 
-## <div id="quickstart">RaPId - Quick Start </div>
-### <div id="demos">Demo Videos
+## <div id="quickstart"> RaPId - Quick Start </div>
+### <div id="demos"> Demo Videos
 To see RaPId in action, you can find demonstration videos on Youtube:
 
 1. Demonstrating basic usage of RaPId:
@@ -71,7 +71,7 @@ To see RaPId in action, you can find demonstration videos on Youtube:
 3. Advanced features (Future! Release: TBA)
   - Extended functionalities of RaPId for small-signal (linearized model) and time-domain (non-linear time domain) power system inter-area electromechanical mode model validation and calibration: [Inter-Area Mode Model-Validation](https://www.youtube.com/watch?v=5s34tjT9Cwk)
 
-**N.B.**  RaPId is continuously evolving, thus the GUI and source code is subject to change (usually improvements) compared to what is depicted in the videos.
+**Note:**  RaPId is continuously evolving, thus the GUI and source code is subject to change (usually improvements) compared to what is depicted in the videos.
 </div>
 
 ### <div id="reqs"> Software requirements (dependencies):
@@ -84,8 +84,8 @@ Here is compiled a list of the required software packages to run the toolbox.
   * Statistics Toolbox
   * Signal Processing Toolbox
 - FMI Toolbox v2.1 and above ([Modelon](http://www.modelon.com/products/fmi-toolbox-for-matlab/))
-
 </div>
+
 ### <div id="install"> Installation:
 Provided that all the software required have been installed on your machine, the installation has been automated with an installation script.
 
