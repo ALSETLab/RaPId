@@ -61,9 +61,13 @@ package Mostar
               {-24,-30}})));
     Modelica.Blocks.Math.Add3 add3_1 annotation (Placement(transformation(extent={{-30,-32},
               {-38,-24}})));
+    Modelica.Blocks.Interfaces.RealOutput ETERM
+      annotation (Placement(transformation(extent={{2,28},{22,48}})));
+    Modelica.Blocks.Interfaces.RealOutput EFD0
+      annotation (Placement(transformation(extent={{2,48},{22,68}})));
   equation
     connect(bus.p, pwLine.p) annotation (Line(points={{-8,0},{14.6,0}},    color={0,0,255}));
-    connect(constantLoad.p, pwLine.p) annotation (Line(points={{0,-19.4},{0,-19.4},
+    connect(constantLoad.p, pwLine.p) annotation (Line(points={{0,-20},{0,-20},
             {0,0},{14.6,0}},                                                                      color={0,0,255}));
     connect(pwLine.n, bus1.p) annotation (Line(points={{25.4,0},{25.4,0},{50,0}},
                                                                               color={0,0,255}));
@@ -83,14 +87,18 @@ package Mostar
             {-40,-10.8},{-47.04,-10.8}},                                                                                  color={0,0,127}));
     connect(step.y, add3_1.u2) annotation (Line(points={{-24.4,-20},{-26,-20},{-26,
             -28},{-29.2,-28}},                                                                        color={0,0,127}));
-    connect(gENSAL.ETERM, add3_1.u1) annotation (Line(points={{-46.8,-3.6},{-28,-3.6},
-            {-28,-24.8},{-29.2,-24.8}},                                                                      color={0,0,127}));
     connect(add3_1.y, sT5B.ECOMP) annotation (Line(points={{-38.4,-28},{-38.4,-28},
             {-54,-28}},                                                                                        color={0,0,127}));
     connect(sT5B.VOTHSG, const2.y) annotation (Line(points={{-54,-23.5},{-52,-23.5},
             {-52,-24},{-52,-52},{-40.6,-52}}, color={0,0,127}));
     connect(add3_1.u3, step1.y) annotation (Line(points={{-29.2,-31.2},{-26,-31.2},
             {-26,-34},{-24.4,-34}}, color={0,0,127}));
+    connect(gENSAL.ETERM, add3_1.u1) annotation (Line(points={{-46.8,-3.6},{
+            -29.2,-3.6},{-29.2,-24.8}}, color={0,0,127}));
+    connect(ETERM, gENSAL.ETERM) annotation (Line(points={{12,38},{-34,38},{-34,
+            -3.6},{-46.8,-3.6}}, color={0,0,127}));
+    connect(EFD0, sT5B.EFD0) annotation (Line(points={{12,58},{-16,58},{-16,-6},
+            {-42,-6},{-42,-34.5},{-54,-34.5}}, color={0,0,127}));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
   end System1;
 
