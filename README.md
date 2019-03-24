@@ -141,8 +141,8 @@ If you would like to use Modelica to generate FMUs containing power system model
 The initial development of RaPId was possible through the [iTesla](http://www.itesla-project.eu/) project funded by the European Commission through the FP7 program. 
 </div>
 
-## <div id="dedi">Dedication of this OSS Release (by Luigi Vanfretti - RaPId's Original Dev. Team Leader)
-See [Full Statement on the Wiki.](https://github.com/SmarTS-Lab/iTesla_RaPId/wiki#dedication-of-this-oss-release-by-luigi-vanfretti---rapids-original-dev-team-leader)
+## <div id="dedi">Dedication
+To the memory of Jan Ove Gjerde.
 </div>
 
 ## <div id="nowarranty">No Warranty
