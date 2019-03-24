@@ -11,9 +11,9 @@
 2. [Contents](#contents)
 3. [Quick Download: Release](#release)
 4. [Contributing](#contribute)
-5. [iTesla RaPId - Introduction](#intro)
-6. [iTesla RaPId - Cite us in your Publications](#cite)
-7. [iTesla RaPId - Quick Start](#quickstart)
+5. [RaPId Introduction](#intro)
+6. [Cite us in your Publications](#cite)
+7. [RaPId - Quick Start](#quickstart)
   1. [Demo videos](#demos)
   2. [Software requirements](#reqs)
   3. [Installation](#install)
@@ -31,9 +31,9 @@
 </div>
 
 ## <div id="contribute">Contributing
-- Reporting Bugs: please use the [Issues](https://github.com/SmarTS-Lab/iTesla_RaPId/issues) facility to report bugs.
+- Reporting Bugs: please use the Issues tab to report bugs.
 - If you are familiar with GIT, and want to be involved in the development (from bug fixes, to anything else!), please clone the repository and use GIT to contribute.
-- Contribution Guidelines will be found in the [Wiki: Project & Community](https://github.com/SmarTS-Lab/iTesla_RaPId/wiki/project-and-community) (under construction).
+- Contributions: Via Pull Requests.
 </div>
 
 ## <div id="intro">RaPId - Introduction
@@ -120,9 +120,9 @@ The best way to get familiar with the toolbox is to refer to the examples provid
 To load an example, click on the 'load container' button and select an example's container. After successful loading, you can simply click on 'Run Optimization' and the toolbox will run the optimization process.
 
 To build your own experiments, the best practice is to work in the **./Examples/work_dir/** directory (it is ignored by GIT). You can start by copying the files of one of the examples, replace with your own FMU, load the copied container and modify the appropriate settings to suite your experiment.
+
 Don't forget to save your container, after your modifications!
 
-More details is available in the [Documentation](https://github.com/SmarTS-Lab/iTesla_RaPId/wiki) in the form a Wiki.
 </div>
 
 ### <div id="createfmu"> Creating FMUs
@@ -130,17 +130,15 @@ In principle, RaPId be used with any FMU generated from an [FMI Compliant tool](
 </div>
 
 ### <div id="createpowerfmu"> Creating FMUs for Power System Models
-The development of RaPId was carried out in parallel to the development of the iTesla Power Systems Modelica Library ([iPSL](https://github.com/itesla/ipsl)), also within the iTesla project, to be able to validate and calibrate power system models.
-Currently, the developers have continued to develop the OpenIPSL library, as a fork of iPSL: [https://github.com/SmarTS-Lab/OpenIPSL](https://github.com/SmarTS-Lab/OpenIPSL)
+The development of RaPId was carried out in parallel to the development of a Modelica library for power networks to be able to validate and calibrate power system models. Currently, only the Modelica OpenIPSL library is recommended: [https://openipsl.org](https://openipsl.org)
 
-To create FMUs for power system models you can use a [Modelica tool of your choice](https://modelica.org/tools) capable of generating FMUs. FMU generation with RaPId has been tested using [JModelica](http://www.jmodelica.org/), [OpenModelica](https://www.openmodelica.org/) and [Dymola](http://www.3ds.com/products-services/catia/products/dymola).
+To create FMUs for power system models you can use a [Modelica tool of your choice](https://modelica.org/tools) capable of generating FMUs. FMU generation with RaPId has been tested using [JModelica](http://www.jmodelica.org/) and [Dymola](http://www.3ds.com/products-services/catia/products/dymola).
 
 If you would like to use Modelica to generate FMUs containing power system models, you can use the [OpenIPSL](https://github.com/SmarTS-Lab/OpenIPSL). Several of the examples in RaPId where developed using the OpenIPSL.
 </div>
 
 ## <div id="acknowledgements">Acknowledgements
-The initial development of RaPId was possible through the [iTesla](http://www.itesla-project.eu/) project funded by the European Commission through the FP7.
-The original development team at KTH SmarTS Lab was also supported by [Statnett SF](http://www.statnett.no/) (the Norwegian power grid operator), the NER-funded project [STRONgrid](http://www.nordicenergy.org/project/smart-transmission-grid-operation-and-control/), and the [STandUP for Energy collaboration initiative](http://www.standupforenergy.se/).
+The initial development of RaPId was possible through the [iTesla](http://www.itesla-project.eu/) project funded by the European Commission through the FP7 program. 
 </div>
 
 ## <div id="dedi">Dedication of this OSS Release (by Luigi Vanfretti - RaPId's Original Dev. Team Leader)
@@ -150,11 +148,11 @@ See [Full Statement on the Wiki.](https://github.com/SmarTS-Lab/iTesla_RaPId/wik
 ## <div id="nowarranty">No Warranty
 ><Rapid Parameter Identification is a toolbox for automated parameter identification>
 >
->Copyright 2015-2016 Luigi Vanfretti, Achour Amazouz, Maxime Baudette,
+>Copyright 2015-2018 Luigi Vanfretti, Achour Amazouz, Maxime Baudette,
 >Tetiana Bogodorova, Jan Lavenius, Tin Rabuzin, Giuseppe Laera,
 >Francisco Gomez-Lopez
 >
->The authors can be contacted by email: luigiv at kth dot se
+>The authors can be contacted by email: luigi.vanfretti@gmail.com
 >
 >This package is part of Rapid Parameter Identification ("RaPId") .
 >
