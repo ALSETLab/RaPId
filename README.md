@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/44382864.svg)](https://zenodo.org/badge/latestdoi/44382864)
+
 # RaPId
 
 ## <div id="abstract">Abstract
