@@ -21,7 +21,7 @@
   5. [Creating FMUs](#createfmu)
   6. [Creating FMUs for Power System Models](#createpowerfmu)
 8. [Acknowledgements](#acknowledgements)
-9. [Dedication of this OSS Release (by Luigi Vanfretti - RaPId's Original Dev. Team Leader)](#dedi)
+9. [Dedication](#dedi)
 10. [No Warranty](#nowarranty)
 </div>
 
