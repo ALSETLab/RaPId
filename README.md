@@ -76,14 +76,22 @@ To see RaPId in action, you can find demonstration videos on Youtube:
 
 ### <div id="reqs"> Software requirements (dependencies):
 Here is compiled a list of the required software packages to run the toolbox.
-- Matlab R2011b to R2014b ([MathWorks](http://se.mathworks.com/products/matlab/))
-- Simulink ([MathWorks](http://se.mathworks.com/products/matlab/))
+- Matlab R2016b ([MathWorks](http://mathworks.com/products/matlab/)). R2018b will be supported and replace R2016b when the FMI Toolbox adds support for that version.
+- Simulink ([MathWorks](http://mathworks.com/products/matlab/))
 - Matlab Toolboxes:
   * Optimization Toolbox
   * Global Optimization Toolbox
   * Statistics Toolbox
   * Signal Processing Toolbox
-- FMI Toolbox v2.1 and above ([Modelon](http://www.modelon.com/products/fmi-toolbox-for-matlab/))
+- FMI Toolbox v2.6.x and above ([Modelon](http://www.modelon.com/products/fmi-toolbox-for-matlab/))
+  
+
+- Note on Operating Systems: 
+    - Testing for the current version of RaPId has only been carried out using Windows 10 (64-bit) 
+    - While the software should work in other operating systems supporting MATLAB/Simulink, the FMI Toolbox and with FMUs exported for that platform, this variants have not been tested.
+    - In the future, testing will be carried for Ubuntu (LTS versions 16 and 18), and specific versions of Red Hat (TBD).
+    - MAC OS cannot be supported natively, as the FMI Toolbox is not supported in Mac OS.
+
 </div>
 
 ### <div id="install"> Installation:
