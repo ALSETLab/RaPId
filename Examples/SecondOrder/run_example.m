@@ -21,7 +21,7 @@ rapidSettings.experimentData.pathToInData = '';
 
 %General settings 
 rapidSettings.experimentSettings.tf = 50; %Simulation length
-rapidSettings.experimentSettings.ts = 0.01; %Sampling time
+rapidSettings.experimentSettings.ts = 0.1; %Sampling time
 rapidSettings.experimentSettings.t_fitness_start = 4; %Start calculating fintess function after t_fintess_start
 rapidSettings.experimentSettings.timeOut = 2; %Seconds before simulation timeout
 rapidSettings.experimentSettings.integrationMethod = 'ode45'; %Solver selection

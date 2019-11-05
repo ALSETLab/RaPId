@@ -1,0 +1,3971 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  fmiVersion="2.0"
+  modelName="generator_aggregation"
+  guid="{acd82ad5-668e-412c-a6ec-8d4f9ae1314a}"
+  description="SMIB system with one load and GENROE model"
+  version="1.0.0"
+  generationTool="Dymola Version 2020 (64-bit), 2019-04-10"
+  generationDateAndTime="2019-11-05T15:16:41Z"
+  variableNamingConvention="structured"
+  numberOfEventIndicators="8">
+  <ModelExchange
+    modelIdentifier="generator_aggregation"
+    canGetAndSetFMUstate="true"
+    canSerializeFMUstate="true"
+    providesDirectionalDerivative="true">
+    <SourceFiles>
+      <File
+        name="all.c"/>
+    </SourceFiles>
+  </ModelExchange>
+  <CoSimulation
+    modelIdentifier="generator_aggregation"
+    canHandleVariableCommunicationStepSize="true"
+    canInterpolateInputs="true"
+    maxOutputDerivativeOrder="1"
+    canGetAndSetFMUstate="true"
+    canSerializeFMUstate="true"
+    providesDirectionalDerivative="true">
+    <SourceFiles>
+      <File
+        name="all.c"/>
+    </SourceFiles>
+  </CoSimulation>
+  <UnitDefinitions>
+    <Unit
+      name="1"/>
+    <Unit
+      name="Hz">
+      <BaseUnit s="-1"/>
+    </Unit>
+    <Unit
+      name="MVA">
+      <BaseUnit kg="1"
+        m="2"
+        s="-3"
+        factor="1000000.0"/>
+    </Unit>
+    <Unit
+      name="MW">
+      <BaseUnit kg="1"
+        m="2"
+        s="-3"
+        factor="1000000.0"/>
+    </Unit>
+    <Unit
+      name="Mvar">
+      <BaseUnit kg="1"
+        m="2"
+        s="-3"
+        factor="1000000.0"/>
+    </Unit>
+    <Unit
+      name="deg">
+      <BaseUnit rad="1"
+        factor="0.017453292519943295"/>
+    </Unit>
+    <Unit
+      name="kV">
+      <BaseUnit kg="1"
+        m="2"
+        s="-3"
+        A="-1"
+        factor="1000.0"/>
+    </Unit>
+    <Unit
+      name="rad">
+      <BaseUnit rad="1"/>
+      <DisplayUnit
+        name="deg"
+        factor="57.29577951308232"/>
+    </Unit>
+    <Unit
+      name="s">
+      <BaseUnit s="1"/>
+    </Unit>
+  </UnitDefinitions>
+  <TypeDefinitions>
+    <SimpleType
+      name="Modelica.Blocks.Interfaces.RealInput">
+      <Real/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.Blocks.Interfaces.RealOutput">
+      <Real/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Angle">
+      <Real
+        quantity="Angle"
+        unit="rad"
+        displayUnit="deg"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Conversions.NonSIunits.Angle_deg">
+      <Real
+        quantity="Angle"
+        unit="deg"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Frequency">
+      <Real
+        quantity="Frequency"
+        unit="Hz"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Time">
+      <Real
+        quantity="Time"
+        unit="s"/>
+    </SimpleType>
+    <SimpleType
+      name="RapidTest.Types.ActivePowerMega">
+      <Real
+        quantity="Power"
+        unit="MW"/>
+    </SimpleType>
+    <SimpleType
+      name="RapidTest.Types.ApparentPowerMega">
+      <Real
+        quantity="Power"
+        unit="MVA"/>
+    </SimpleType>
+    <SimpleType
+      name="RapidTest.Types.ReactivePowerMega">
+      <Real
+        quantity="Power"
+        unit="Mvar"/>
+    </SimpleType>
+    <SimpleType
+      name="RapidTest.Types.VoltageKilo">
+      <Real
+        quantity="ElectricPotential"
+        unit="kV"/>
+    </SimpleType>
+  </TypeDefinitions>
+  <DefaultExperiment startTime="0.0"
+    stopTime="1.0"
+    tolerance="0.0001"/>
+  <ModelVariables>
+    <!-- Index for next variable = 1 -->
+    <ScalarVariable
+      name="SysData.S_b"
+      valueReference="16777216"
+      description="System base"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ApparentPowerMega"
+        start="100"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 2 -->
+    <ScalarVariable
+      name="SysData.fn"
+      valueReference="16777217"
+      description="System Frequency"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Frequency"
+        start="50"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 3 -->
+    <ScalarVariable
+      name="gENROE.V_b"
+      valueReference="16777218"
+      description="Base voltage of the bus"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="RapidTest.Types.VoltageKilo"
+        start="400"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 4 -->
+    <ScalarVariable
+      name="gENROE.V_0"
+      valueReference="16777219"
+      description="Voltage magnitude (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1.05"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 5 -->
+    <ScalarVariable
+      name="gENROE.angle_0"
+      valueReference="16777220"
+      description="Voltage angle"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Conversions.NonSIunits.Angle_deg"
+        start="-0.1696705"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 6 -->
+    <ScalarVariable
+      name="gENROE.P_0"
+      valueReference="16777221"
+      description="Active power"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ActivePowerMega"
+        start="50"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 7 -->
+    <ScalarVariable
+      name="gENROE.Q_0"
+      valueReference="16777222"
+      description="Reactive power"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ReactivePowerMega"
+        start="54.87792"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 8 -->
+    <ScalarVariable
+      name="gENROE.S_b"
+      valueReference="100663296"
+      description="System base power"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ApparentPowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 9 -->
+    <ScalarVariable
+      name="gENROE.fn"
+      valueReference="100663297"
+      description="System Frequeny"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Frequency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 10 -->
+    <ScalarVariable
+      name="gENROE.M_b"
+      valueReference="16777223"
+      description="Machine base power (MVA)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="100"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 11 -->
+    <ScalarVariable
+      name="gENROE.Tpd0"
+      valueReference="16777224"
+      description="d-axis transient open-circuit time constant (s)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="5"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 12 -->
+    <ScalarVariable
+      name="gENROE.Tppd0"
+      valueReference="16777225"
+      description="d-axis sub-transient open-circuit time constant (s)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.07"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 13 -->
+    <ScalarVariable
+      name="gENROE.Tppq0"
+      valueReference="16777226"
+      description="q-axis transient open-circuit time constant (s)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.09"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 14 -->
+    <ScalarVariable
+      name="gENROE.H"
+      valueReference="16777227"
+      description="Inertia constant (s)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="4.28"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 15 -->
+    <ScalarVariable
+      name="gENROE.D"
+      valueReference="16777228"
+      description="Speed damping"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 16 -->
+    <ScalarVariable
+      name="gENROE.Xd"
+      valueReference="16777229"
+      description="d-axis reactance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1.84"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 17 -->
+    <ScalarVariable
+      name="gENROE.Xq"
+      valueReference="16777230"
+      description="q-axis reactance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1.75"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 18 -->
+    <ScalarVariable
+      name="gENROE.Xpd"
+      valueReference="16777231"
+      description="d-axis transient reactance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.41"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 19 -->
+    <ScalarVariable
+      name="gENROE.Xppd"
+      valueReference="16777232"
+      description="d-axis sub-transient reactance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 20 -->
+    <ScalarVariable
+      name="gENROE.Xppq"
+      valueReference="16777233"
+      description="q-axis sub-transient reactance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 21 -->
+    <ScalarVariable
+      name="gENROE.Xl"
+      valueReference="16777234"
+      description="leakage reactance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.12"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 22 -->
+    <ScalarVariable
+      name="gENROE.S10"
+      valueReference="16777235"
+      description="Saturation factor at 1.0 pu"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.11"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 23 -->
+    <ScalarVariable
+      name="gENROE.S12"
+      valueReference="16777236"
+      description="Saturation factor at 1.2 pu"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.39"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 24 -->
+    <ScalarVariable
+      name="gENROE.R_a"
+      valueReference="16777237"
+      description="amature resistance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 25 -->
+    <ScalarVariable
+      name="gENROE.p.vr"
+      valueReference="637534210"
+      description="Real part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 26 -->
+    <ScalarVariable
+      name="gENROE.p.vi"
+      valueReference="637534211"
+      description="Imaginary part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 27 -->
+    <ScalarVariable
+      name="gENROE.p.ir"
+      valueReference="637534212"
+      description="Real part of the current">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 28 -->
+    <ScalarVariable
+      name="gENROE.p.ii"
+      valueReference="637534213"
+      description="Imaginary part of the current">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 29 -->
+    <ScalarVariable
+      name="gENROE.SPEED"
+      valueReference="33554432"
+      description="Machine speed deviation from nominal (pu)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 30 -->
+    <ScalarVariable
+      name="gENROE.PMECH"
+      valueReference="100663365"
+      description="Turbine mechanical power (pu on M_b)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 31 -->
+    <ScalarVariable
+      name="gENROE.PMECH0"
+      valueReference="100663365"
+      description="Initial value of machine electrical power (pu on M_b)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 32 -->
+    <ScalarVariable
+      name="gENROE.ETERM"
+      valueReference="905969670"
+      description="Machine terminal voltage (pu)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 33 -->
+    <ScalarVariable
+      name="gENROE.EFD"
+      valueReference="637534215"
+      description="Generator main field voltage (pu)"
+      variability="discrete">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 34 -->
+    <ScalarVariable
+      name="gENROE.EFD0"
+      valueReference="100663366"
+      description="Initial generator main field voltage (pu)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 35 -->
+    <ScalarVariable
+      name="gENROE.PELEC"
+      valueReference="905969672"
+      description="Machine electrical power (pu on M_b)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 36 -->
+    <ScalarVariable
+      name="gENROE.ISORCE"
+      valueReference="637534217"
+      description="Machine source current (pu)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 37 -->
+    <ScalarVariable
+      name="gENROE.ANGLE"
+      valueReference="33554433"
+      description="Machine relative rotor angle (deg.)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 38 -->
+    <ScalarVariable
+      name="gENROE.XADIFD"
+      valueReference="637534217"
+      description="Machine field current (pu)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 39 -->
+    <ScalarVariable
+      name="gENROE.w"
+      valueReference="33554432"
+      description="Machine speed deviation (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 40 -->
+    <ScalarVariable
+      name="der(gENROE.w)"
+      valueReference="587202560"
+      description="der(Machine speed deviation (pu))">
+      <Real derivative="39"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 41 -->
+    <ScalarVariable
+      name="gENROE.delta"
+      valueReference="33554433"
+      description="Rotor angle (deg.)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 42 -->
+    <ScalarVariable
+      name="der(gENROE.delta)"
+      valueReference="587202561"
+      description="der(Rotor angle (deg.))">
+      <Real derivative="41"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 43 -->
+    <ScalarVariable
+      name="gENROE.Vt"
+      valueReference="905969670"
+      description="Bus voltage magnitude (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 44 -->
+    <ScalarVariable
+      name="gENROE.anglev"
+      valueReference="905969674"
+      description="Bus voltage angle (deg.)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 45 -->
+    <ScalarVariable
+      name="gENROE.I"
+      valueReference="905969675"
+      description="Terminal current magnitude (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 46 -->
+    <ScalarVariable
+      name="gENROE.anglei"
+      valueReference="905969676"
+      description="Terminal current angle (deg.)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 47 -->
+    <ScalarVariable
+      name="gENROE.P"
+      valueReference="905969677"
+      description="Active power (p.u. on S_b)">
+      <Real
+        unit="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 48 -->
+    <ScalarVariable
+      name="gENROE.Q"
+      valueReference="905969678"
+      description="Reactive power (p.u. on S_b)">
+      <Real
+        unit="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 49 -->
+    <ScalarVariable
+      name="gENROE.Te"
+      valueReference="637534223"
+      description="Electrical torque (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 50 -->
+    <ScalarVariable
+      name="gENROE.id"
+      valueReference="637534224"
+      description="d-axis armature current (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 51 -->
+    <ScalarVariable
+      name="gENROE.iq"
+      valueReference="637534225"
+      description="q-axis armature current (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 52 -->
+    <ScalarVariable
+      name="gENROE.ud"
+      valueReference="637534226"
+      description="d-axis terminal voltage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 53 -->
+    <ScalarVariable
+      name="gENROE.uq"
+      valueReference="637534227"
+      description="q-axis terminal voltage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 54 -->
+    <ScalarVariable
+      name="gENROE.w_b"
+      valueReference="100663316"
+      description="System base speed (rad/s)"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 55 -->
+    <ScalarVariable
+      name="gENROE.anglev_rad"
+      valueReference="100663317"
+      description="initial value of bus voltage angle in rad"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 56 -->
+    <ScalarVariable
+      name="gENROE.CoB"
+      valueReference="100663318"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 57 -->
+    <ScalarVariable
+      name="gENROE.vr0"
+      valueReference="100663319"
+      description="Real component of initial terminal voltage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 58 -->
+    <ScalarVariable
+      name="gENROE.vi0"
+      valueReference="100663320"
+      description="Imaginary component of intitial terminal voltage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 59 -->
+    <ScalarVariable
+      name="gENROE.ir0"
+      valueReference="100663321"
+      description="Real component of initial armature current, systembase"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 60 -->
+    <ScalarVariable
+      name="gENROE.ii0"
+      valueReference="100663322"
+      description="Imaginary component of initial armature current, systembase"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 61 -->
+    <ScalarVariable
+      name="gENROE.p0"
+      valueReference="100663323"
+      description="initial active power generation in pu machinebase"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 62 -->
+    <ScalarVariable
+      name="gENROE.q0"
+      valueReference="100663324"
+      description="initial reactive power generation in pu machinebase"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 63 -->
+    <ScalarVariable
+      name="gENROE.Xpq"
+      valueReference="16777238"
+      description="Sub-transient reactance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.6"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 64 -->
+    <ScalarVariable
+      name="gENROE.Tpq0"
+      valueReference="16777239"
+      description="q-axis transient open-circuit time constant (s)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.9"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 65 -->
+    <ScalarVariable
+      name="gENROE.Xpp"
+      valueReference="100663325"
+      description="Sub-transient reactance (pu)"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 66 -->
+    <ScalarVariable
+      name="gENROE.Epd"
+      valueReference="33554434"
+      description="d-axis voltage behind transient reactance (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 67 -->
+    <ScalarVariable
+      name="der(gENROE.Epd)"
+      valueReference="587202562"
+      description="der(d-axis voltage behind transient reactance (pu))">
+      <Real derivative="66"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 68 -->
+    <ScalarVariable
+      name="gENROE.Epq"
+      valueReference="33554435"
+      description="q-axis voltage behind transient reactance ">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 69 -->
+    <ScalarVariable
+      name="der(gENROE.Epq)"
+      valueReference="587202563"
+      description="der(q-axis voltage behind transient reactance )">
+      <Real derivative="68"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 70 -->
+    <ScalarVariable
+      name="gENROE.PSIkd"
+      valueReference="33554436"
+      description="d-axis rotor flux linkage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 71 -->
+    <ScalarVariable
+      name="der(gENROE.PSIkd)"
+      valueReference="587202564"
+      description="der(d-axis rotor flux linkage (pu))">
+      <Real derivative="70"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 72 -->
+    <ScalarVariable
+      name="gENROE.PSIkq"
+      valueReference="33554437"
+      description="q-axis rotor flux linkage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 73 -->
+    <ScalarVariable
+      name="der(gENROE.PSIkq)"
+      valueReference="587202565"
+      description="der(q-axis rotor flux linkage (pu))">
+      <Real derivative="72"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 74 -->
+    <ScalarVariable
+      name="gENROE.PSId"
+      valueReference="637534238"
+      description="d-axis flux linkage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 75 -->
+    <ScalarVariable
+      name="gENROE.PSIq"
+      valueReference="637534239"
+      description="q-axis flux linkage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 76 -->
+    <ScalarVariable
+      name="gENROE.PSIppd"
+      valueReference="637534240"
+      description="d-axis subtransient flux linkage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 77 -->
+    <ScalarVariable
+      name="gENROE.PSIppq"
+      valueReference="637534241"
+      description="q-axis subtransient flux linkage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 78 -->
+    <ScalarVariable
+      name="gENROE.PSIpp"
+      valueReference="637534242"
+      description="Air-gap flux (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 79 -->
+    <ScalarVariable
+      name="gENROE.XadIfd"
+      valueReference="637534217"
+      description="d-axis machine field current (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 80 -->
+    <ScalarVariable
+      name="gENROE.XaqIlq"
+      valueReference="637534243"
+      description="q-axis Machine field current (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 81 -->
+    <ScalarVariable
+      name="gENROE.Zs.re"
+      valueReference="100663332"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 82 -->
+    <ScalarVariable
+      name="gENROE.Zs.im"
+      valueReference="100663333"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 83 -->
+    <ScalarVariable
+      name="gENROE.VT.re"
+      valueReference="100663334"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 84 -->
+    <ScalarVariable
+      name="gENROE.VT.im"
+      valueReference="100663335"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 85 -->
+    <ScalarVariable
+      name="gENROE.S.re"
+      valueReference="100663336"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 86 -->
+    <ScalarVariable
+      name="gENROE.S.im"
+      valueReference="100663337"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 87 -->
+    <ScalarVariable
+      name="gENROE.It.re"
+      valueReference="100663338"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 88 -->
+    <ScalarVariable
+      name="gENROE.It.im"
+      valueReference="100663339"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 89 -->
+    <ScalarVariable
+      name="gENROE.Is.re"
+      valueReference="100663340"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 90 -->
+    <ScalarVariable
+      name="gENROE.Is.im"
+      valueReference="100663341"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 91 -->
+    <ScalarVariable
+      name="gENROE.PSIpp0.re"
+      valueReference="100663342"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 92 -->
+    <ScalarVariable
+      name="gENROE.PSIpp0.im"
+      valueReference="100663343"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 93 -->
+    <ScalarVariable
+      name="gENROE.ang_PSIpp0"
+      valueReference="100663344"
+      description="flux angle"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 94 -->
+    <ScalarVariable
+      name="gENROE.ang_It"
+      valueReference="100663345"
+      description="current angle"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 95 -->
+    <ScalarVariable
+      name="gENROE.ang_PSIpp0andIt"
+      valueReference="100663346"
+      description="angle difference"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 96 -->
+    <ScalarVariable
+      name="gENROE.abs_PSIpp0"
+      valueReference="100663347"
+      description="magnitude of sub-transient flux linkage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 97 -->
+    <ScalarVariable
+      name="gENROE.dsat"
+      valueReference="100663348"
+      description="To include saturation of during initialization"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 98 -->
+    <ScalarVariable
+      name="gENROE.a"
+      valueReference="100663349"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 99 -->
+    <ScalarVariable
+      name="gENROE.b"
+      valueReference="100663350"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 100 -->
+    <ScalarVariable
+      name="gENROE.delta0"
+      valueReference="100663351"
+      description="initial rotor angle in radians"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 101 -->
+    <ScalarVariable
+      name="gENROE.DQ_dq.re"
+      valueReference="100663352"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 102 -->
+    <ScalarVariable
+      name="gENROE.DQ_dq.im"
+      valueReference="100663353"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 103 -->
+    <ScalarVariable
+      name="gENROE.PSIpp0_dq.re"
+      valueReference="100663354"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 104 -->
+    <ScalarVariable
+      name="gENROE.PSIpp0_dq.im"
+      valueReference="100663355"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 105 -->
+    <ScalarVariable
+      name="gENROE.I_dq.re"
+      valueReference="100663356"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 106 -->
+    <ScalarVariable
+      name="gENROE.I_dq.im"
+      valueReference="100663357"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 107 -->
+    <ScalarVariable
+      name="gENROE.PSIppq0"
+      valueReference="100663358"
+      description="q-axis component of the sub-transient flux linkage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 108 -->
+    <ScalarVariable
+      name="gENROE.PSIppd0"
+      valueReference="100663359"
+      description="d-axis component of the sub-transient flux linkage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 109 -->
+    <ScalarVariable
+      name="gENROE.delta1"
+      valueReference="100663360"
+      description="rotor angle in degrees"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 110 -->
+    <ScalarVariable
+      name="gENROE.iq0"
+      valueReference="100663361"
+      description="q-axis component of intitial current"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 111 -->
+    <ScalarVariable
+      name="gENROE.id0"
+      valueReference="100663362"
+      description="d-axis component of intitial current"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 112 -->
+    <ScalarVariable
+      name="gENROE.ud0"
+      valueReference="100663363"
+      description="d-axis component of intitial voltage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 113 -->
+    <ScalarVariable
+      name="gENROE.uq0"
+      valueReference="100663364"
+      description="q-axis component of intitial voltage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 114 -->
+    <ScalarVariable
+      name="gENROE.pm0"
+      valueReference="100663365"
+      description="Initial mechanical power, machine base"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 115 -->
+    <ScalarVariable
+      name="gENROE.efd0"
+      valueReference="100663366"
+      description="Initial field voltage magnitude"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 116 -->
+    <ScalarVariable
+      name="gENROE.Epq0"
+      valueReference="100663367"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 117 -->
+    <ScalarVariable
+      name="gENROE.Epd0"
+      valueReference="100663368"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 118 -->
+    <ScalarVariable
+      name="gENROE.PSIkd0"
+      valueReference="100663369"
+      description="d-axis initial rotor flux linkage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 119 -->
+    <ScalarVariable
+      name="gENROE.PSIkq0"
+      valueReference="100663370"
+      description="q-axis initial rotor flux linkage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 120 -->
+    <ScalarVariable
+      name="gENROE.PSId0"
+      valueReference="100663371"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 121 -->
+    <ScalarVariable
+      name="gENROE.PSIq0"
+      valueReference="100663372"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 122 -->
+    <ScalarVariable
+      name="gENROE.K1d"
+      valueReference="100663373"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 123 -->
+    <ScalarVariable
+      name="gENROE.K2d"
+      valueReference="100663374"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 124 -->
+    <ScalarVariable
+      name="gENROE.K1q"
+      valueReference="100663375"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 125 -->
+    <ScalarVariable
+      name="gENROE.K2q"
+      valueReference="100663376"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 126 -->
+    <ScalarVariable
+      name="gENROE.K3d"
+      valueReference="100663377"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 127 -->
+    <ScalarVariable
+      name="gENROE.K4d"
+      valueReference="100663378"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 128 -->
+    <ScalarVariable
+      name="gENROE.K3q"
+      valueReference="100663379"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 129 -->
+    <ScalarVariable
+      name="gENROE.K4q"
+      valueReference="100663380"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 130 -->
+    <ScalarVariable
+      name="add.u1"
+      valueReference="637534293"
+      description="Connector of Real input signal 1"
+      variability="discrete">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 131 -->
+    <ScalarVariable
+      name="add.u2"
+      valueReference="637534294"
+      description="Connector of Real input signal 2"
+      variability="discrete">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 132 -->
+    <ScalarVariable
+      name="add.y"
+      valueReference="637534295"
+      description="Connector of Real output signal"
+      variability="discrete">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 133 -->
+    <ScalarVariable
+      name="add.k1"
+      valueReference="16777240"
+      description="Gain of input signal 1"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 134 -->
+    <ScalarVariable
+      name="add.k2"
+      valueReference="16777241"
+      description="Gain of input signal 2"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 135 -->
+    <ScalarVariable
+      name="step.height"
+      valueReference="16777242"
+      description="Height of step"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 136 -->
+    <ScalarVariable
+      name="step.y"
+      valueReference="637534293"
+      description="Connector of Real output signal">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 137 -->
+    <ScalarVariable
+      name="step.offset"
+      valueReference="16777243"
+      description="Offset of output signal y"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 138 -->
+    <ScalarVariable
+      name="step.startTime"
+      valueReference="16777244"
+      description="Output y = offset for time &lt; startTime"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Time"
+        start="2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 139 -->
+    <ScalarVariable
+      name="step1.height"
+      valueReference="16777245"
+      description="Height of step"
+      causality="parameter"
+      variability="tunable">
+      <Real start="-0.1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 140 -->
+    <ScalarVariable
+      name="step1.y"
+      valueReference="637534294"
+      description="Connector of Real output signal">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 141 -->
+    <ScalarVariable
+      name="step1.offset"
+      valueReference="16777246"
+      description="Offset of output signal y"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 142 -->
+    <ScalarVariable
+      name="step1.startTime"
+      valueReference="16777247"
+      description="Output y = offset for time &lt; startTime"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Time"
+        start="10"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 143 -->
+    <ScalarVariable
+      name="add1.u1"
+      valueReference="637534295"
+      description="Connector of Real input signal 1">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 144 -->
+    <ScalarVariable
+      name="add1.u2"
+      valueReference="100663366"
+      description="Connector of Real input signal 2">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 145 -->
+    <ScalarVariable
+      name="add1.y"
+      valueReference="637534215"
+      description="Connector of Real output signal">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 146 -->
+    <ScalarVariable
+      name="add1.k1"
+      valueReference="16777248"
+      description="Gain of input signal 1"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 147 -->
+    <ScalarVariable
+      name="add1.k2"
+      valueReference="16777249"
+      description="Gain of input signal 2"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 148 -->
+    <ScalarVariable
+      name="gENROE1.V_b"
+      valueReference="16777250"
+      description="Base voltage of the bus"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="RapidTest.Types.VoltageKilo"
+        start="400"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 149 -->
+    <ScalarVariable
+      name="gENROE1.V_0"
+      valueReference="16777251"
+      description="Voltage magnitude (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 150 -->
+    <ScalarVariable
+      name="gENROE1.angle_0"
+      valueReference="16777252"
+      description="Voltage angle"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Conversions.NonSIunits.Angle_deg"
+        start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 151 -->
+    <ScalarVariable
+      name="gENROE1.P_0"
+      valueReference="16777253"
+      description="Active power"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ActivePowerMega"
+        start="50.06256"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 152 -->
+    <ScalarVariable
+      name="gENROE1.Q_0"
+      valueReference="16777254"
+      description="Reactive power"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ReactivePowerMega"
+        start="2.634454"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 153 -->
+    <ScalarVariable
+      name="gENROE1.S_b"
+      valueReference="100663384"
+      description="System base power"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ApparentPowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 154 -->
+    <ScalarVariable
+      name="gENROE1.fn"
+      valueReference="100663385"
+      description="System Frequeny"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Frequency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 155 -->
+    <ScalarVariable
+      name="gENROE1.M_b"
+      valueReference="16777255"
+      description="Machine base power (MVA)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1000"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 156 -->
+    <ScalarVariable
+      name="gENROE1.Tpd0"
+      valueReference="16777256"
+      description="d-axis transient open-circuit time constant (s)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="7.6969"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 157 -->
+    <ScalarVariable
+      name="gENROE1.Tppd0"
+      valueReference="16777257"
+      description="d-axis sub-transient open-circuit time constant (s)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.0413"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 158 -->
+    <ScalarVariable
+      name="gENROE1.Tppq0"
+      valueReference="16777258"
+      description="q-axis transient open-circuit time constant (s)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.0763"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 159 -->
+    <ScalarVariable
+      name="gENROE1.H"
+      valueReference="16777259"
+      description="Inertia constant (s)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="7.92"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 160 -->
+    <ScalarVariable
+      name="gENROE1.D"
+      valueReference="16777260"
+      description="Speed damping"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 161 -->
+    <ScalarVariable
+      name="gENROE1.Xd"
+      valueReference="16777261"
+      description="d-axis reactance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1.003"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 162 -->
+    <ScalarVariable
+      name="gENROE1.Xq"
+      valueReference="16777262"
+      description="q-axis reactance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1.3005"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 163 -->
+    <ScalarVariable
+      name="gENROE1.Xpd"
+      valueReference="16777263"
+      description="d-axis transient reactance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.1638"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 164 -->
+    <ScalarVariable
+      name="gENROE1.Xppd"
+      valueReference="16777264"
+      description="d-axis sub-transient reactance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.1331"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 165 -->
+    <ScalarVariable
+      name="gENROE1.Xppq"
+      valueReference="16777265"
+      description="q-axis sub-transient reactance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 166 -->
+    <ScalarVariable
+      name="gENROE1.Xl"
+      valueReference="16777266"
+      description="leakage reactance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.1111"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 167 -->
+    <ScalarVariable
+      name="gENROE1.S10"
+      valueReference="16777267"
+      description="Saturation factor at 1.0 pu"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.11"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 168 -->
+    <ScalarVariable
+      name="gENROE1.S12"
+      valueReference="16777268"
+      description="Saturation factor at 1.2 pu"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.39"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 169 -->
+    <ScalarVariable
+      name="gENROE1.R_a"
+      valueReference="16777269"
+      description="amature resistance"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 170 -->
+    <ScalarVariable
+      name="gENROE1.p.vr"
+      valueReference="637534298"
+      description="Real part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 171 -->
+    <ScalarVariable
+      name="gENROE1.p.vi"
+      valueReference="637534299"
+      description="Imaginary part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 172 -->
+    <ScalarVariable
+      name="gENROE1.p.ir"
+      valueReference="637534300"
+      description="Real part of the current">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 173 -->
+    <ScalarVariable
+      name="gENROE1.p.ii"
+      valueReference="637534301"
+      description="Imaginary part of the current">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 174 -->
+    <ScalarVariable
+      name="gENROE1.SPEED"
+      valueReference="33554438"
+      description="Machine speed deviation from nominal (pu)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 175 -->
+    <ScalarVariable
+      name="gENROE1.PMECH"
+      valueReference="100663452"
+      description="Turbine mechanical power (pu on M_b)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 176 -->
+    <ScalarVariable
+      name="gENROE1.PMECH0"
+      valueReference="100663452"
+      description="Initial value of machine electrical power (pu on M_b)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 177 -->
+    <ScalarVariable
+      name="gENROE1.ETERM"
+      valueReference="905969758"
+      description="Machine terminal voltage (pu)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 178 -->
+    <ScalarVariable
+      name="gENROE1.EFD"
+      valueReference="100663453"
+      description="Generator main field voltage (pu)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 179 -->
+    <ScalarVariable
+      name="gENROE1.EFD0"
+      valueReference="100663453"
+      description="Initial generator main field voltage (pu)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 180 -->
+    <ScalarVariable
+      name="gENROE1.PELEC"
+      valueReference="905969759"
+      description="Machine electrical power (pu on M_b)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 181 -->
+    <ScalarVariable
+      name="gENROE1.ISORCE"
+      valueReference="637534304"
+      description="Machine source current (pu)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 182 -->
+    <ScalarVariable
+      name="gENROE1.ANGLE"
+      valueReference="33554439"
+      description="Machine relative rotor angle (deg.)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 183 -->
+    <ScalarVariable
+      name="gENROE1.XADIFD"
+      valueReference="637534304"
+      description="Machine field current (pu)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 184 -->
+    <ScalarVariable
+      name="gENROE1.w"
+      valueReference="33554438"
+      description="Machine speed deviation (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 185 -->
+    <ScalarVariable
+      name="der(gENROE1.w)"
+      valueReference="587202566"
+      description="der(Machine speed deviation (pu))">
+      <Real derivative="184"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 186 -->
+    <ScalarVariable
+      name="gENROE1.delta"
+      valueReference="33554439"
+      description="Rotor angle (deg.)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 187 -->
+    <ScalarVariable
+      name="der(gENROE1.delta)"
+      valueReference="587202567"
+      description="der(Rotor angle (deg.))">
+      <Real derivative="186"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 188 -->
+    <ScalarVariable
+      name="gENROE1.Vt"
+      valueReference="905969758"
+      description="Bus voltage magnitude (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 189 -->
+    <ScalarVariable
+      name="gENROE1.anglev"
+      valueReference="905969761"
+      description="Bus voltage angle (deg.)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 190 -->
+    <ScalarVariable
+      name="gENROE1.I"
+      valueReference="905969762"
+      description="Terminal current magnitude (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 191 -->
+    <ScalarVariable
+      name="gENROE1.anglei"
+      valueReference="905969763"
+      description="Terminal current angle (deg.)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 192 -->
+    <ScalarVariable
+      name="gENROE1.P"
+      valueReference="905969764"
+      description="Active power (p.u. on S_b)">
+      <Real
+        unit="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 193 -->
+    <ScalarVariable
+      name="gENROE1.Q"
+      valueReference="905969765"
+      description="Reactive power (p.u. on S_b)">
+      <Real
+        unit="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 194 -->
+    <ScalarVariable
+      name="gENROE1.Te"
+      valueReference="637534310"
+      description="Electrical torque (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 195 -->
+    <ScalarVariable
+      name="gENROE1.id"
+      valueReference="637534311"
+      description="d-axis armature current (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 196 -->
+    <ScalarVariable
+      name="gENROE1.iq"
+      valueReference="637534312"
+      description="q-axis armature current (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 197 -->
+    <ScalarVariable
+      name="gENROE1.ud"
+      valueReference="637534313"
+      description="d-axis terminal voltage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 198 -->
+    <ScalarVariable
+      name="gENROE1.uq"
+      valueReference="637534314"
+      description="q-axis terminal voltage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 199 -->
+    <ScalarVariable
+      name="gENROE1.w_b"
+      valueReference="100663403"
+      description="System base speed (rad/s)"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 200 -->
+    <ScalarVariable
+      name="gENROE1.anglev_rad"
+      valueReference="100663404"
+      description="initial value of bus voltage angle in rad"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 201 -->
+    <ScalarVariable
+      name="gENROE1.CoB"
+      valueReference="100663405"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 202 -->
+    <ScalarVariable
+      name="gENROE1.vr0"
+      valueReference="100663406"
+      description="Real component of initial terminal voltage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 203 -->
+    <ScalarVariable
+      name="gENROE1.vi0"
+      valueReference="100663407"
+      description="Imaginary component of intitial terminal voltage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 204 -->
+    <ScalarVariable
+      name="gENROE1.ir0"
+      valueReference="100663408"
+      description="Real component of initial armature current, systembase"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 205 -->
+    <ScalarVariable
+      name="gENROE1.ii0"
+      valueReference="100663409"
+      description="Imaginary component of initial armature current, systembase"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 206 -->
+    <ScalarVariable
+      name="gENROE1.p0"
+      valueReference="100663410"
+      description="initial active power generation in pu machinebase"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 207 -->
+    <ScalarVariable
+      name="gENROE1.q0"
+      valueReference="100663411"
+      description="initial reactive power generation in pu machinebase"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 208 -->
+    <ScalarVariable
+      name="gENROE1.Xpq"
+      valueReference="16777270"
+      description="Sub-transient reactance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.8517"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 209 -->
+    <ScalarVariable
+      name="gENROE1.Tpq0"
+      valueReference="16777271"
+      description="q-axis transient open-circuit time constant (s)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1.6732"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 210 -->
+    <ScalarVariable
+      name="gENROE1.Xpp"
+      valueReference="100663412"
+      description="Sub-transient reactance (pu)"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 211 -->
+    <ScalarVariable
+      name="gENROE1.Epd"
+      valueReference="33554440"
+      description="d-axis voltage behind transient reactance (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 212 -->
+    <ScalarVariable
+      name="der(gENROE1.Epd)"
+      valueReference="587202568"
+      description="der(d-axis voltage behind transient reactance (pu))">
+      <Real derivative="211"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 213 -->
+    <ScalarVariable
+      name="gENROE1.Epq"
+      valueReference="33554441"
+      description="q-axis voltage behind transient reactance ">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 214 -->
+    <ScalarVariable
+      name="der(gENROE1.Epq)"
+      valueReference="587202569"
+      description="der(q-axis voltage behind transient reactance )">
+      <Real derivative="213"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 215 -->
+    <ScalarVariable
+      name="gENROE1.PSIkd"
+      valueReference="33554442"
+      description="d-axis rotor flux linkage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 216 -->
+    <ScalarVariable
+      name="der(gENROE1.PSIkd)"
+      valueReference="587202570"
+      description="der(d-axis rotor flux linkage (pu))">
+      <Real derivative="215"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 217 -->
+    <ScalarVariable
+      name="gENROE1.PSIkq"
+      valueReference="33554443"
+      description="q-axis rotor flux linkage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 218 -->
+    <ScalarVariable
+      name="der(gENROE1.PSIkq)"
+      valueReference="587202571"
+      description="der(q-axis rotor flux linkage (pu))">
+      <Real derivative="217"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 219 -->
+    <ScalarVariable
+      name="gENROE1.PSId"
+      valueReference="637534325"
+      description="d-axis flux linkage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 220 -->
+    <ScalarVariable
+      name="gENROE1.PSIq"
+      valueReference="637534326"
+      description="q-axis flux linkage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 221 -->
+    <ScalarVariable
+      name="gENROE1.PSIppd"
+      valueReference="637534327"
+      description="d-axis subtransient flux linkage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 222 -->
+    <ScalarVariable
+      name="gENROE1.PSIppq"
+      valueReference="637534328"
+      description="q-axis subtransient flux linkage (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 223 -->
+    <ScalarVariable
+      name="gENROE1.PSIpp"
+      valueReference="637534329"
+      description="Air-gap flux (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 224 -->
+    <ScalarVariable
+      name="gENROE1.XadIfd"
+      valueReference="637534304"
+      description="d-axis machine field current (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 225 -->
+    <ScalarVariable
+      name="gENROE1.XaqIlq"
+      valueReference="637534330"
+      description="q-axis Machine field current (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 226 -->
+    <ScalarVariable
+      name="gENROE1.Zs.re"
+      valueReference="100663419"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 227 -->
+    <ScalarVariable
+      name="gENROE1.Zs.im"
+      valueReference="100663420"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 228 -->
+    <ScalarVariable
+      name="gENROE1.VT.re"
+      valueReference="100663421"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 229 -->
+    <ScalarVariable
+      name="gENROE1.VT.im"
+      valueReference="100663422"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 230 -->
+    <ScalarVariable
+      name="gENROE1.S.re"
+      valueReference="100663423"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 231 -->
+    <ScalarVariable
+      name="gENROE1.S.im"
+      valueReference="100663424"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 232 -->
+    <ScalarVariable
+      name="gENROE1.It.re"
+      valueReference="100663425"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 233 -->
+    <ScalarVariable
+      name="gENROE1.It.im"
+      valueReference="100663426"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 234 -->
+    <ScalarVariable
+      name="gENROE1.Is.re"
+      valueReference="100663427"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 235 -->
+    <ScalarVariable
+      name="gENROE1.Is.im"
+      valueReference="100663428"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 236 -->
+    <ScalarVariable
+      name="gENROE1.PSIpp0.re"
+      valueReference="100663429"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 237 -->
+    <ScalarVariable
+      name="gENROE1.PSIpp0.im"
+      valueReference="100663430"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 238 -->
+    <ScalarVariable
+      name="gENROE1.ang_PSIpp0"
+      valueReference="100663431"
+      description="flux angle"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 239 -->
+    <ScalarVariable
+      name="gENROE1.ang_It"
+      valueReference="100663432"
+      description="current angle"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 240 -->
+    <ScalarVariable
+      name="gENROE1.ang_PSIpp0andIt"
+      valueReference="100663433"
+      description="angle difference"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 241 -->
+    <ScalarVariable
+      name="gENROE1.abs_PSIpp0"
+      valueReference="100663434"
+      description="magnitude of sub-transient flux linkage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 242 -->
+    <ScalarVariable
+      name="gENROE1.dsat"
+      valueReference="100663435"
+      description="To include saturation of during initialization"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 243 -->
+    <ScalarVariable
+      name="gENROE1.a"
+      valueReference="100663436"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 244 -->
+    <ScalarVariable
+      name="gENROE1.b"
+      valueReference="100663437"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 245 -->
+    <ScalarVariable
+      name="gENROE1.delta0"
+      valueReference="100663438"
+      description="initial rotor angle in radians"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 246 -->
+    <ScalarVariable
+      name="gENROE1.DQ_dq.re"
+      valueReference="100663439"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 247 -->
+    <ScalarVariable
+      name="gENROE1.DQ_dq.im"
+      valueReference="100663440"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 248 -->
+    <ScalarVariable
+      name="gENROE1.PSIpp0_dq.re"
+      valueReference="100663441"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 249 -->
+    <ScalarVariable
+      name="gENROE1.PSIpp0_dq.im"
+      valueReference="100663442"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 250 -->
+    <ScalarVariable
+      name="gENROE1.I_dq.re"
+      valueReference="100663443"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 251 -->
+    <ScalarVariable
+      name="gENROE1.I_dq.im"
+      valueReference="100663444"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 252 -->
+    <ScalarVariable
+      name="gENROE1.PSIppq0"
+      valueReference="100663445"
+      description="q-axis component of the sub-transient flux linkage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 253 -->
+    <ScalarVariable
+      name="gENROE1.PSIppd0"
+      valueReference="100663446"
+      description="d-axis component of the sub-transient flux linkage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 254 -->
+    <ScalarVariable
+      name="gENROE1.delta1"
+      valueReference="100663447"
+      description="rotor angle in degrees"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 255 -->
+    <ScalarVariable
+      name="gENROE1.iq0"
+      valueReference="100663448"
+      description="q-axis component of intitial current"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 256 -->
+    <ScalarVariable
+      name="gENROE1.id0"
+      valueReference="100663449"
+      description="d-axis component of intitial current"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 257 -->
+    <ScalarVariable
+      name="gENROE1.ud0"
+      valueReference="100663450"
+      description="d-axis component of intitial voltage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 258 -->
+    <ScalarVariable
+      name="gENROE1.uq0"
+      valueReference="100663451"
+      description="q-axis component of intitial voltage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 259 -->
+    <ScalarVariable
+      name="gENROE1.pm0"
+      valueReference="100663452"
+      description="Initial mechanical power, machine base"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 260 -->
+    <ScalarVariable
+      name="gENROE1.efd0"
+      valueReference="100663453"
+      description="Initial field voltage magnitude"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 261 -->
+    <ScalarVariable
+      name="gENROE1.Epq0"
+      valueReference="100663454"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 262 -->
+    <ScalarVariable
+      name="gENROE1.Epd0"
+      valueReference="100663455"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 263 -->
+    <ScalarVariable
+      name="gENROE1.PSIkd0"
+      valueReference="100663456"
+      description="d-axis initial rotor flux linkage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 264 -->
+    <ScalarVariable
+      name="gENROE1.PSIkq0"
+      valueReference="100663457"
+      description="q-axis initial rotor flux linkage"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 265 -->
+    <ScalarVariable
+      name="gENROE1.PSId0"
+      valueReference="100663458"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 266 -->
+    <ScalarVariable
+      name="gENROE1.PSIq0"
+      valueReference="100663459"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 267 -->
+    <ScalarVariable
+      name="gENROE1.K1d"
+      valueReference="100663460"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 268 -->
+    <ScalarVariable
+      name="gENROE1.K2d"
+      valueReference="100663461"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 269 -->
+    <ScalarVariable
+      name="gENROE1.K1q"
+      valueReference="100663462"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 270 -->
+    <ScalarVariable
+      name="gENROE1.K2q"
+      valueReference="100663463"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 271 -->
+    <ScalarVariable
+      name="gENROE1.K3d"
+      valueReference="100663464"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 272 -->
+    <ScalarVariable
+      name="gENROE1.K4d"
+      valueReference="100663465"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 273 -->
+    <ScalarVariable
+      name="gENROE1.K3q"
+      valueReference="100663466"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 274 -->
+    <ScalarVariable
+      name="gENROE1.K4q"
+      valueReference="100663467"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 275 -->
+    <ScalarVariable
+      name="pwLine.p.vr"
+      valueReference="637534210"
+      description="Real part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 276 -->
+    <ScalarVariable
+      name="pwLine.p.vi"
+      valueReference="637534211"
+      description="Imaginary part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 277 -->
+    <ScalarVariable
+      name="pwLine.p.ir"
+      valueReference="637534391"
+      description="Real part of the current">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 278 -->
+    <ScalarVariable
+      name="pwLine.p.ii"
+      valueReference="637534392"
+      description="Imaginary part of the current">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 279 -->
+    <ScalarVariable
+      name="pwLine.n.vr"
+      valueReference="637534380"
+      description="Real part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 280 -->
+    <ScalarVariable
+      name="pwLine.n.vi"
+      valueReference="637534381"
+      description="Imaginary part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 281 -->
+    <ScalarVariable
+      name="pwLine.n.ir"
+      valueReference="637534382"
+      description="Real part of the current">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 282 -->
+    <ScalarVariable
+      name="pwLine.n.ii"
+      valueReference="637534383"
+      description="Imaginary part of the current">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 283 -->
+    <ScalarVariable
+      name="pwLine.R"
+      valueReference="16777272"
+      description="Resistance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.001"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 284 -->
+    <ScalarVariable
+      name="pwLine.X"
+      valueReference="16777273"
+      description="Reactance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 285 -->
+    <ScalarVariable
+      name="pwLine.G"
+      valueReference="16777274"
+      description="Shunt half conductance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 286 -->
+    <ScalarVariable
+      name="pwLine.B"
+      valueReference="16777275"
+      description="Shunt half susceptance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 287 -->
+    <ScalarVariable
+      name="pwLine.S_b"
+      valueReference="16777276"
+      description="System base power (MVA)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="100"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 288 -->
+    <ScalarVariable
+      name="pwLine.t1"
+      valueReference="100663472"
+      variability="constant">
+      <Real start="1E+60"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 289 -->
+    <ScalarVariable
+      name="pwLine.t2"
+      valueReference="100663473"
+      variability="constant">
+      <Real start="1E+60"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 290 -->
+    <ScalarVariable
+      name="pwLine.opening"
+      valueReference="100663474"
+      variability="constant">
+      <Integer start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 291 -->
+    <ScalarVariable
+      name="pwLine.displayPF"
+      valueReference="16777277"
+      description="Display power flow results:"
+      causality="parameter"
+      variability="fixed">
+      <Boolean start="false"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 292 -->
+    <ScalarVariable
+      name="pwLine.P12"
+      valueReference="905969843">
+      <Real
+        declaredType="RapidTest.Types.ActivePowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 293 -->
+    <ScalarVariable
+      name="pwLine.P21"
+      valueReference="905969844">
+      <Real
+        declaredType="RapidTest.Types.ActivePowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 294 -->
+    <ScalarVariable
+      name="pwLine.Q12"
+      valueReference="905969845">
+      <Real
+        declaredType="RapidTest.Types.ReactivePowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 295 -->
+    <ScalarVariable
+      name="pwLine.Q21"
+      valueReference="905969846">
+      <Real
+        declaredType="RapidTest.Types.ReactivePowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 296 -->
+    <ScalarVariable
+      name="pwLine.vs.re"
+      valueReference="637534210"
+      description="Real part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 297 -->
+    <ScalarVariable
+      name="pwLine.vs.im"
+      valueReference="637534211"
+      description="Imaginary part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 298 -->
+    <ScalarVariable
+      name="pwLine.is.re"
+      valueReference="637534391"
+      description="Real part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 299 -->
+    <ScalarVariable
+      name="pwLine.is.im"
+      valueReference="637534392"
+      description="Imaginary part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 300 -->
+    <ScalarVariable
+      name="pwLine.vr.re"
+      valueReference="637534380"
+      description="Real part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 301 -->
+    <ScalarVariable
+      name="pwLine.vr.im"
+      valueReference="637534381"
+      description="Imaginary part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 302 -->
+    <ScalarVariable
+      name="pwLine.ir.re"
+      valueReference="637534382"
+      description="Real part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 303 -->
+    <ScalarVariable
+      name="pwLine.ir.im"
+      valueReference="637534383"
+      description="Imaginary part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 304 -->
+    <ScalarVariable
+      name="pwLine.Y.re"
+      valueReference="100663481"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 305 -->
+    <ScalarVariable
+      name="pwLine.Y.im"
+      valueReference="100663482"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 306 -->
+    <ScalarVariable
+      name="pwLine.Z.re"
+      valueReference="100663483"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 307 -->
+    <ScalarVariable
+      name="pwLine.Z.im"
+      valueReference="100663484"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 308 -->
+    <ScalarVariable
+      name="pwLine1.p.vr"
+      valueReference="637534380"
+      description="Real part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 309 -->
+    <ScalarVariable
+      name="pwLine1.p.vi"
+      valueReference="637534381"
+      description="Imaginary part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 310 -->
+    <ScalarVariable
+      name="pwLine1.p.ir"
+      valueReference="637534397"
+      description="Real part of the current"
+      initial="approx">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 311 -->
+    <ScalarVariable
+      name="pwLine1.p.ii"
+      valueReference="637534398"
+      description="Imaginary part of the current"
+      initial="approx">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 312 -->
+    <ScalarVariable
+      name="pwLine1.n.vr"
+      valueReference="637534298"
+      description="Real part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 313 -->
+    <ScalarVariable
+      name="pwLine1.n.vi"
+      valueReference="637534299"
+      description="Imaginary part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 314 -->
+    <ScalarVariable
+      name="pwLine1.n.ir"
+      valueReference="637534399"
+      description="Real part of the current">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 315 -->
+    <ScalarVariable
+      name="pwLine1.n.ii"
+      valueReference="637534400"
+      description="Imaginary part of the current">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 316 -->
+    <ScalarVariable
+      name="pwLine1.R"
+      valueReference="16777278"
+      description="Resistance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.001"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 317 -->
+    <ScalarVariable
+      name="pwLine1.X"
+      valueReference="16777279"
+      description="Reactance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 318 -->
+    <ScalarVariable
+      name="pwLine1.G"
+      valueReference="16777280"
+      description="Shunt half conductance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 319 -->
+    <ScalarVariable
+      name="pwLine1.B"
+      valueReference="16777281"
+      description="Shunt half susceptance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 320 -->
+    <ScalarVariable
+      name="pwLine1.S_b"
+      valueReference="16777282"
+      description="System base power (MVA)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="100"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 321 -->
+    <ScalarVariable
+      name="pwLine1.t1"
+      valueReference="100663489"
+      variability="constant">
+      <Real start="1E+60"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 322 -->
+    <ScalarVariable
+      name="pwLine1.t2"
+      valueReference="100663490"
+      variability="constant">
+      <Real start="1E+60"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 323 -->
+    <ScalarVariable
+      name="pwLine1.opening"
+      valueReference="100663491"
+      variability="constant">
+      <Integer start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 324 -->
+    <ScalarVariable
+      name="pwLine1.displayPF"
+      valueReference="16777283"
+      description="Display power flow results:"
+      causality="parameter"
+      variability="fixed">
+      <Boolean start="false"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 325 -->
+    <ScalarVariable
+      name="pwLine1.P12"
+      valueReference="905969860">
+      <Real
+        declaredType="RapidTest.Types.ActivePowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 326 -->
+    <ScalarVariable
+      name="pwLine1.P21"
+      valueReference="905969861">
+      <Real
+        declaredType="RapidTest.Types.ActivePowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 327 -->
+    <ScalarVariable
+      name="pwLine1.Q12"
+      valueReference="905969862">
+      <Real
+        declaredType="RapidTest.Types.ReactivePowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 328 -->
+    <ScalarVariable
+      name="pwLine1.Q21"
+      valueReference="905969863">
+      <Real
+        declaredType="RapidTest.Types.ReactivePowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 329 -->
+    <ScalarVariable
+      name="pwLine1.vs.re"
+      valueReference="637534380"
+      description="Real part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 330 -->
+    <ScalarVariable
+      name="pwLine1.vs.im"
+      valueReference="637534381"
+      description="Imaginary part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 331 -->
+    <ScalarVariable
+      name="pwLine1.is.re"
+      valueReference="637534397"
+      description="Real part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 332 -->
+    <ScalarVariable
+      name="pwLine1.is.im"
+      valueReference="637534398"
+      description="Imaginary part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 333 -->
+    <ScalarVariable
+      name="pwLine1.vr.re"
+      valueReference="637534298"
+      description="Real part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 334 -->
+    <ScalarVariable
+      name="pwLine1.vr.im"
+      valueReference="637534299"
+      description="Imaginary part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 335 -->
+    <ScalarVariable
+      name="pwLine1.ir.re"
+      valueReference="637534399"
+      description="Real part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 336 -->
+    <ScalarVariable
+      name="pwLine1.ir.im"
+      valueReference="637534400"
+      description="Imaginary part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 337 -->
+    <ScalarVariable
+      name="pwLine1.Y.re"
+      valueReference="100663496"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 338 -->
+    <ScalarVariable
+      name="pwLine1.Y.im"
+      valueReference="100663497"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 339 -->
+    <ScalarVariable
+      name="pwLine1.Z.re"
+      valueReference="100663498"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 340 -->
+    <ScalarVariable
+      name="pwLine1.Z.im"
+      valueReference="100663499"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 341 -->
+    <ScalarVariable
+      name="pwLine3.p.vr"
+      valueReference="637534380"
+      description="Real part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 342 -->
+    <ScalarVariable
+      name="pwLine3.p.vi"
+      valueReference="637534381"
+      description="Imaginary part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 343 -->
+    <ScalarVariable
+      name="pwLine3.p.ir"
+      valueReference="637534412"
+      description="Real part of the current"
+      initial="approx">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 344 -->
+    <ScalarVariable
+      name="pwLine3.p.ii"
+      valueReference="637534413"
+      description="Imaginary part of the current"
+      initial="approx">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 345 -->
+    <ScalarVariable
+      name="pwLine3.n.vr"
+      valueReference="637534298"
+      description="Real part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 346 -->
+    <ScalarVariable
+      name="pwLine3.n.vi"
+      valueReference="637534299"
+      description="Imaginary part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 347 -->
+    <ScalarVariable
+      name="pwLine3.n.ir"
+      valueReference="637534414"
+      description="Real part of the current"
+      initial="approx">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 348 -->
+    <ScalarVariable
+      name="pwLine3.n.ii"
+      valueReference="637534415"
+      description="Imaginary part of the current"
+      initial="approx">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 349 -->
+    <ScalarVariable
+      name="pwLine3.R"
+      valueReference="16777284"
+      description="Resistance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.001"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 350 -->
+    <ScalarVariable
+      name="pwLine3.X"
+      valueReference="16777285"
+      description="Reactance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 351 -->
+    <ScalarVariable
+      name="pwLine3.G"
+      valueReference="16777286"
+      description="Shunt half conductance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 352 -->
+    <ScalarVariable
+      name="pwLine3.B"
+      valueReference="16777287"
+      description="Shunt half susceptance (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 353 -->
+    <ScalarVariable
+      name="pwLine3.S_b"
+      valueReference="16777288"
+      description="System base power (MVA)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="100"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 354 -->
+    <ScalarVariable
+      name="pwLine3.t1"
+      valueReference="100663504"
+      variability="constant">
+      <Real start="100"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 355 -->
+    <ScalarVariable
+      name="pwLine3.t2"
+      valueReference="100663505"
+      variability="constant">
+      <Real start="100"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 356 -->
+    <ScalarVariable
+      name="pwLine3.opening"
+      valueReference="100663506"
+      variability="constant">
+      <Integer start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 357 -->
+    <ScalarVariable
+      name="pwLine3.displayPF"
+      valueReference="16777289"
+      description="Display power flow results:"
+      causality="parameter"
+      variability="fixed">
+      <Boolean start="false"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 358 -->
+    <ScalarVariable
+      name="pwLine3.P12"
+      valueReference="905969875">
+      <Real
+        declaredType="RapidTest.Types.ActivePowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 359 -->
+    <ScalarVariable
+      name="pwLine3.P21"
+      valueReference="905969876">
+      <Real
+        declaredType="RapidTest.Types.ActivePowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 360 -->
+    <ScalarVariable
+      name="pwLine3.Q12"
+      valueReference="905969877">
+      <Real
+        declaredType="RapidTest.Types.ReactivePowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 361 -->
+    <ScalarVariable
+      name="pwLine3.Q21"
+      valueReference="905969878">
+      <Real
+        declaredType="RapidTest.Types.ReactivePowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 362 -->
+    <ScalarVariable
+      name="pwLine3.vs.re"
+      valueReference="637534380"
+      description="Real part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 363 -->
+    <ScalarVariable
+      name="pwLine3.vs.im"
+      valueReference="637534381"
+      description="Imaginary part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 364 -->
+    <ScalarVariable
+      name="pwLine3.is.re"
+      valueReference="637534412"
+      description="Real part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 365 -->
+    <ScalarVariable
+      name="pwLine3.is.im"
+      valueReference="637534413"
+      description="Imaginary part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 366 -->
+    <ScalarVariable
+      name="pwLine3.vr.re"
+      valueReference="637534298"
+      description="Real part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 367 -->
+    <ScalarVariable
+      name="pwLine3.vr.im"
+      valueReference="637534299"
+      description="Imaginary part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 368 -->
+    <ScalarVariable
+      name="pwLine3.ir.re"
+      valueReference="637534414"
+      description="Real part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 369 -->
+    <ScalarVariable
+      name="pwLine3.ir.im"
+      valueReference="637534415"
+      description="Imaginary part of complex number">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 370 -->
+    <ScalarVariable
+      name="pwLine3.Y.re"
+      valueReference="100663511"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 371 -->
+    <ScalarVariable
+      name="pwLine3.Y.im"
+      valueReference="100663512"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 372 -->
+    <ScalarVariable
+      name="pwLine3.Z.re"
+      valueReference="100663513"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 373 -->
+    <ScalarVariable
+      name="pwLine3.Z.im"
+      valueReference="100663514"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 374 -->
+    <ScalarVariable
+      name="constantLoad.V_b"
+      valueReference="16777290"
+      description="Base voltage of the bus"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="RapidTest.Types.VoltageKilo"
+        start="400"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 375 -->
+    <ScalarVariable
+      name="constantLoad.V_0"
+      valueReference="16777291"
+      description="Voltage magnitude (pu)"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.9983706"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 376 -->
+    <ScalarVariable
+      name="constantLoad.angle_0"
+      valueReference="16777292"
+      description="Voltage angle"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="Modelica.SIunits.Conversions.NonSIunits.Angle_deg"
+        start="-2.873504"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 377 -->
+    <ScalarVariable
+      name="constantLoad.P_0"
+      valueReference="16777293"
+      description="Active power"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ActivePowerMega"
+        start="100"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 378 -->
+    <ScalarVariable
+      name="constantLoad.Q_0"
+      valueReference="16777294"
+      description="Reactive power"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ReactivePowerMega"
+        start="50"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 379 -->
+    <ScalarVariable
+      name="constantLoad.S_b"
+      valueReference="100663515"
+      description="System base power"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ApparentPowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 380 -->
+    <ScalarVariable
+      name="constantLoad.fn"
+      valueReference="100663516"
+      description="System Frequeny"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Frequency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 381 -->
+    <ScalarVariable
+      name="constantLoad.S_p.re"
+      valueReference="100663517"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 382 -->
+    <ScalarVariable
+      name="constantLoad.S_p.im"
+      valueReference="100663518"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 383 -->
+    <ScalarVariable
+      name="constantLoad.S_i.re"
+      valueReference="16777295"
+      description="Real part of complex number"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 384 -->
+    <ScalarVariable
+      name="constantLoad.S_i.im"
+      valueReference="16777296"
+      description="Imaginary part of complex number"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 385 -->
+    <ScalarVariable
+      name="constantLoad.S_y.re"
+      valueReference="16777297"
+      description="Real part of complex number"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 386 -->
+    <ScalarVariable
+      name="constantLoad.S_y.im"
+      valueReference="16777298"
+      description="Imaginary part of complex number"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 387 -->
+    <ScalarVariable
+      name="constantLoad.a.re"
+      valueReference="16777299"
+      description="Real part of complex number"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 388 -->
+    <ScalarVariable
+      name="constantLoad.a.im"
+      valueReference="16777300"
+      description="Imaginary part of complex number"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 389 -->
+    <ScalarVariable
+      name="constantLoad.b.re"
+      valueReference="16777301"
+      description="Real part of complex number"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 390 -->
+    <ScalarVariable
+      name="constantLoad.b.im"
+      valueReference="16777302"
+      description="Imaginary part of complex number"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 391 -->
+    <ScalarVariable
+      name="constantLoad.PQBRAK"
+      valueReference="100663519"
+      description="Constant power characteristic threshold"
+      variability="constant">
+      <Real start="0.7"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 392 -->
+    <ScalarVariable
+      name="constantLoad.characteristic"
+      valueReference="100663520"
+      variability="constant">
+      <Integer start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 393 -->
+    <ScalarVariable
+      name="constantLoad.p.vr"
+      valueReference="637534380"
+      description="Real part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 394 -->
+    <ScalarVariable
+      name="constantLoad.p.vi"
+      valueReference="637534381"
+      description="Imaginary part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 395 -->
+    <ScalarVariable
+      name="constantLoad.p.ir"
+      valueReference="637534433"
+      description="Real part of the current">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 396 -->
+    <ScalarVariable
+      name="constantLoad.p.ii"
+      valueReference="637534434"
+      description="Imaginary part of the current">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 397 -->
+    <ScalarVariable
+      name="constantLoad.angle"
+      valueReference="905969891"
+      description="Bus voltage angle">
+      <Real
+        declaredType="Modelica.SIunits.Angle"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 398 -->
+    <ScalarVariable
+      name="constantLoad.v"
+      valueReference="637534436"
+      description="Bus voltage magnitude (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 399 -->
+    <ScalarVariable
+      name="constantLoad.P"
+      valueReference="905969893"
+      description="Active power consumption (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 400 -->
+    <ScalarVariable
+      name="constantLoad.Q"
+      valueReference="905969894"
+      description="Reactive power consumption (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 401 -->
+    <ScalarVariable
+      name="constantLoad.anglev_rad"
+      valueReference="100663527"
+      variability="fixed">
+      <Real
+        declaredType="Modelica.SIunits.Angle"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 402 -->
+    <ScalarVariable
+      name="constantLoad.p0"
+      valueReference="100663528"
+      description="pu"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 403 -->
+    <ScalarVariable
+      name="constantLoad.q0"
+      valueReference="100663529"
+      description="pu"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 404 -->
+    <ScalarVariable
+      name="constantLoad.vr0"
+      valueReference="100663530"
+      description="Initialitation"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 405 -->
+    <ScalarVariable
+      name="constantLoad.vi0"
+      valueReference="100663531"
+      description="Initialitation"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 406 -->
+    <ScalarVariable
+      name="constantLoad.ir0"
+      valueReference="100663532"
+      description="Initialitation"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 407 -->
+    <ScalarVariable
+      name="constantLoad.ii0"
+      valueReference="100663533"
+      description="Initialitation"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 408 -->
+    <ScalarVariable
+      name="constantLoad.S_P.re"
+      valueReference="100663534"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 409 -->
+    <ScalarVariable
+      name="constantLoad.S_P.im"
+      valueReference="100663535"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 410 -->
+    <ScalarVariable
+      name="constantLoad.S_I.re"
+      valueReference="100663536"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 411 -->
+    <ScalarVariable
+      name="constantLoad.S_I.im"
+      valueReference="100663537"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 412 -->
+    <ScalarVariable
+      name="constantLoad.S_Y.re"
+      valueReference="100663538"
+      description="Real part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 413 -->
+    <ScalarVariable
+      name="constantLoad.S_Y.im"
+      valueReference="100663539"
+      description="Imaginary part of complex number"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 414 -->
+    <ScalarVariable
+      name="constantLoad.a2"
+      valueReference="16777303"
+      causality="parameter"
+      variability="fixed">
+      <Real start="1.502"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 415 -->
+    <ScalarVariable
+      name="constantLoad.b2"
+      valueReference="16777304"
+      causality="parameter"
+      variability="fixed">
+      <Real start="1.769"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 416 -->
+    <ScalarVariable
+      name="constantLoad.a0"
+      valueReference="16777305"
+      causality="parameter"
+      variability="fixed">
+      <Real start="0.4881"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 417 -->
+    <ScalarVariable
+      name="constantLoad.a1"
+      valueReference="16777306"
+      causality="parameter"
+      variability="fixed">
+      <Real start="-0.4999"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 418 -->
+    <ScalarVariable
+      name="constantLoad.b1"
+      valueReference="16777307"
+      causality="parameter"
+      variability="fixed">
+      <Real start="0.1389"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 419 -->
+    <ScalarVariable
+      name="constantLoad.wp"
+      valueReference="16777308"
+      causality="parameter"
+      variability="fixed">
+      <Real start="3.964"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 420 -->
+    <ScalarVariable
+      name="constantLoad.kP"
+      valueReference="637534452">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 421 -->
+    <ScalarVariable
+      name="constantLoad.kI"
+      valueReference="100663541"
+      variability="constant">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 422 -->
+    <ScalarVariable
+      name="LOAD.V_b"
+      valueReference="16777309"
+      description="Base voltage of the bus"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="RapidTest.Types.VoltageKilo"
+        start="400"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 423 -->
+    <ScalarVariable
+      name="LOAD.V_0"
+      valueReference="16777310"
+      description="Voltage magnitude (pu)"
+      causality="parameter"
+      variability="fixed">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 424 -->
+    <ScalarVariable
+      name="LOAD.angle_0"
+      valueReference="16777311"
+      description="Voltage angle"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="Modelica.SIunits.Conversions.NonSIunits.Angle_deg"
+        start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 425 -->
+    <ScalarVariable
+      name="LOAD.P_0"
+      valueReference="16777312"
+      description="Active power"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="RapidTest.Types.ActivePowerMega"
+        start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 426 -->
+    <ScalarVariable
+      name="LOAD.Q_0"
+      valueReference="16777313"
+      description="Reactive power"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="RapidTest.Types.ReactivePowerMega"
+        start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 427 -->
+    <ScalarVariable
+      name="LOAD.S_b"
+      valueReference="100663542"
+      description="System base power"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ApparentPowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 428 -->
+    <ScalarVariable
+      name="LOAD.fn"
+      valueReference="100663543"
+      description="System Frequeny"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Frequency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 429 -->
+    <ScalarVariable
+      name="LOAD.p.vr"
+      valueReference="637534380"
+      description="Real part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 430 -->
+    <ScalarVariable
+      name="LOAD.p.vi"
+      valueReference="637534381"
+      description="Imaginary part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 431 -->
+    <ScalarVariable
+      name="LOAD.p.ir"
+      valueReference="100663544"
+      description="Real part of the current"
+      variability="constant">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 432 -->
+    <ScalarVariable
+      name="LOAD.p.ii"
+      valueReference="100663545"
+      description="Imaginary part of the current"
+      variability="constant">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 433 -->
+    <ScalarVariable
+      name="LOAD.V"
+      valueReference="905969914"
+      description="Bus voltage magnitude (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 434 -->
+    <ScalarVariable
+      name="LOAD.angle"
+      valueReference="905969915"
+      description="Bus voltage angle">
+      <Real
+        declaredType="Modelica.SIunits.Conversions.NonSIunits.Angle_deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 435 -->
+    <ScalarVariable
+      name="LOAD.displayPF"
+      valueReference="16777314"
+      description="Display voltage values:"
+      causality="parameter"
+      variability="fixed">
+      <Boolean start="true"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 436 -->
+    <ScalarVariable
+      name="GEN1.V_b"
+      valueReference="16777315"
+      description="Base voltage of the bus"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="RapidTest.Types.VoltageKilo"
+        start="400"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 437 -->
+    <ScalarVariable
+      name="GEN1.V_0"
+      valueReference="16777316"
+      description="Voltage magnitude (pu)"
+      causality="parameter"
+      variability="fixed">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 438 -->
+    <ScalarVariable
+      name="GEN1.angle_0"
+      valueReference="16777317"
+      description="Voltage angle"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="Modelica.SIunits.Conversions.NonSIunits.Angle_deg"
+        start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 439 -->
+    <ScalarVariable
+      name="GEN1.P_0"
+      valueReference="16777318"
+      description="Active power"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="RapidTest.Types.ActivePowerMega"
+        start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 440 -->
+    <ScalarVariable
+      name="GEN1.Q_0"
+      valueReference="16777319"
+      description="Reactive power"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="RapidTest.Types.ReactivePowerMega"
+        start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 441 -->
+    <ScalarVariable
+      name="GEN1.S_b"
+      valueReference="100663548"
+      description="System base power"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ApparentPowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 442 -->
+    <ScalarVariable
+      name="GEN1.fn"
+      valueReference="100663549"
+      description="System Frequeny"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Frequency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 443 -->
+    <ScalarVariable
+      name="GEN1.p.vr"
+      valueReference="637534210"
+      description="Real part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 444 -->
+    <ScalarVariable
+      name="GEN1.p.vi"
+      valueReference="637534211"
+      description="Imaginary part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 445 -->
+    <ScalarVariable
+      name="GEN1.p.ir"
+      valueReference="100663550"
+      description="Real part of the current"
+      variability="constant">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 446 -->
+    <ScalarVariable
+      name="GEN1.p.ii"
+      valueReference="100663551"
+      description="Imaginary part of the current"
+      variability="constant">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 447 -->
+    <ScalarVariable
+      name="GEN1.V"
+      valueReference="905969920"
+      description="Bus voltage magnitude (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 448 -->
+    <ScalarVariable
+      name="GEN1.angle"
+      valueReference="905969921"
+      description="Bus voltage angle">
+      <Real
+        declaredType="Modelica.SIunits.Conversions.NonSIunits.Angle_deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 449 -->
+    <ScalarVariable
+      name="GEN1.displayPF"
+      valueReference="16777320"
+      description="Display voltage values:"
+      causality="parameter"
+      variability="fixed">
+      <Boolean start="true"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 450 -->
+    <ScalarVariable
+      name="GEN2.V_b"
+      valueReference="16777321"
+      description="Base voltage of the bus"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="RapidTest.Types.VoltageKilo"
+        start="400"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 451 -->
+    <ScalarVariable
+      name="GEN2.V_0"
+      valueReference="16777322"
+      description="Voltage magnitude (pu)"
+      causality="parameter"
+      variability="fixed">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 452 -->
+    <ScalarVariable
+      name="GEN2.angle_0"
+      valueReference="16777323"
+      description="Voltage angle"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="Modelica.SIunits.Conversions.NonSIunits.Angle_deg"
+        start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 453 -->
+    <ScalarVariable
+      name="GEN2.P_0"
+      valueReference="16777324"
+      description="Active power"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="RapidTest.Types.ActivePowerMega"
+        start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 454 -->
+    <ScalarVariable
+      name="GEN2.Q_0"
+      valueReference="16777325"
+      description="Reactive power"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="RapidTest.Types.ReactivePowerMega"
+        start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 455 -->
+    <ScalarVariable
+      name="GEN2.S_b"
+      valueReference="100663554"
+      description="System base power"
+      variability="tunable">
+      <Real
+        declaredType="RapidTest.Types.ApparentPowerMega"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 456 -->
+    <ScalarVariable
+      name="GEN2.fn"
+      valueReference="100663555"
+      description="System Frequeny"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Frequency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 457 -->
+    <ScalarVariable
+      name="GEN2.p.vr"
+      valueReference="637534298"
+      description="Real part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 458 -->
+    <ScalarVariable
+      name="GEN2.p.vi"
+      valueReference="637534299"
+      description="Imaginary part of the voltage">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 459 -->
+    <ScalarVariable
+      name="GEN2.p.ir"
+      valueReference="100663556"
+      description="Real part of the current"
+      variability="constant">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 460 -->
+    <ScalarVariable
+      name="GEN2.p.ii"
+      valueReference="100663557"
+      description="Imaginary part of the current"
+      variability="constant">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 461 -->
+    <ScalarVariable
+      name="GEN2.V"
+      valueReference="905969926"
+      description="Bus voltage magnitude (pu)">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 462 -->
+    <ScalarVariable
+      name="GEN2.angle"
+      valueReference="905969927"
+      description="Bus voltage angle">
+      <Real
+        declaredType="Modelica.SIunits.Conversions.NonSIunits.Angle_deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 463 -->
+    <ScalarVariable
+      name="GEN2.displayPF"
+      valueReference="16777326"
+      description="Display voltage values:"
+      causality="parameter"
+      variability="fixed">
+      <Boolean start="true"/>
+    </ScalarVariable>
+  </ModelVariables>
+  <ModelStructure>
+    <Derivatives>
+      <Unknown index="40"
+        dependencies="39 41 66 68 70 72 186 211 213 215 217"
+        dependenciesKind="dependent dependent fixed fixed fixed fixed dependent fixed fixed fixed fixed"/>
+      <Unknown index="42"
+        dependencies="39"
+        dependenciesKind="fixed"/>
+      <Unknown index="67"
+        dependencies="41 66 68 70 72 186 211 213 215 217"
+        dependenciesKind="dependent dependent fixed fixed dependent dependent fixed fixed fixed fixed"/>
+      <Unknown index="69"
+        dependencies="41 66 68 70 72 186 211 213 215 217"
+        dependenciesKind="dependent fixed dependent dependent fixed dependent fixed fixed fixed fixed"/>
+      <Unknown index="71"
+        dependencies="41 66 68 70 72 186 211 213 215 217"
+        dependenciesKind="dependent fixed fixed fixed fixed dependent fixed fixed fixed fixed"/>
+      <Unknown index="73"
+        dependencies="41 66 68 70 72 186 211 213 215 217"
+        dependenciesKind="dependent fixed fixed fixed fixed dependent fixed fixed fixed fixed"/>
+      <Unknown index="185"
+        dependencies="41 66 68 70 72 184 186 211 213 215 217"
+        dependenciesKind="dependent fixed fixed fixed fixed dependent dependent fixed fixed fixed fixed"/>
+      <Unknown index="187"
+        dependencies="184"
+        dependenciesKind="fixed"/>
+      <Unknown index="212"
+        dependencies="41 66 68 70 72 186 211 213 215 217"
+        dependenciesKind="dependent fixed fixed fixed fixed dependent dependent fixed fixed dependent"/>
+      <Unknown index="214"
+        dependencies="41 66 68 70 72 186 211 213 215 217"
+        dependenciesKind="dependent fixed fixed fixed fixed dependent fixed dependent dependent fixed"/>
+      <Unknown index="216"
+        dependencies="41 66 68 70 72 186 211 213 215 217"
+        dependenciesKind="dependent fixed fixed fixed fixed dependent fixed fixed fixed fixed"/>
+      <Unknown index="218"
+        dependencies="41 66 68 70 72 186 211 213 215 217"
+        dependenciesKind="dependent fixed fixed fixed fixed dependent fixed fixed fixed fixed"/>
+    </Derivatives>
+    <InitialUnknowns>
+      <Unknown index="39"
+        dependencies=""
+        dependenciesKind=""/>
+      <Unknown index="40"
+        dependencies="1 4 5 6 7 10 11 12 13 14 16 17 18 19 20 21 22 23 24 63 64 133 134 135 137 138 139 141 142 146 147 149 150 151 152 155 156 157 158 161 162 163 164 165 166 167 168 169 208 209 283 284 285 286 316 317 318 319 349 350 351 352 375 377 378 383 384 385 386 387 388 389 390"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="41"
+        dependencies="4 5 6 7 10 16 17 19 21 22 23 24"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="42"
+        dependencies=""
+        dependenciesKind=""/>
+      <Unknown index="66"
+        dependencies="1 4 5 6 7 10 11 12 13 16 17 18 19 20 21 22 23 24 63 64 133 134 135 137 138 139 141 142 146 147 149 150 151 152 155 156 157 158 161 162 163 164 165 166 167 168 169 208 209 283 284 285 286 316 317 318 319 349 350 351 352 375 377 378 383 384 385 386 387 388 389 390"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="67"
+        dependencies=""
+        dependenciesKind=""/>
+      <Unknown index="68"
+        dependencies="1 4 5 6 7 10 11 12 13 16 17 18 19 20 21 22 23 24 63 64 133 134 135 137 138 139 141 142 146 147 149 150 151 152 155 156 157 158 161 162 163 164 165 166 167 168 169 208 209 283 284 285 286 316 317 318 319 349 350 351 352 375 377 378 383 384 385 386 387 388 389 390"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="69"
+        dependencies=""
+        dependenciesKind=""/>
+      <Unknown index="70"
+        dependencies="1 4 5 6 7 10 11 12 13 16 17 18 19 20 21 22 23 24 63 64 133 134 135 137 138 139 141 142 146 147 149 150 151 152 155 156 157 158 161 162 163 164 165 166 167 168 169 208 209 283 284 285 286 316 317 318 319 349 350 351 352 375 377 378 383 384 385 386 387 388 389 390"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="71"
+        dependencies=""
+        dependenciesKind=""/>
+      <Unknown index="72"
+        dependencies="1 4 5 6 7 10 11 12 13 16 17 18 19 20 21 22 23 24 63 64 133 134 135 137 138 139 141 142 146 147 149 150 151 152 155 156 157 158 161 162 163 164 165 166 167 168 169 208 209 283 284 285 286 316 317 318 319 349 350 351 352 375 377 378 383 384 385 386 387 388 389 390"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="73"
+        dependencies=""
+        dependenciesKind=""/>
+      <Unknown index="184"
+        dependencies=""
+        dependenciesKind=""/>
+      <Unknown index="185"
+        dependencies="1 4 5 6 7 10 11 12 13 16 17 18 19 20 21 22 23 24 63 64 133 134 135 137 138 139 141 142 146 147 149 150 151 152 155 156 157 158 159 161 162 163 164 165 166 167 168 169 208 209 283 284 285 286 316 317 318 319 349 350 351 352 375 377 378 383 384 385 386 387 388 389 390"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="186"
+        dependencies="149 150 151 152 155 161 162 164 166 167 168 169"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="187"
+        dependencies=""
+        dependenciesKind=""/>
+      <Unknown index="211"
+        dependencies="1 4 5 6 7 10 11 12 13 16 17 18 19 20 21 22 23 24 63 64 133 134 135 137 138 139 141 142 146 147 149 150 151 152 155 156 157 158 161 162 163 164 165 166 167 168 169 208 209 283 284 285 286 316 317 318 319 349 350 351 352 375 377 378 383 384 385 386 387 388 389 390"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="212"
+        dependencies=""
+        dependenciesKind=""/>
+      <Unknown index="213"
+        dependencies="1 4 5 6 7 10 11 12 13 16 17 18 19 20 21 22 23 24 63 64 133 134 135 137 138 139 141 142 146 147 149 150 151 152 155 156 157 158 161 162 163 164 165 166 167 168 169 208 209 283 284 285 286 316 317 318 319 349 350 351 352 375 377 378 383 384 385 386 387 388 389 390"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="214"
+        dependencies=""
+        dependenciesKind=""/>
+      <Unknown index="215"
+        dependencies="1 4 5 6 7 10 11 12 13 16 17 18 19 20 21 22 23 24 63 64 133 134 135 137 138 139 141 142 146 147 149 150 151 152 155 156 157 158 161 162 163 164 165 166 167 168 169 208 209 283 284 285 286 316 317 318 319 349 350 351 352 375 377 378 383 384 385 386 387 388 389 390"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="216"
+        dependencies=""
+        dependenciesKind=""/>
+      <Unknown index="217"
+        dependencies="1 4 5 6 7 10 11 12 13 16 17 18 19 20 21 22 23 24 63 64 133 134 135 137 138 139 141 142 146 147 149 150 151 152 155 156 157 158 161 162 163 164 165 166 167 168 169 208 209 283 284 285 286 316 317 318 319 349 350 351 352 375 377 378 383 384 385 386 387 388 389 390"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="218"
+        dependencies=""
+        dependenciesKind=""/>
+    </InitialUnknowns>
+  </ModelStructure>
+</fmiModelDescription>

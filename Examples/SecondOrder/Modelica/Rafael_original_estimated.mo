@@ -16,6 +16,7 @@ equation
       points={{-19,30},{10,30}},
       color={0,0,127},
       smooth=Smooth.None));
-  annotation (uses(Modelica(version="3.2")), Diagram(coordinateSystem(
+  annotation (uses(Modelica(version="3.2.3")),
+                                             Diagram(coordinateSystem(
           preserveAspectRatio=false, extent={{-100,-100},{100,100}}), graphics));
 end Rafael_original_estimated;

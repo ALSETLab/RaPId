@@ -16,8 +16,8 @@ rapidSettings.experimentData.pathToInData = '';
 
 %General settings 
 rapidSettings.experimentSettings.tf = 18.005; %Simulation length
-rapidSettings.experimentSettings.ts = 0.01; %Sampling time
-rapidSettings.experimentSettings.t_fitness_start = 1.728; %Start calculating fintess function after t_fintess_start
+rapidSettings.experimentSettings.ts = 0.0048; %Sampling time
+rapidSettings.experimentSettings.t_fitness_start = 0; %Start calculating fintess function after t_fintess_start
 rapidSettings.experimentSettings.timeOut = 2; %Seconds before simulation timeout
 rapidSettings.experimentSettings.integrationMethod = 'ode45'; %Solver selection
 rapidSettings.experimentSettings.solverMode = 'Simulink';
@@ -28,7 +28,7 @@ rapidSettings.experimentSettings.saveHist = 0; %Don't save history
 
 %Model related settings
 rapidSettings.experimentSettings.pathToSimulinkModel = 'sim_model_64bit.mdl'; %Simulink model file name
-rapidSettings.experimentSettings.pathToFMUModel = 'Mostar_System1_64bit.fmu'; %FMU file name
+rapidSettings.experimentSettings.pathToFMUModel = 'Mostar.fmu'; %FMU file name
 rapidSettings.experimentSettings.modelName = 'sim_model_64bit'; %Simulink model name
 rapidSettings.experimentSettings.blockName = 'sim_model_64bit/FMUme'; %FMU name
 rapidSettings.experimentSettings.scopeName = 'simout'; %Result sink name

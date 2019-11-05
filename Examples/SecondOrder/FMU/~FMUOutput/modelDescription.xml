@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  fmiVersion="2.0"
+  modelName="Rafael_original_estimated"
+  guid="{181c2ec5-83d2-42ae-9984-24e660d780f6}"
+  generationTool="Dymola Version 2020 (64-bit), 2019-04-10"
+  generationDateAndTime="2019-11-05T14:38:27Z"
+  variableNamingConvention="structured"
+  numberOfEventIndicators="0">
+  <ModelExchange
+    modelIdentifier="Rafael_0original_0estimated"
+    canGetAndSetFMUstate="true"
+    canSerializeFMUstate="true"
+    providesDirectionalDerivative="true">
+    <SourceFiles>
+      <File
+        name="all.c"/>
+    </SourceFiles>
+  </ModelExchange>
+  <CoSimulation
+    modelIdentifier="Rafael_0original_0estimated"
+    canHandleVariableCommunicationStepSize="true"
+    canInterpolateInputs="true"
+    maxOutputDerivativeOrder="1"
+    canGetAndSetFMUstate="true"
+    canSerializeFMUstate="true"
+    providesDirectionalDerivative="true">
+    <SourceFiles>
+      <File
+        name="all.c"/>
+    </SourceFiles>
+  </CoSimulation>
+  <UnitDefinitions>
+    <Unit
+      name="s">
+      <BaseUnit s="1"/>
+    </Unit>
+  </UnitDefinitions>
+  <TypeDefinitions>
+    <SimpleType
+      name="Modelica.Blocks.Interfaces.RealOutput">
+      <Real/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Time">
+      <Real
+        quantity="Time"
+        unit="s"/>
+    </SimpleType>
+  </TypeDefinitions>
+  <DefaultExperiment startTime="0.0"
+    stopTime="1.0"
+    tolerance="0.0001"/>
+  <ModelVariables>
+    <!-- Index for next variable = 1 -->
+    <ScalarVariable
+      name="step1.height"
+      valueReference="16777216"
+      description="Height of step"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 2 -->
+    <ScalarVariable
+      name="step1.offset"
+      valueReference="16777217"
+      description="Offset of output signal y"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 3 -->
+    <ScalarVariable
+      name="step1.startTime"
+      valueReference="16777218"
+      description="Output y = offset for time &lt; startTime"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Time"
+        start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 4 -->
+    <ScalarVariable
+      name="y1"
+      valueReference="335544320"
+      causality="output">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 5 -->
+    <ScalarVariable
+      name="transferFunction.b[1]"
+      valueReference="16777219"
+      description="Numerator coefficients of transfer function (e.g., 2*s+3 is specified as {2,3})"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0.2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 6 -->
+    <ScalarVariable
+      name="transferFunction.a[1]"
+      valueReference="16777220"
+      description="Denominator coefficients of transfer function (e.g., 5*s+6 is specified as {5,6})"
+      causality="parameter"
+      variability="tunable">
+      <Real start="4.1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 7 -->
+    <ScalarVariable
+      name="transferFunction.a[2]"
+      valueReference="16777221"
+      description="Denominator coefficients of transfer function (e.g., 5*s+6 is specified as {5,6})"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1.5"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 8 -->
+    <ScalarVariable
+      name="transferFunction.a[3]"
+      valueReference="16777222"
+      description="Denominator coefficients of transfer function (e.g., 5*s+6 is specified as {5,6})"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1.1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 9 -->
+    <ScalarVariable
+      name="transferFunction.x_start[1]"
+      valueReference="16777223"
+      description="Initial or guess values of states"
+      causality="parameter"
+      variability="fixed">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 10 -->
+    <ScalarVariable
+      name="transferFunction.x_start[2]"
+      valueReference="16777224"
+      description="Initial or guess values of states"
+      causality="parameter"
+      variability="fixed">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 11 -->
+    <ScalarVariable
+      name="transferFunction.y_start"
+      valueReference="16777225"
+      description="Initial value of output (derivatives of y are zero up to nx-1-th derivative)"
+      causality="parameter"
+      variability="fixed">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 12 -->
+    <ScalarVariable
+      name="transferFunction.x_scaled[1]"
+      valueReference="33554432"
+      description="Scaled vector x"
+      initial="exact">
+      <Real start="0.0"
+        derivative="14"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 13 -->
+    <ScalarVariable
+      name="der(transferFunction.x_scaled[1])"
+      valueReference="587202560"
+      description="der(Scaled vector x)">
+      <Real derivative="12"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 14 -->
+    <ScalarVariable
+      name="transferFunction.x_scaled[2]"
+      valueReference="33554433"
+      description="Scaled vector x"
+      initial="exact">
+      <Real start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 15 -->
+    <ScalarVariable
+      name="der(transferFunction.x_scaled[2])"
+      valueReference="587202561"
+      description="der(Scaled vector x)">
+      <Real derivative="14"/>
+    </ScalarVariable>
+  </ModelVariables>
+  <ModelStructure>
+    <Outputs>
+      <Unknown index="4"
+        dependencies="14"
+        dependenciesKind="fixed"/>
+    </Outputs>
+    <Derivatives>
+      <Unknown index="13"
+        dependencies="12 14"
+        dependenciesKind="fixed fixed"/>
+      <Unknown index="15"
+        dependencies="12"
+        dependenciesKind="fixed"/>
+    </Derivatives>
+    <InitialUnknowns>
+      <Unknown index="4"
+        dependencies="5 6 7 8 14"
+        dependenciesKind="dependent dependent dependent dependent dependent"/>
+      <Unknown index="13"
+        dependencies="1 2 3 6 7 8 12 14"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="15"
+        dependencies="12"
+        dependenciesKind="dependent"/>
+    </InitialUnknowns>
+  </ModelStructure>
+</fmiModelDescription>

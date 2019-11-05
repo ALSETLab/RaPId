@@ -121,8 +121,8 @@ package line_aggregation
                     color={0,0,255}));
     connect(gENROE1.p,GEN2. p)
       annotation (Line(points={{130,10},{130,10},{102,10}},    color={0,0,255}));
-    connect(constantLoad.p,pwLine1. p) annotation (Line(points={{46,-37.4},{46,-37.4},
-            {46,10},{50,10},{50,30},{63,30}},
+    connect(constantLoad.p,pwLine1. p) annotation (Line(points={{46,-38},{46,
+            -38},{46,10},{50,10},{50,30},{63,30}},
                                          color={0,0,255}));
     connect(pwLine.p, GEN1.p)
       annotation (Line(points={{7,10},{7,10},{-14,10}},    color={0,0,255}));
@@ -237,7 +237,7 @@ package line_aggregation
       annotation (Line(points={{-82,20},{-82,20},{-99,20}}, color={0,0,127}));
     connect(add.u1, gENROE.PMECH0) annotation (Line(points={{-122,26},{-132,26},{-132,
             42},{-28,42},{-28,20},{-36,20}},      color={0,0,127}));
-    connect(constantLoad.p, LOAD.p) annotation (Line(points={{50,-23.4},{50,-23.4},
+    connect(constantLoad.p, LOAD.p) annotation (Line(points={{50,-24},{50,-24},
             {50,10},{42,10}},        color={0,0,255}));
     connect(pwLine1.n,GEN2. p)
       annotation (Line(points={{97,10},{97,10},{112,10}},      color={0,0,255}));
@@ -257,6 +257,6 @@ package line_aggregation
       Icon(coordinateSystem(extent={{-200,-60},{200,60}})));
   end aggregated_system;
   annotation (uses(PowerSystems(version="0.7"),
-      Modelica(version="3.2.2"),
-      OpenIPSL(version="1.0.0")), version="1");
+      OpenIPSL(version="1.0.0"),
+      Modelica(version="3.2.3")), version="1");
 end line_aggregation;
