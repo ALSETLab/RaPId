@@ -34493,16 +34493,16 @@ All of the transfer functions found in this package are also available in the Mo
           opening=1)                                                                                                 annotation(Placement(transformation(extent={{62,-30},
                   {82,-10}})));
         Electrical.Loads.PSSE.Load                    constantLoad(
+          S_y(re=0, im=0),
           PQBRAK=0.7,
           V_0=0.9983706,
           angle_0=-2.873504,
           P_0=100,
           Q_0=50,
-          a=1,
-          S_p=50,
-          S_i=10,
-          S_y=0,
-          b=0)                                                                                                      annotation(Placement(transformation(extent={{40,-48},
+          a(re=1, im=0),
+          S_p(re=50, im=0),
+          S_i(re=10, im=0),
+          b(re=0, im=0))                                                                                            annotation(Placement(transformation(extent={{40,-48},
                   {48,-40}})));
         Electrical.Buses.Bus          LOAD
           annotation (Placement(transformation(extent={{30,-10},{50,10}})));
@@ -34641,10 +34641,10 @@ All of the transfer functions found in this package are also available in the Mo
           angle_0=-0.5755869,
           P_0=50,
           Q_0=10,
-          S_p=50,
-          S_i=10,
-          S_y=0,
-          a=1)                                                                                                      annotation(Placement(transformation(extent={{40,-50},
+          S_p(re=50, im=0),
+          S_i(re=10, im=0),
+          S_y(re=0, im=0),
+          a(re=1, im=0))                                                                                            annotation(Placement(transformation(extent={{40,-50},
                   {54,-36}})));
         Electrical.Buses.Bus          LOAD
           annotation (Placement(transformation(extent={{32,0},{52,20}})));
@@ -34755,10 +34755,10 @@ All of the transfer functions found in this package are also available in the Mo
           angle_0=-0.5755869,
           P_0=50,
           Q_0=10,
-          S_p=50,
-          S_i=10,
-          S_y=0,
-          a=1)                                                                                                      annotation(Placement(transformation(extent={{44,-36},
+          S_p(re=50, im=0),
+          S_i(re=10, im=0),
+          S_y(re=0, im=0),
+          a(re=1, im=0))                                                                                            annotation(Placement(transformation(extent={{44,-36},
                   {56,-24}})));
         Electrical.Branches.PwLine          pwLine1(
           G=0,
