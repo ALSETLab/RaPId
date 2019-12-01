@@ -217,6 +217,10 @@ classdef Rapid <handle
                     [ sol, historic] = fmincon_algo(obj.rapidSettings);
                 case 'pfnew'
                     [ sol, historic] = pf_algo(obj.rapidSettings);
+                case 'parallel'
+                    [ sol, historic] = parallel_algo(obj.rapidSettings);
+                case 'multiobj'
+                    [ sol, historic] = multiObj_algo(obj.rapidSettings);
                 otherwise
                     error('Wrong Method name');         
             end

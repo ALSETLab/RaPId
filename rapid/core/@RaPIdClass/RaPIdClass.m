@@ -36,6 +36,8 @@ classdef  RaPIdClass <handle
         gaExtSettings
         fminconSettings
         pfSettings
+        parallelSettings
+        multiObjSettings
         experimentSettings
         experimentData
         resultData

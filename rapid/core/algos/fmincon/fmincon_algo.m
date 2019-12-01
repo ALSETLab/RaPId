@@ -42,7 +42,7 @@ else
     sol = fmincon(funcwrapper,rapidSettings.experimentSettings.p_0,[],[],[],[],rapidSettings.experimentSettings.p_min,rapidSettings.experimentSettings.p_max,[],options);
 end
 other = [];
-
+%print sol
 end
 
 

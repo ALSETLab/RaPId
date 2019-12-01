@@ -21,21 +21,28 @@ rapidSettings.experimentSettings.t_fitness_start = 0; %Start calculating fintess
 rapidSettings.experimentSettings.timeOut = 100; %Seconds before simulation timeout
 rapidSettings.experimentSettings.integrationMethod = 'ode23'; %Solver selection
 rapidSettings.experimentSettings.solverMode = 'Simulink';
-rapidSettings.experimentSettings.optimizationAlgorithm = 'pso'; %Selection of optimization algorithm
+rapidSettings.experimentSettings.optimizationAlgorithm = 'parallel'; %Selection of optimization algorithm
 rapidSettings.experimentSettings.maxIterations = 5; %Maximum number of estimation iterations
 rapidSettings.experimentSettings.verbose = 1; %Can trigger more data for debugging
 rapidSettings.experimentSettings.saveHist = 0; %Don't save history
 
 %Model related settings
-rapidSettings.experimentSettings.pathToSimulinkModel = 'sim_model_64bit.mdl'; %Simulink model file name
-rapidSettings.experimentSettings.pathToFMUModel = 'Mostar.fmu'; %FMU file name
-rapidSettings.experimentSettings.modelName = 'sim_model_64bit'; %Simulink model name
-rapidSettings.experimentSettings.blockName = 'sim_model_64bit/FMUme'; %FMU name
+rapidSettings.experimentSettings.pathToSimulinkModel = 'mostar1.mdl'; %Simulink model file name
+rapidSettings.experimentSettings.pathToFMUModel = 'mostar1.fmu'; %FMU file name
+rapidSettings.experimentSettings.modelName = 'mostar1'; %Simulink model name
+rapidSettings.experimentSettings.blockName = 'mostar1/FMUme'; %FMU name
 rapidSettings.experimentSettings.scopeName = 'simout'; %Result sink name
 rapidSettings.experimentSettings.displayMode = 'Show';
 
 %Estimation parameter settings
-rapidSettings.experimentSettings.p_0 = [500,0.004,10,0.1,1,0.1]; %Initial parameter guess
+rapidSettings.experimentSettings.p_0 = [500 0.00225 4 0.055 0.595 0.055;
+                                        50 0.0025 6.5 0.01 0.595 0.056;
+                                        50 0.0025 9.01 0.055 0.595 0.055;
+                                        100 0.00186 9.01 0.05 0.595 0.055;
+                                        100,0.004,10,0.1,1,0.1;
+                                        250,0.0005,5,0.001,0.5,0.02;
+                                        300,0.00015,5.24,0.008,0.75,0.08];
+%rapidSettings.experimentSettings.p_0 = [500,0.004,10,0.1,1,0.1]; %Initial parameter guess
 rapidSettings.experimentSettings.p_min = [1,1e-4,1,1e-4,0.1,1e-4]; %Minimum values of parameters
 rapidSettings.experimentSettings.p_max = [1000,0.004,10,0.1,1,0.1]; %Maximum values of parameters
 
@@ -56,6 +63,8 @@ switch lower(rapidSettings.experimentSettings.optimizationAlgorithm) % use lower
         rapidSettings.psoSettings.fitnessStopRatio = 1e-2; %Fitness stop ratio
         rapidSettings.psoSettings.kick_multiplier = 0.002; %Kick multiplier
         rapidSettings.psoSettings.method = 'PSO';
+    case 'parallel'
+        rapidSettings.parallelSettings = 'optimset(''UseParallel'',false)';
 end
 
 %% ==========FMU parameters, inputs and outputs==========

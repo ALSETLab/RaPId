@@ -23,14 +23,14 @@ rapidSettings.experimentData.pathToInData = '';
 rapidSettings.experimentSettings.tf = 60; %Simulation length
 rapidSettings.experimentSettings.ts = 0.12; %Sampling time
 rapidSettings.experimentSettings.t_fitness_start = 0; %Start calculating fintess function after t_fintess_start
-rapidSettings.experimentSettings.timeOut = 2; %Seconds before simulation timeout
+rapidSettings.experimentSettings.timeOut = 10000; %Seconds before simulation timeout
 rapidSettings.experimentSettings.integrationMethod = 'ode45'; %Solver selection
 rapidSettings.experimentSettings.solverMode = 'Simulink';
-rapidSettings.experimentSettings.optimizationAlgorithm = 'pso'; %Selection of optimization algorithm
+rapidSettings.experimentSettings.optimizationAlgorithm = 'fmincon'; %Selection of optimization algorithm
 rapidSettings.experimentSettings.maxIterations = 5; %Maximum number of estimation iterations
 rapidSettings.experimentSettings.verbose = 1; %Can trigger more data for debugging
 rapidSettings.experimentSettings.saveHist = 0; %Don't save history
-
+rapidSettings.experimentSettings.UseParallel = 1;
 %Model related settings
 rapidSettings.experimentSettings.pathToSimulinkModel = 'sim_model.mdl'; %Simulink model file name
 rapidSettings.experimentSettings.pathToFMUModel = 'CauerLowPassAnalog.fmu'; %FMU file name
@@ -41,6 +41,9 @@ rapidSettings.experimentSettings.displayMode = 'Show';
 
 %Estimation parameter settings
 rapidSettings.experimentSettings.p_0 = [0.3, 0.001, 1.7, 1.1, 1]; %Initial parameter guess
+% rapidSettings.experimentSettings.p_0 = [0.3, 0.001, 1.7, 1.1, 1;
+%                                         0.2, 0.001, 1.5, 1.1, 1.5;
+%                                         1, 2, 1.3, 0.5, 1]; %Initial parameter guess
 rapidSettings.experimentSettings.p_min = [0.0001, 0.000019, 1.5, 0, 0]; %Minimum values of parameters
 rapidSettings.experimentSettings.p_max = [2, 4.2, 1.7, 1.5,2]; %Maximum values of parameters
 
@@ -61,6 +64,8 @@ switch lower(rapidSettings.experimentSettings.optimizationAlgorithm) % use lower
         rapidSettings.psoSettings.fitnessStopRatio = 1e-2; %Fitness stop ratio
         rapidSettings.psoSettings.kick_multiplier = 0.002; %Kick multiplier
         rapidSettings.psoSettings.method = 'PSO';
+    case 'parallel'
+        rapidSettings.parallelSettings = 'optimset(''UseParallel'',false)';
 end
 
 %% ==========FMU parameters, inputs and outputs==========
