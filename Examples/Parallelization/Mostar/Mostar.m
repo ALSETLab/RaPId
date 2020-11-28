@@ -36,10 +36,6 @@ rapidSettings.experimentSettings.displayMode = 'Show';
 
 %Estimation parameter settings
 rapidSettings.experimentSettings.p_0 = [500 0.00225 4 0.055 0.595 0.055;
-                                        50 0.0025 6.5 0.01 0.595 0.056;
-                                        50 0.0025 9.01 0.055 0.595 0.055;
-                                        100 0.00186 9.01 0.05 0.595 0.055;
-                                        100,0.004,10,0.1,1,0.1;
                                         250,0.0005,5,0.001,0.5,0.02;
                                         300,0.00015,5.24,0.008,0.75,0.08];
 %rapidSettings.experimentSettings.p_0 = [500,0.004,10,0.1,1,0.1]; %Initial parameter guess
@@ -47,7 +43,7 @@ rapidSettings.experimentSettings.p_min = [1,1e-4,1,1e-4,0.1,1e-4]; %Minimum valu
 rapidSettings.experimentSettings.p_max = [1000,0.004,10,0.1,1,0.1]; %Maximum values of parameters
 
 %Fitness function settings
-rapidSettings.experimentSettings.cost_type = 1; %Fitness function selection
+rapidSettings.experimentSettings.cost_typPe = 1; %Fitness function selection
 rapidSettings.experimentSettings.objective_weights = 1; %Weights of the output signals for fitness function
 
 %% ==========Optimization Algorithm settings==========
@@ -65,7 +61,9 @@ switch lower(rapidSettings.experimentSettings.optimizationAlgorithm) % use lower
         rapidSettings.psoSettings.method = 'PSO';
     case 'parallel'
         rapidSettings.parallelSettings.parallel = 'optimset(''UseParallel'',false)';
-        rapidSettings.parallelSettings.solver = 'fmincon';
+   case 'fmincon'
+       rapidSettings.fminconSettings = 'optimset(''FinDiffRelStep'',0.1)';
+
 end
 
 %% ==========FMU parameters, inputs and outputs==========
@@ -83,9 +81,11 @@ open_system(strcat(rapidSettings.experimentSettings.modelName,'/Q'));
 pause(1); %Waiting one second for scope to initialize
 %%
 % Create the object which carries out the work
+startTime = tic;
 rapidObject=Rapid(rapidSettings);
 %Starting the estimation process
 [sol, hist] = rapidObject.runIdentification();
 sprintf('Vector of estimated parameters is: %s',mat2str(sol,3)) 
+parallel_time = toc(startTime);
 
 

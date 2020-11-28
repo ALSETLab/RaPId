@@ -117,7 +117,7 @@ function OptimMethodSelect_popupmenu_CreateFcn(hObject, eventdata, handles)
 
 % Hint: popupmenu controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
-set(hObject,'String',{'PSO','GA','Naive','CG','NM','Combi','PSOext','GAext','KNITRO','fmincon','pfNew'});
+set(hObject,'String',{'PSO','GA','Naive','CG','NM','Combi','PSOext','GAext','KNITRO','fmincon','pfNew','Parallel'});
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
@@ -229,6 +229,8 @@ switch lower(rapidObject.rapidSettings.experimentSettings.optimizationAlgorithm)
     case 'fmincon'
         otherSettings;
     case 'pfnew'
+        otherSettings;
+    case 'parallel'
         otherSettings;
     otherwise
         error('Seems like there is something wrong with the chosen optimzation selecting string');
@@ -353,7 +355,7 @@ function Logo_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 axes(hObject) %make axes current
-img=imread(fullfile(getPathToRapid,'gui','logoz.png')); %load
+img=imread(fullfile(getPathToRapid,'gui','l')); %load
 image(img);
 axis off        
 axis image 
