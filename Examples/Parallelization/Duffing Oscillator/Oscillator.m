@@ -44,16 +44,16 @@ rapidSettings.experimentSettings.t_fitness_start = 0; %Start calculating fintess
 rapidSettings.experimentSettings.timeOut = 100; %Seconds before simulation timeout
 rapidSettings.experimentSettings.integrationMethod = 'ode45'; %Solver selection
 rapidSettings.experimentSettings.solverMode = 'Simulink';
-rapidSettings.experimentSettings.optimizationAlgorithm = 'parallel'; %Selection of optimization algorithm
+rapidSettings.experimentSettings.optimizationAlgorithm = 'fmincon'; %Selection of optimization algorithm
 rapidSettings.experimentSettings.maxIterations = 5; %Maximum number of estimation iterations
 rapidSettings.experimentSettings.verbose = 1; %Can trigger more data for debugging
 rapidSettings.experimentSettings.saveHist = 0; %Don't save history
 rapidSettings.experimentSettings.UseParallel = 1;
 %Model related settings
-rapidSettings.experimentSettings.pathToSimulinkModel = 'sim_model.mdl'; %Simulink model file name
+rapidSettings.experimentSettings.pathToSimulinkModel = 'sim_model2018b.mdl'; %Simulink model file name
 rapidSettings.experimentSettings.pathToFMUModel = 'Duffing.fmu'; %FMU file name
-rapidSettings.experimentSettings.modelName = 'sim_model'; %Simulink model name
-rapidSettings.experimentSettings.blockName = 'sim_model/FMUme'; %FMU name
+rapidSettings.experimentSettings.modelName = 'sim_model2018b'; %Simulink model name
+rapidSettings.experimentSettings.blockName = 'sim_model2018b/FMUme'; %FMU name
 rapidSettings.experimentSettings.scopeName = 'simout'; %Result sink name
 rapidSettings.experimentSettings.displayMode = 'Show';
 
@@ -66,11 +66,11 @@ rapidSettings.experimentSettings.displayMode = 'Show';
 %                                         15, 15000, 10000,10000]; %Initial parameter guesses
 % rapidSettings.experimentSettings.p_min = [0.1, 1000, 1000, 1000]; %Minimum values of parameters
 % rapidSettings.experimentSettings.p_max = [10000, 20000, 20000, 20000]; %Maximum values of parameters
-rapidSettings.experimentSettings.p_0 = [0.3, 0.001, 1.7, 1.1;
-                                        0.2, 0.001, 1.5, 1.1;
-                                        1, 2, 1.3, 0.5;
-                                        1.3, 3, 0.87, 0.45;
-                                        1.5, 3.1, 0.9, 0.6]; %Initial parameter guesses
+rapidSettings.experimentSettings.p_0 = [0.3, 0.001, 1.7, 1.1];
+%                                         0.2, 0.001, 1.5, 1.1;
+%                                         1, 2, 1.3, 0.5;
+%                                         1.3, 3, 0.87, 0.45;
+%                                         1.5, 3.1, 0.9, 0.6]; %Initial parameter guesses
 rapidSettings.experimentSettings.p_min = [0.0001, 0.000019, 1.5,0]; %Minimum values of parameters
 rapidSettings.experimentSettings.p_max = [20, 4.2, 1.7, 1.5]; %Maximum values of parameters
 %Fitness function settings
@@ -93,6 +93,8 @@ switch lower(rapidSettings.experimentSettings.optimizationAlgorithm) % use lower
         rapidSettings.psoSettings.method = 'PSO';
     case 'parallel'
         rapidSettings.parallelSettings.parallel = 'optimset(''UseParallel'',false)';
+    case 'fmincon'
+       rapidSettings.fminconSettings = 'optimset(''FinDiffRelStep'',0.1,''UseParallel'',false)';
 end
 
 %% ==========FMU parameters, inputs and outputs==========
@@ -112,6 +114,7 @@ pause(1); %Waiting one second for scope to initialize
 rapidObject=Rapid(rapidSettings);
 %Starting the estimation process
 [sol, hist] = rapidObject.runIdentification();
+
 sprintf('Vector of estimated parameters is: %s',mat2str(sol,3)) 
 %Restoring workspace
 cd(oldFolder);

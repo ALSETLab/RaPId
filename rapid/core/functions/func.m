@@ -39,6 +39,8 @@ switch lower(rapidSettings.experimentSettings.solverMode)
         [simuRes] = rapid_ODEsolve(p,rapidSettings);
     case 'simulink'
         [simuRes] = rapid_simuSystem(p,rapidSettings);
+    case 'simulink_parallel'
+        [simuRes] = rapid_simuSystem_parallel(p,rapidSettings);
     otherwise
         error('In "mySettings.mode": You must select either "ODE" (internal ODE-solvers) or "Simulink"');
 end

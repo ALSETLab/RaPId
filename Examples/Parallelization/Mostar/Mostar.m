@@ -20,24 +20,25 @@ rapidSettings.experimentSettings.ts = 0.0048; %Sampling time
 rapidSettings.experimentSettings.t_fitness_start = 0; %Start calculating fintess function after t_fintess_start
 rapidSettings.experimentSettings.timeOut = 100; %Seconds before simulation timeout
 rapidSettings.experimentSettings.integrationMethod = 'ode23'; %Solver selection
-rapidSettings.experimentSettings.solverMode = 'Simulink';
+rapidSettings.experimentSettings.solverMode = 'simulink';
 rapidSettings.experimentSettings.optimizationAlgorithm = 'parallel'; %Selection of optimization algorithm
 rapidSettings.experimentSettings.maxIterations = 5; %Maximum number of estimation iterations
 rapidSettings.experimentSettings.verbose = 1; %Can trigger more data for debugging
 rapidSettings.experimentSettings.saveHist = 0; %Don't save history
 
 %Model related settings
-rapidSettings.experimentSettings.pathToSimulinkModel = 'mostar1.mdl'; %Simulink model file name
+rapidSettings.experimentSettings.pathToSimulinkModel = 'mostar2018b.mdl'; %Simulink model file name
 rapidSettings.experimentSettings.pathToFMUModel = 'mostar1.fmu'; %FMU file name
-rapidSettings.experimentSettings.modelName = 'mostar1'; %Simulink model name
-rapidSettings.experimentSettings.blockName = 'mostar1/FMUme'; %FMU name
+rapidSettings.experimentSettings.modelName = 'mostar2018b'; %Simulink model name
+rapidSettings.experimentSettings.blockName = 'mostar2018b/FMUme'; %FMU name
 rapidSettings.experimentSettings.scopeName = 'simout'; %Result sink name
 rapidSettings.experimentSettings.displayMode = 'Show';
 
 %Estimation parameter settings
 rapidSettings.experimentSettings.p_0 = [500 0.00225 4 0.055 0.595 0.055;
-                                        250,0.0005,5,0.001,0.5,0.02;
-                                        300,0.00015,5.24,0.008,0.75,0.08];
+                                       250,0.0005,5,0.001,0.5,0.02;
+                                       300,0.00015,5.24,0.008,0.75,0.08;
+                                       100,0.0011,1.7783,0.0124,0.9777,0.0270];
 %rapidSettings.experimentSettings.p_0 = [500,0.004,10,0.1,1,0.1]; %Initial parameter guess
 rapidSettings.experimentSettings.p_min = [1,1e-4,1,1e-4,0.1,1e-4]; %Minimum values of parameters
 rapidSettings.experimentSettings.p_max = [1000,0.004,10,0.1,1,0.1]; %Maximum values of parameters
@@ -45,6 +46,9 @@ rapidSettings.experimentSettings.p_max = [1000,0.004,10,0.1,1,0.1]; %Maximum val
 %Fitness function settings
 rapidSettings.experimentSettings.cost_typPe = 1; %Fitness function selection
 rapidSettings.experimentSettings.objective_weights = 1; %Weights of the output signals for fitness function
+
+%Use parallel
+%rapidSettings.experimentSettings.useParallel = 'true';
 
 %% ==========Optimization Algorithm settings==========
 
@@ -62,7 +66,7 @@ switch lower(rapidSettings.experimentSettings.optimizationAlgorithm) % use lower
     case 'parallel'
         rapidSettings.parallelSettings.parallel = 'optimset(''UseParallel'',false)';
    case 'fmincon'
-       rapidSettings.fminconSettings = 'optimset(''FinDiffRelStep'',0.1)';
+       rapidSettings.fminconSettings = 'optimset(''FinDiffRelStep'',0.1,''UseParallel'',false)';
 
 end
 
@@ -75,17 +79,26 @@ rapidSettings.fmuOutputNames = {'gENSAL.P','gENSAL.Q','gENSAL.EFD','gENSAL.ETERM
 %% ==========Running the computation==========
 
 %Opening simulink model
-open_system(rapidSettings.experimentSettings.pathToSimulinkModel); %Opening the simulink model
+    open_system(rapidSettings.experimentSettings.pathToSimulinkModel); %Opening the simulink model
+    open_system(strcat(rapidSettings.experimentSettings.modelName,'/P')); %Opening the scope in the model to observe estimation process
+    open_system(strcat(rapidSettings.experimentSettings.modelName,'/Q')); %Opening the scope in the model to observe estimation process
+    pause(1); %Waiting one second for scope to initialize
+
+
+%%
+
+
+rapidObject=Rapid(rapidSettings);
+startTime = tic;
+%Starting the estimation process
+[sol, hist] = rapidObject.runIdentification();
 open_system(strcat(rapidSettings.experimentSettings.modelName,'/P')); %Opening the scope in the model to observe estimation process
 open_system(strcat(rapidSettings.experimentSettings.modelName,'/Q'));
 pause(1); %Waiting one second for scope to initialize
 %%
 % Create the object which carries out the work
-startTime = tic;
-rapidObject=Rapid(rapidSettings);
-%Starting the estimation process
-[sol, hist] = rapidObject.runIdentification();
+
 sprintf('Vector of estimated parameters is: %s',mat2str(sol,3)) 
-parallel_time = toc(startTime);
+multistart_time = toc(startTime);
 
 

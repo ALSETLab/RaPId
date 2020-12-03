@@ -1,4 +1,4 @@
-classdef Rapid <handle
+classdef Rapid_parallel <handle
 %RAPID is a class which carries out the tasks (including the parameter identification) in the RaPId Toolbox.
 %   RAPIDOBJECT = RAPID(RAPIDSETTINGS) creates a new object, see
 %   METHODS for specifications.
@@ -209,7 +209,7 @@ classdef Rapid <handle
                 obj.prepareSimulation();
             end
             % Everything should be OK!
-            %finishup = onCleanup(@(x)cleanFunc(obj.rapidSettings)); %execute on cleanup
+            finishup = onCleanup(@(x)cleanFunc(obj.rapidSettings)); %execute on cleanup
             %% Selecting the chosen opimtization method
             switch lower(obj.rapidSettings.experimentSettings.optimizationAlgorithm) % use lower case
                 case 'pso'
