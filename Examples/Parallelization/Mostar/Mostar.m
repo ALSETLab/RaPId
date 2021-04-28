@@ -22,7 +22,7 @@ rapidSettings.experimentSettings.timeOut = 100; %Seconds before simulation timeo
 rapidSettings.experimentSettings.integrationMethod = 'ode23'; %Solver selection
 rapidSettings.experimentSettings.solverMode = 'simulink';
 rapidSettings.experimentSettings.optimizationAlgorithm = 'parallel'; %Selection of optimization algorithm
-rapidSettings.experimentSettings.maxIterations = 5; %Maximum number of estimation iterations
+rapidSettings.experimentSettings.maxIterations = 20; %Maximum number of estimation iterations
 rapidSettings.experimentSettings.verbose = 1; %Can trigger more data for debugging
 rapidSettings.experimentSettings.saveHist = 0; %Don't save history
 

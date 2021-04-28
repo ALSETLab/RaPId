@@ -43,7 +43,7 @@ else
 end
 other = [];
 %print sol
-
+sol
 end
 
 

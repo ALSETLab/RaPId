@@ -43,6 +43,7 @@ ms = MultiStart('UseParallel',options.UseParallel);
 problem = createOptimProblem(rapidSettings.parallelSettings.solver,'x0',rapidSettings.experimentSettings.p_0(1,:),...
           'objective',funcwrapper,'lb',rapidSettings.experimentSettings.p_min,'ub',rapidSettings.experimentSettings.p_max);
 [sol,f] = run(ms,problem,tpoints)
+
 other = [];
 end
 

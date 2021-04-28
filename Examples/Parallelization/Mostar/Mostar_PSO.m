@@ -35,15 +35,14 @@ rapidSettings.experimentSettings.scopeName = 'simout'; %Result sink name
 rapidSettings.experimentSettings.displayMode = 'Show';
 
 %Estimation parameter settings
-rapidSettings.experimentSettings.p_0 = [500 0.00225 4 0.055 0.595 0.055;
+rapidSettings.experimentSettings.p_0 = [500 0.005 20 0.005 2 0.02;
                                         250,0.0005,5,0.001,0.5,0.02;
                                         300,0.00015,5.24,0.008,0.75,0.08];
 %rapidSettings.experimentSettings.p_0 = [500,0.004,10,0.1,1,0.1]; %Initial parameter guess
-rapidSettings.experimentSettings.p_min = [1,1e-4,1,1e-4,0.1,1e-4]; %Minimum values of parameters
-rapidSettings.experimentSettings.p_max = [1000,0.004,10,0.1,1,0.1]; %Maximum values of parameters
-
+rapidSettings.experimentSettings.p_min = [300,1e-4,15,1e-4,1.5,0.01]; %Minimum values of parameters
+rapidSettings.experimentSettings.p_max = [600,0.01,25,0.01,2.5,0.05]; %Maximum values of parameters
 %Fitness function settings
-rapidSettings.experimentSettings.cost_typPe = 1; %Fitness function selection
+rapidSettings.experimentSettings.cost_type = 1; %Fitness function selection
 rapidSettings.experimentSettings.objective_weights = 1; %Weights of the output signals for fitness function
 
 %% ==========Optimization Algorithm settings==========
