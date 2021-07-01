@@ -83,8 +83,8 @@ package Mostar
             {-80,16},{-42,16},{-42,6},{-46.8,6}},                                                                                 color={0,0,127}));
     connect(gENSAL.EFD0, sT5B.EFD0) annotation (Line(points={{-46.8,-6},{-42,-6},{
             -42,-34.5},{-54,-34.5}},                                                                                  color={0,0,127}));
-    connect(sT5B.XADIFD, gENSAL.XADIFD) annotation (Line(points={{-54,-31},{-40,-31},
-            {-40,-10.8},{-47.04,-10.8}},                                                                                  color={0,0,127}));
+    connect(sT5B.XADIFD, gENSAL.XADIFD) annotation (Line(points={{-68.5,-37.8},
+            {-40,-37.8},{-40,-10.8},{-47.04,-10.8}},                                                                      color={0,0,127}));
     connect(step.y, add3_1.u2) annotation (Line(points={{-24.4,-20},{-26,-20},{-26,
             -28},{-29.2,-28}},                                                                        color={0,0,127}));
     connect(add3_1.y, sT5B.ECOMP) annotation (Line(points={{-38.4,-28},{-38.4,-28},

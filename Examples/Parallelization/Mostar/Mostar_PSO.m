@@ -87,5 +87,49 @@ rapidObject=Rapid(rapidSettings);
 sprintf('Vector of estimated parameters is: %s',mat2str(sol,3)) 
 PSO_time = toc(startTime);
 
+%%
+figure;
+results = simout.signals.values;
+plot(time, results(:,1), dataMeasuredS(:,1), dataMeasuredS(:,2),'LineWidth',5);xlabel('Time(s)');ylabel('Active Power (p.u.)');legend('Simulation','Measurements');
+figure;
+plot(time, results(:,2), dataMeasuredS(:,1), dataMeasuredS(:,3),'LineWidth',5);xlabel('Time(s)');ylabel('Reactive Power (p.u.)');legend('Simulation','Measurements');
+figure;
+plot(time, results(:,3), dataMeasuredS(:,1), dataMeasuredS(:,4),'LineWidth',5);xlabel('Time(s)');ylabel('Field voltage, Efd (p.u.)');legend('Simulation','Measurements');
+figure;
+plot(time, results(:,4), dataMeasuredS(:,1), dataMeasuredS(:,5),'LineWidth',5);xlabel('Time(s)');ylabel('Terminal Voltage, Vt (p.u.)');legend('Simulation','Measurements');
 
+figure;plot(time, results(:,2))
+
+
+%%
+tiledlayout(4,1) 
+nexttile
+plot(dataMeasuredS(:,1), dataMeasuredS(:,2),time, results_fmincon(:,1),time,results_PSO(:,1),time,results_multistart(:,1),'LineWidth',5);xlabel('Time(s)');ylabel('Active Power (p.u.)');legend('Measurements','fmincon','PSO','MultiStart');title('A');
+nexttile
+plot(dataMeasuredS(:,1), dataMeasuredS(:,3),time, results_fmincon(:,2),time,results_PSO(:,2),time,results_multistart(:,2),'LineWidth',5);xlabel('Time(s)');ylabel('Reactive Power (p.u.)');legend('Measurements','fmincon','PSO','MultiStart');title('B');
+nexttile
+plot(dataMeasuredS(:,1), dataMeasuredS(:,4),time, results_fmincon(:,3),time,results_PSO(:,3),time,results_multistart(:,3),'LineWidth',5);xlabel('Time(s)');ylabel('Fielc voltage, Efd (p.u.)');legend('Measurements','fmincon','PSO','MultiStart');title('C');
+nexttile
+plot(dataMeasuredS(:,1), dataMeasuredS(:,5),time, results_fmincon(:,4),time,results_PSO(:,4),time,results_multistart(:,4),'LineWidth',5);xlabel('Time(s)');ylabel('Terminal voltage, Vt (p.u.)');legend('Measurements','fmincon','PSO','MultiStart');title('D');
+
+%%
+tiledlayout(3,1) 
+%nexttile
+%plot(dataMeasuredS(:,1), dataMeasuredS(:,2),time, results_fmincon(:,1),time,results_PSO(:,1),time,results_multistart(:,1),'LineWidth',5);xlabel('Time(s)');ylabel('Active Power (p.u.)');legend('Measurements','fmincon','PSO','MultiStart');title('A');
+nexttile
+plot(dataMeasuredS(:,1), dataMeasuredS(:,3),time, results_fmincon(:,2),time,results_PSO(:,2),time,results_multistart(:,2),'LineWidth',5);xlabel('Time(s)');ylabel('Reactive Power (p.u.)');legend('Measurements','fmincon','PSO','MultiStart');title('A');
+nexttile
+plot(dataMeasuredS(:,1), dataMeasuredS(:,4),time, results_fmincon(:,3),time,results_PSO(:,3),time,results_multistart(:,3),'LineWidth',5);xlabel('Time(s)');ylabel('Fielc voltage, Efd (p.u.)');legend('Measurements','fmincon','PSO','MultiStart');title('B');
+nexttile
+plot(dataMeasuredS(:,1), dataMeasuredS(:,5),time, results_fmincon(:,4),time,results_PSO(:,4),time,results_multistart(:,4),'LineWidth',5);xlabel('Time(s)');ylabel('Terminal voltage, Vt (p.u.)');legend('Measurements','fmincon','PSO','MultiStart');title('C');
+%%
+tiledlayout(3,1) 
+%nexttile
+%plot(dataMeasuredS(:,1), dataMeasuredS(:,2),time, results_fmincon(:,1),time,results_PSO(:,1),time,results_multistart(:,1),'LineWidth',5);xlabel('Time(s)');ylabel('Active Power (p.u.)');legend('Measurements','fmincon','PSO','MultiStart');title('A');
+nexttile
+plot(time, results_fmincon(:,2),time,results_PSO(:,2),time,results_multistart(:,2),dataMeasuredS(:,1), dataMeasuredS(:,3),'LineWidth',5);xlabel('Time(s)');ylabel('Reactive Power (p.u.)');legend('fmincon','PSO','MultiStart','Measurements');title('A');
+nexttile
+plot(time, results_fmincon(:,3),time,results_PSO(:,3),time,results_multistart(:,3),dataMeasuredS(:,1), dataMeasuredS(:,4),'LineWidth',5);xlabel('Time(s)');ylabel('Fielc voltage, Efd (p.u.)');legend('fmincon','PSO','MultiStart','Measurements');title('B');
+nexttile
+plot(time, results_fmincon(:,4),time,results_PSO(:,4),time,results_multistart(:,4),dataMeasuredS(:,1), dataMeasuredS(:,5),'LineWidth',5);xlabel('Time(s)');ylabel('Terminal voltage, Vt (p.u.)');legend('fmincon','PSO','MultiStart','Measurements');title('C');
 

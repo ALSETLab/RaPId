@@ -1,0 +1,1421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  fmiVersion="1.0"
+  modelName="DuffingOscillator2"
+  modelIdentifier="DuffingOscillator2"
+  guid="{ae7efcfe-a9c3-4509-bcbe-d73cd83d37df}"
+  generationTool="Dymola Version 2019 FD01 (64-bit), 2018-10-10 (requires license to execute)"
+  generationDateAndTime="2021-04-21T19:56:39Z"
+  variableNamingConvention="structured"
+  numberOfContinuousStates="2"
+  numberOfEventIndicators="6">
+  <UnitDefinitions>
+    <BaseUnit
+      unit="F">
+      <DisplayUnitDefinition
+        displayUnit="nF"
+        gain="1000000000.0"/>
+    </BaseUnit>
+    <BaseUnit
+      unit="H">
+      <DisplayUnitDefinition
+        displayUnit="mH"
+        gain="1000.0"/>
+    </BaseUnit>
+    <BaseUnit
+      unit="Hz">
+      <DisplayUnitDefinition
+        displayUnit="kHz"
+        gain="0.001"/>
+    </BaseUnit>
+    <BaseUnit
+      unit="K">
+      <DisplayUnitDefinition
+        displayUnit="degC"
+        offset="-273.15"/>
+    </BaseUnit>
+    <BaseUnit
+      unit="Ohm">
+      <DisplayUnitDefinition
+        displayUnit="kOhm"
+        gain="0.001"/>
+    </BaseUnit>
+    <BaseUnit
+      unit="V">
+      <DisplayUnitDefinition
+        displayUnit="mV"
+        gain="1000.0"/>
+    </BaseUnit>
+    <BaseUnit
+      unit="rad">
+      <DisplayUnitDefinition
+        displayUnit="deg"
+        gain="57.29577951308232"/>
+    </BaseUnit>
+  </UnitDefinitions>
+  <TypeDefinitions>
+    <Type
+      name="Modelica.Blocks.Interfaces.RealOutput">
+      <RealType/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.Angle">
+      <RealType
+        quantity="Angle"
+        unit="rad"
+        displayUnit="deg"/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.Capacitance">
+      <RealType
+        quantity="Capacitance"
+        unit="F"
+        min="0.0"/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.Conductance">
+      <RealType
+        quantity="Conductance"
+        unit="S"/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.Current">
+      <RealType
+        quantity="ElectricCurrent"
+        unit="A"/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.ElectricPotential">
+      <RealType
+        quantity="ElectricPotential"
+        unit="V"/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.Frequency">
+      <RealType
+        quantity="Frequency"
+        unit="Hz"/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.Inductance">
+      <RealType
+        quantity="Inductance"
+        unit="H"/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.LinearTemperatureCoefficient">
+      <RealType
+        quantity="LinearTemperatureCoefficient"
+        unit="1/K"/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.Power">
+      <RealType
+        quantity="Power"
+        unit="W"/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.Resistance">
+      <RealType
+        quantity="Resistance"
+        unit="Ohm"/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.Temperature">
+      <RealType
+        quantity="ThermodynamicTemperature"
+        unit="K"
+        displayUnit="degC"
+        min="0.0"
+        nominal="300.0"/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.Time">
+      <RealType
+        quantity="Time"
+        unit="s"/>
+    </Type>
+    <Type
+      name="Modelica.SIunits.Voltage">
+      <RealType
+        quantity="ElectricPotential"
+        unit="V"/>
+    </Type>
+  </TypeDefinitions>
+  <DefaultExperiment startTime="0.0"
+    stopTime="0.05"
+    tolerance="0.0001"/>
+  <ModelVariables>
+    <ScalarVariable
+      name="diode.v"
+      valueReference="637534208"
+      description="Voltage drop of the two pins (= p.v - n.v)">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.i"
+      valueReference="637534209"
+      description="Current flowing from pin p to pin n">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.p.v"
+      valueReference="100663298"
+      description="Potential at the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"
+        start="0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.p.i"
+      valueReference="637534209"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.n.v"
+      valueReference="637534211"
+      description="Potential at the pin">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.n.i"
+      valueReference="637534212"
+      description="Current flowing into the pin">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.Ron"
+      valueReference="16777216"
+      description="Forward state-on differential resistance (closed resistance)"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Resistance"
+        min="0.0"
+        start="1E-05"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.Goff"
+      valueReference="16777217"
+      description="Backward state-off conductance (opened conductance)"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Conductance"
+        min="0.0"
+        start="1E-05"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.Vknee"
+      valueReference="16777218"
+      description="Forward threshold voltage"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"
+        min="0.0"
+        start="0.7"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.T"
+      valueReference="16777219"
+      description="Fixed device temperature if useHeatPort = false"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"
+        start="293.15"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.LossPower"
+      valueReference="905969670"
+      description="Loss power leaving component via heatPort">
+      <Real
+        declaredType="Modelica.SIunits.Power"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.T_heatPort"
+      valueReference="234881027"
+      description="Temperature of heatPort"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.off"
+      valueReference="637534215"
+      description="Switching state"
+      variability="discrete">
+      <Boolean start="true"
+        fixed="false"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode.s"
+      valueReference="637534216"
+      description="Auxiliary variable for actual position on the ideal diode characteristic">
+      <Real
+        unit="1"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.v"
+      valueReference="637534211"
+      description="Voltage drop of the two pins (= p.v - n.v)"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.i"
+      valueReference="637534219"
+      description="Current flowing from pin p to pin n">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.p.v"
+      valueReference="637534211"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.p.i"
+      valueReference="637534219"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.n.v"
+      valueReference="100663308"
+      description="Potential at the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.n.i"
+      valueReference="637534221"
+      description="Current flowing into the pin">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.Ron"
+      valueReference="16777220"
+      description="Forward state-on differential resistance (closed resistance)"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Resistance"
+        min="0.0"
+        start="1E-05"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.Goff"
+      valueReference="16777221"
+      description="Backward state-off conductance (opened conductance)"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Conductance"
+        min="0.0"
+        start="1E-05"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.Vknee"
+      valueReference="16777222"
+      description="Forward threshold voltage"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"
+        min="0.0"
+        start="0.7"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.T"
+      valueReference="16777223"
+      description="Fixed device temperature if useHeatPort = false"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"
+        start="293.15"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.LossPower"
+      valueReference="905969679"
+      description="Loss power leaving component via heatPort">
+      <Real
+        declaredType="Modelica.SIunits.Power"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.T_heatPort"
+      valueReference="234881031"
+      description="Temperature of heatPort"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.off"
+      valueReference="637534224"
+      description="Switching state"
+      variability="discrete">
+      <Boolean start="true"
+        fixed="false"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="diode1.s"
+      valueReference="637534225"
+      description="Auxiliary variable for actual position on the ideal diode characteristic">
+      <Real
+        unit="1"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.R"
+      valueReference="16777224"
+      description="Resistance at temperature T_ref"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Resistance"
+        displayUnit="kOhm"
+        start="10000"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.T_ref"
+      valueReference="16777225"
+      description="Reference temperature"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"
+        start="300.15"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.alpha"
+      valueReference="16777226"
+      description="Temperature coefficient of resistance (R_actual = R*(1 + alpha*(T_heatPort - T_ref))"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.LinearTemperatureCoefficient"
+        start="0"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.v"
+      valueReference="637534228"
+      description="Voltage drop of the two pins (= p.v - n.v)">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.i"
+      valueReference="637534229"
+      description="Current flowing from pin p to pin n">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.p.v"
+      valueReference="637534211"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.p.i"
+      valueReference="637534229"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.n.v"
+      valueReference="33554432"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.n.i"
+      valueReference="637534230"
+      description="Current flowing into the pin">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.T"
+      valueReference="100663320"
+      description="Fixed device temperature if useHeatPort = false"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.LossPower"
+      valueReference="905969689"
+      description="Loss power leaving component via heatPort">
+      <Real
+        declaredType="Modelica.SIunits.Power"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.T_heatPort"
+      valueReference="100663320"
+      description="Temperature of heatPort"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor3.R_actual"
+      valueReference="100663322"
+      description="Actual resistance = R*(1 + alpha*(T_heatPort - T_ref))"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Resistance"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.Slope"
+      valueReference="16777227"
+      description="Slope of the out.v/vin characteristic at vin=0"
+      variability="parameter">
+      <Real start="10000"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.in_p.v"
+      valueReference="637534211"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.in_p.i"
+      valueReference="100663323"
+      description="Current flowing into the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.in_n.v"
+      valueReference="637534236"
+      description="Potential at the pin">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.in_n.i"
+      valueReference="100663325"
+      description="Current flowing into the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.out.v"
+      valueReference="637534238"
+      description="Potential at the pin">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.out.i"
+      valueReference="905969695"
+      description="Current flowing into the pin">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.VMax.v"
+      valueReference="234881047"
+      description="Potential at the pin"
+      variability="parameter"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.VMax.i"
+      valueReference="100663328"
+      description="Current flowing into the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.VMin.v"
+      valueReference="234881046"
+      description="Potential at the pin"
+      variability="parameter"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.VMin.i"
+      valueReference="100663329"
+      description="Current flowing into the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.vin"
+      valueReference="637534242"
+      description="input voltage">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.f"
+      valueReference="100663331"
+      description="auxiliary variable"
+      variability="parameter">
+      <Real/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="opAmp.absSlope"
+      valueReference="100663332"
+      variability="parameter">
+      <Real/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.R"
+      valueReference="16777228"
+      description="Resistance at temperature T_ref"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Resistance"
+        displayUnit="kOhm"
+        start="10000"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.T_ref"
+      valueReference="16777229"
+      description="Reference temperature"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"
+        start="300.15"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.alpha"
+      valueReference="16777230"
+      description="Temperature coefficient of resistance (R_actual = R*(1 + alpha*(T_heatPort - T_ref))"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.LinearTemperatureCoefficient"
+        start="0"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.v"
+      valueReference="637534245"
+      description="Voltage drop of the two pins (= p.v - n.v)">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.i"
+      valueReference="637534246"
+      description="Current flowing from pin p to pin n">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0.0"
+        fixed="false"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.p.v"
+      valueReference="637534247"
+      description="Potential at the pin">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.p.i"
+      valueReference="637534246"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.n.v"
+      valueReference="637534236"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.n.i"
+      valueReference="637534288"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.T"
+      valueReference="100663337"
+      description="Fixed device temperature if useHeatPort = false"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.LossPower"
+      valueReference="905969706"
+      description="Loss power leaving component via heatPort">
+      <Real
+        declaredType="Modelica.SIunits.Power"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.T_heatPort"
+      valueReference="100663337"
+      description="Temperature of heatPort"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor1.R_actual"
+      valueReference="100663339"
+      description="Actual resistance = R*(1 + alpha*(T_heatPort - T_ref))"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Resistance"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.R"
+      valueReference="16777231"
+      description="Resistance at temperature T_ref"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Resistance"
+        displayUnit="kOhm"
+        start="10000"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.T_ref"
+      valueReference="16777232"
+      description="Reference temperature"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"
+        start="300.15"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.alpha"
+      valueReference="16777233"
+      description="Temperature coefficient of resistance (R_actual = R*(1 + alpha*(T_heatPort - T_ref))"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.LinearTemperatureCoefficient"
+        start="0"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.v"
+      valueReference="637534252"
+      description="Voltage drop of the two pins (= p.v - n.v)">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.i"
+      valueReference="637534246"
+      description="Current flowing from pin p to pin n"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.p.v"
+      valueReference="637534236"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.p.i"
+      valueReference="637534246"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.n.v"
+      valueReference="637534238"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.n.i"
+      valueReference="637534288"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.T"
+      valueReference="100663342"
+      description="Fixed device temperature if useHeatPort = false"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.LossPower"
+      valueReference="905969711"
+      description="Loss power leaving component via heatPort">
+      <Real
+        declaredType="Modelica.SIunits.Power"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.T_heatPort"
+      valueReference="100663342"
+      description="Temperature of heatPort"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor2.R_actual"
+      valueReference="100663344"
+      description="Actual resistance = R*(1 + alpha*(T_heatPort - T_ref))"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Resistance"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.R"
+      valueReference="16777234"
+      description="Resistance at temperature T_ref"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Resistance"
+        start="20"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.T_ref"
+      valueReference="16777235"
+      description="Reference temperature"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"
+        start="300.15"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.alpha"
+      valueReference="16777236"
+      description="Temperature coefficient of resistance (R_actual = R*(1 + alpha*(T_heatPort - T_ref))"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.LinearTemperatureCoefficient"
+        start="0"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.v"
+      valueReference="637534257"
+      description="Voltage drop of the two pins (= p.v - n.v)">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.i"
+      valueReference="33554433"
+      description="Current flowing from pin p to pin n"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.p.v"
+      valueReference="637534238"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.p.i"
+      valueReference="33554433"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.n.v"
+      valueReference="637534258"
+      description="Potential at the pin">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.n.i"
+      valueReference="100663378"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.T"
+      valueReference="100663348"
+      description="Fixed device temperature if useHeatPort = false"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.LossPower"
+      valueReference="905969717"
+      description="Loss power leaving component via heatPort">
+      <Real
+        declaredType="Modelica.SIunits.Power"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.T_heatPort"
+      valueReference="100663348"
+      description="Temperature of heatPort"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="resistor.R_actual"
+      valueReference="100663350"
+      description="Actual resistance = R*(1 + alpha*(T_heatPort - T_ref))"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Resistance"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="capacitor.v"
+      valueReference="33554432"
+      description="Voltage drop of the two pins (= p.v - n.v)">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"
+        start="0"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="der(capacitor.v)"
+      valueReference="587202560"
+      description="der(Voltage drop of the two pins (= p.v - n.v))">
+      <Real
+        unit="V/s"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="capacitor.i"
+      valueReference="637534263"
+      description="Current flowing from pin p to pin n">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="capacitor.p.v"
+      valueReference="33554432"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="capacitor.p.i"
+      valueReference="637534263"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="capacitor.n.v"
+      valueReference="100663352"
+      description="Potential at the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"
+        start="0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="capacitor.n.i"
+      valueReference="637534265"
+      description="Current flowing into the pin">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="capacitor.C"
+      valueReference="16777237"
+      description="Capacitance"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Capacitance"
+        displayUnit="nF"
+        start="4.7E-07"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="ground.p.v"
+      valueReference="100663354"
+      description="Potential at the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="ground.p.i"
+      valueReference="637534263"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage.V"
+      valueReference="16777238"
+      description="Value of constant voltage"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"
+        start="2"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage.v"
+      valueReference="234881046"
+      description="Voltage drop of the two pins (= p.v - n.v)"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage.i"
+      valueReference="100663355"
+      description="Current flowing from pin p to pin n"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage.p.v"
+      valueReference="234881046"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage.p.i"
+      valueReference="100663356"
+      description="Current flowing into the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage.n.v"
+      valueReference="100663357"
+      description="Potential at the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"
+        start="0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage.n.i"
+      valueReference="100663358"
+      description="Current flowing into the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="ground1.p.v"
+      valueReference="100663359"
+      description="Potential at the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="ground1.p.i"
+      valueReference="100663360"
+      description="Current flowing into the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage1.V"
+      valueReference="16777239"
+      description="Value of constant voltage"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"
+        start="-2"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage1.v"
+      valueReference="234881047"
+      description="Voltage drop of the two pins (= p.v - n.v)"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage1.i"
+      valueReference="100663361"
+      description="Current flowing from pin p to pin n"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage1.p.v"
+      valueReference="234881047"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage1.p.i"
+      valueReference="100663362"
+      description="Current flowing into the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage1.n.v"
+      valueReference="100663363"
+      description="Potential at the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"
+        start="0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="constantVoltage1.n.i"
+      valueReference="100663364"
+      description="Current flowing into the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="ground2.p.v"
+      valueReference="100663365"
+      description="Potential at the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="ground2.p.i"
+      valueReference="905969734"
+      description="Current flowing into the pin">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="ground3.p.v"
+      valueReference="100663367"
+      description="Potential at the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="ground3.p.i"
+      valueReference="100663368"
+      description="Current flowing into the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.V"
+      valueReference="16777240"
+      description="Amplitude of sine wave"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"
+        displayUnit="mV"
+        start="0.24"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.phase"
+      valueReference="16777241"
+      description="Phase of sine wave"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Angle"
+        start="0"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.freqHz"
+      valueReference="16777242"
+      description="Frequency of sine wave"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Frequency"
+        displayUnit="kHz"
+        start="1500"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.v"
+      valueReference="637534247"
+      description="Voltage drop of the two pins (= p.v - n.v)"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.i"
+      valueReference="637534288"
+      description="Current flowing from pin p to pin n"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.p.v"
+      valueReference="637534247"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.p.i"
+      valueReference="637534288"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.n.v"
+      valueReference="100663369"
+      description="Potential at the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"
+        start="0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.n.i"
+      valueReference="637534246"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.offset"
+      valueReference="16777243"
+      description="Voltage offset"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"
+        start="0"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.startTime"
+      valueReference="16777244"
+      description="Time offset"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Time"
+        start="0"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.signalSource.amplitude"
+      valueReference="100663370"
+      description="Amplitude of sine wave"
+      variability="parameter">
+      <Real
+        unit="V"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.signalSource.freqHz"
+      valueReference="100663371"
+      description="Frequency of sine wave"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Frequency"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.signalSource.phase"
+      valueReference="100663372"
+      description="Phase of sine wave"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Angle"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.signalSource.y"
+      valueReference="637534247"
+      description="Connector of Real output signal"
+      alias="alias">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="V"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.signalSource.offset"
+      valueReference="100663373"
+      description="Offset of output signal y"
+      variability="parameter">
+      <Real
+        unit="V"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="sineVoltage.signalSource.startTime"
+      valueReference="100663374"
+      description="Output y = offset for time &lt; startTime"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Time"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="ground4.p.v"
+      valueReference="100663375"
+      description="Potential at the pin"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"
+        start="0.0"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="ground4.p.i"
+      valueReference="637534288"
+      description="Current flowing into the pin">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="inductor.v"
+      valueReference="637534289"
+      description="Voltage drop of the two pins (= p.v - n.v)">
+      <Real
+        declaredType="Modelica.SIunits.Voltage"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="inductor.i"
+      valueReference="33554433"
+      description="Current flowing from pin p to pin n">
+      <Real
+        declaredType="Modelica.SIunits.Current"
+        start="0"
+        fixed="true"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="der(inductor.i)"
+      valueReference="587202561"
+      description="der(Current flowing from pin p to pin n)">
+      <Real
+        unit="A/s"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="inductor.p.v"
+      valueReference="637534258"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="inductor.p.i"
+      valueReference="33554433"
+      description="Current flowing into the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="inductor.n.v"
+      valueReference="33554432"
+      description="Potential at the pin"
+      alias="alias">
+      <Real
+        declaredType="Modelica.SIunits.ElectricPotential"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="inductor.n.i"
+      valueReference="100663378"
+      description="Current flowing into the pin">
+      <Real
+        declaredType="Modelica.SIunits.Current"/>
+    </ScalarVariable>
+    <ScalarVariable
+      name="inductor.L"
+      valueReference="16777245"
+      description="Inductance"
+      variability="parameter">
+      <Real
+        declaredType="Modelica.SIunits.Inductance"
+        displayUnit="mH"
+        start="0.019"
+        fixed="true"/>
+    </ScalarVariable>
+  </ModelVariables>
+</fmiModelDescription>

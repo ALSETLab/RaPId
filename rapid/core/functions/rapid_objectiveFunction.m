@@ -41,7 +41,7 @@ switch rapidSettings.experimentSettings.cost_type
     % Add your case here and set the rapidSettings accordingly if you
     % want to compute the fitness function differently.
     case 1, % something
-       fitness = sum(sum(delta.*delta))   
+       fitness = sum(sum(delta.*delta));   
     case 2,
        weights = rapidSettings.experimentSettings.objective_weights;
        fitness=sum(sum(delta.*delta*weights)); 

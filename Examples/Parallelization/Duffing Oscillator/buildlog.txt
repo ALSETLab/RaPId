@@ -1,0 +1,59 @@
+Building FMU (Visual C++) 
+64-bit mode activated. 
+32-bit mode disabled 
+**********************************************************************
+** Visual Studio 2017 Developer Command Prompt v15.9.15
+** Copyright (c) 2017 Microsoft Corporation
+**********************************************************************
+[vcvarsall.bat] Environment initialized for: 'x64'
+Compiling the model (Visual C++) with FMI. 
+ 
+fmiFunctions.c
+dsmodel.c
+C:/Program Files/Dymola 2019 FD01\source\matrixop.h(201): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+C:/Program Files/Dymola 2019 FD01\source\matrixop.h(993): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+c:\program files\dymola 2019 fd01\source\matrixop.c(157): warning C4090: 'function': different 'const' qualifiers
+c:\program files\dymola 2019 fd01\source\matrixop.c(3129): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+c:\program files\dymola 2019 fd01\source\matrixop.c(3519): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\program files\dymola 2019 fd01\source\matrixop.c(3567): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+c:\program files\dymola 2019 fd01\source\matrixop.c(3577): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+c:\program files\dymola 2019 fd01\source\matrixop.c(3586): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+c:\program files\dymola 2019 fd01\source\matrixop.c(3595): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+c:\program files\dymola 2019 fd01\source\matrixop.c(3607): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+c:\program files\dymola 2019 fd01\source\matrixop.c(3617): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+c:\program files\dymola 2019 fd01\source\matrixop.c(3627): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+c:\program files\dymola 2019 fd01\source\matrixop.c(3712): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+C:/Program Files/Dymola 2019 FD01\source\ModelicaStrings.c(99): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:/Program Files/Dymola 2019 FD01\source\ModelicaStrings.c(132): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:/Program Files/Dymola 2019 FD01\source\ModelicaStrings.c(230): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
+Generating Code...
+   Creating library ~FMUOutput\binaries\win64\DuffingOscillator2.lib and object ~FMUOutput\binaries\win64\DuffingOscillator2.exp
+Adding [modelDescription.xml] ... OK
+Adding [binaries\win64\DuffingOscillator2.dll] ... OK
+Adding [documentation\index.html] ... OK
+Adding [documentation\LICENSE_CVODE.txt] ... OK
+Adding [documentation\LICENSE_f2c.txt] ... OK
+Adding [documentation\LICENSE_FMI.txt] ... OK
+Adding [documentation\LICENSE_HDF5.txt] ... OK
+Adding [documentation\LICENSE_LAPACK.txt] ... OK
+Adding [documentation\LICENSE_ModelicaFFT.txt] ... OK
+Adding [documentation\LICENSE_ModelicaInternal.txt] ... OK
+Adding [documentation\LICENSE_ModelicaIO.txt] ... OK
+Adding [documentation\LICENSE_ModelicaMatIO.txt] ... OK
+Adding [documentation\LICENSE_ModelicaRandom.txt] ... OK
+Adding [documentation\LICENSE_ModelicaStandardTables.txt] ... OK
+Adding [documentation\LICENSE_ModelicaStrings.txt] ... OK
+Adding [documentation\LICENSE_ModelicaUtilities.txt] ... OK
+Adding [documentation\LICENSE_SUNDIALS.txt] ... OK
+Adding [documentation\LICENSE_SuperLU_MT.txt] ... OK
+Adding [documentation\LICENSE_TPL.txt] ... OK
+Adding [documentation\LICENSE_uthash.txt] ... OK
+Adding [documentation\LICENSE_win32_dirent.txt] ... OK
+Adding [documentation\LICENSE_ZLIB.txt] ... OK
+Adding [documentation\ModelicaLicense2.html] ... OK
+Adding [documentation\_main.html] ... OK
+Adding [documentation\_opensource.html] ... OK
+Adding [model.png] ... OK
+ 
+Successful creation of DuffingOscillator2.fmu. 
+ 

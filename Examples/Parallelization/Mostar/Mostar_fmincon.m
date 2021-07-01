@@ -87,4 +87,14 @@ sprintf('Vector of estimated parameters is: %s',mat2str(sol,3))
 fmincon_time = toc(startTime);
 
 
+%%
+results = simout.signals.values;
+plot(time, results(:,1), dataMeasuredS(:,1), dataMeasuredS(:,2),'LineWidth',5);xlabel('Time(s)');ylabel('Active Power (p.u.)');legend('Simulation','Measurements');
+figure;
+plot(time, results(:,2), dataMeasuredS(:,1), dataMeasuredS(:,3),'LineWidth',5);xlabel('Time(s)');ylabel('Reactive Power (p.u.)');legend('Simulation','Measurements');
+figure;
+plot(time, results(:,3), dataMeasuredS(:,1), dataMeasuredS(:,4),'LineWidth',5);xlabel('Time(s)');ylabel('Field voltage, Efd (p.u.)');legend('Simulation','Measurements');
+figure;
+plot(time, results(:,4), dataMeasuredS(:,1), dataMeasuredS(:,5),'LineWidth',5);xlabel('Time(s)');ylabel('Terminal Voltage, Vt (p.u.)');legend('Simulation','Measurements');
 
+figure;plot(time, results(:,2))

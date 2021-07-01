@@ -36,9 +36,9 @@ rapidSettings.experimentSettings.displayMode = 'Show';
 
 %Estimation parameter settings
 rapidSettings.experimentSettings.p_0 = [500 0.00225 4 0.055 0.595 0.055;
-                                       250,0.0005,5,0.001,0.5,0.02;
+                                       550,0.0005,5,0.001,0.5,0.02;
                                        300,0.00015,5.24,0.008,0.75,0.08;
-                                       100,0.0011,1.7783,0.0124,0.9777,0.0270];
+                                       515,0.004,6,0.0084,0.9195,0.0147];
 %rapidSettings.experimentSettings.p_0 = [500,0.004,10,0.1,1,0.1]; %Initial parameter guess
 rapidSettings.experimentSettings.p_min = [1,1e-4,1,1e-4,0.1,1e-4]; %Minimum values of parameters
 rapidSettings.experimentSettings.p_max = [1000,0.004,10,0.1,1,0.1]; %Maximum values of parameters
@@ -100,5 +100,15 @@ pause(1); %Waiting one second for scope to initialize
 
 sprintf('Vector of estimated parameters is: %s',mat2str(sol,3)) 
 multistart_time = toc(startTime);
+
+%%
+results = simout.signals.values;
+plot(time, results(:,1), dataMeasuredS(:,1), dataMeasuredS(:,2),'LineWidth',5);xlabel('Time(s)');ylabel('Active Power (p.u.)');legend('Simulation','Measurements');
+figure;
+plot(time, results(:,2), dataMeasuredS(:,1), dataMeasuredS(:,3),'LineWidth',5);xlabel('Time(s)');ylabel('Reactive Power (p.u.)');legend('Simulation','Measurements');
+figure;
+plot(time, results(:,3), dataMeasuredS(:,1), dataMeasuredS(:,4),'LineWidth',5);xlabel('Time(s)');ylabel('Field voltage, Efd (p.u.)');legend('Simulation','Measurements');
+figure;
+plot(time, results(:,4), dataMeasuredS(:,1), dataMeasuredS(:,5),'LineWidth',5);xlabel('Time(s)');ylabel('Terminal Voltage, Vt (p.u.)');legend('Simulation','Measurements');
 
 

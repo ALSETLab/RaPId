@@ -9,11 +9,10 @@ package Mostar
       B=0,
       R=0,
       X=0.1169) annotation (Placement(transformation(extent={{14,-4},{26,4}})));
-    OpenIPSL.Electrical.Buses.InfiniteBus infiniteBus(angle_0=0, V_0=0.9617) annotation (Placement(transformation(extent={{80,-10},
+    OpenIPSL.Electrical.Buses.InfiniteBus infiniteBus(angle_0=0)             annotation (Placement(transformation(extent={{80,-10},
               {60,10}})));
     OpenIPSL.Electrical.Loads.PSSE.Load constantLoad(
       PQBRAK=0.7,
-      V_0=0.97042,
       angle_0=0,
       P_0=5.19486) annotation (Placement(transformation(extent={{-6,-32},{6,-20}})));
     OpenIPSL.Electrical.Buses.Bus bus annotation (Placement(transformation(extent={{-18,-10},{2,10}})));
@@ -36,7 +35,6 @@ package Mostar
       H=2.137,
       angle_0=0,
       Q_0=0.07332*30,
-      V_0=0.9705,
       P_0=5.19486) annotation (Placement(transformation(extent={{-72,-12},{-48,12}})));
     Modelica.Blocks.Sources.Constant const(k=-Modelica.Constants.inf)
                                                     annotation (Placement(transformation(extent={{-80,-76},
@@ -73,24 +71,25 @@ package Mostar
                                                                               color={0,0,255}));
     connect(bus1.p, infiniteBus.p) annotation (Line(points={{50,0},{60,0}}, color={0,0,255}));
     connect(gENSAL.p, bus.p) annotation (Line(points={{-48,0},{-48,0},{-8,0}},     color={0,0,255}));
-    connect(const.y, sT5B.VUEL) annotation (Line(points={{-69.5,-71},{-57.5,-71},{
-            -57.5,-38}},                                                                          color={0,0,127}));
-    connect(const1.y, sT5B.VOEL) annotation (Line(points={{-69.5,-51},{-60.5,-51},
-            {-60.5,-38}},                                                                          color={0,0,127}));
-    connect(sT5B.EFD, gENSAL.EFD) annotation (Line(points={{-74.5,-28},{-86,-28},{
-            -86,-6},{-74.4,-6}},                                                                        color={0,0,127}));
+    connect(const.y, sT5B.VUEL) annotation (Line(points={{-69.5,-71},{-60,-71},
+            {-60,-38.9}},                                                                         color={0,0,127}));
+    connect(const1.y, sT5B.VOEL) annotation (Line(points={{-69.5,-51},{-64,-51},
+            {-64,-38.9}},                                                                          color={0,0,127}));
+    connect(sT5B.EFD, gENSAL.EFD) annotation (Line(points={{-75,-29},{-86,-29},
+            {-86,-6},{-74.4,-6}},                                                                       color={0,0,127}));
     connect(gENSAL.PMECH, gENSAL.PMECH0) annotation (Line(points={{-74.4,6},{-80,6},
             {-80,16},{-42,16},{-42,6},{-46.8,6}},                                                                                 color={0,0,127}));
-    connect(gENSAL.EFD0, sT5B.EFD0) annotation (Line(points={{-46.8,-6},{-42,-6},{
-            -42,-34.5},{-54,-34.5}},                                                                                  color={0,0,127}));
-    connect(sT5B.XADIFD, gENSAL.XADIFD) annotation (Line(points={{-54,-31},{-40,-31},
-            {-40,-10.8},{-47.04,-10.8}},                                                                                  color={0,0,127}));
+    connect(gENSAL.EFD0, sT5B.EFD0) annotation (Line(points={{-46.8,-6},{-42,-6},
+            {-42,-32.6},{-53,-32.6}},                                                                                 color={0,0,127}));
+    connect(sT5B.XADIFD, gENSAL.XADIFD) annotation (Line(points={{-72,-38.9},{
+            -40,-38.9},{-40,-10.8},{-46.8,-10.8}},                                                                        color={0,0,127}));
     connect(step.y, add3_1.u2) annotation (Line(points={{-24.4,-20},{-26,-20},{-26,
             -28},{-29.2,-28}},                                                                        color={0,0,127}));
-    connect(add3_1.y, sT5B.ECOMP) annotation (Line(points={{-38.4,-28},{-38.4,-28},
-            {-54,-28}},                                                                                        color={0,0,127}));
-    connect(sT5B.VOTHSG, const2.y) annotation (Line(points={{-54,-23.5},{-52,-23.5},
-            {-52,-24},{-52,-52},{-40.6,-52}}, color={0,0,127}));
+    connect(add3_1.y, sT5B.ECOMP) annotation (Line(points={{-38.4,-28},{-38.4,
+            -29},{-53,-29}},                                                                                   color={0,0,127}));
+    connect(sT5B.VOTHSG, const2.y) annotation (Line(points={{-53,-25.4},{-52,
+            -25.4},{-52,-24},{-52,-52},{-40.6,-52}},
+                                              color={0,0,127}));
     connect(add3_1.u3, step1.y) annotation (Line(points={{-29.2,-31.2},{-26,-31.2},
             {-26,-34},{-24.4,-34}}, color={0,0,127}));
     connect(gENSAL.ETERM, add3_1.u1) annotation (Line(points={{-46.8,-3.6},{
@@ -98,7 +97,7 @@ package Mostar
     connect(ETERM, gENSAL.ETERM) annotation (Line(points={{12,38},{-34,38},{-34,
             -3.6},{-46.8,-3.6}}, color={0,0,127}));
     connect(EFD0, sT5B.EFD0) annotation (Line(points={{12,58},{-16,58},{-16,-6},
-            {-42,-6},{-42,-34.5},{-54,-34.5}}, color={0,0,127}));
+            {-42,-6},{-42,-32.6},{-53,-32.6}}, color={0,0,127}));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
   end System1;
 
