@@ -88,6 +88,8 @@ sprintf('Vector of estimated parameters is: %s',mat2str(sol,3))
 PSO_time = toc(startTime);
 
 %%
+
+load Results_mostar.mat
 figure;
 results = simout.signals.values;
 plot(time, results(:,1), dataMeasuredS(:,1), dataMeasuredS(:,2),'LineWidth',5);xlabel('Time(s)');ylabel('Active Power (p.u.)');legend('Simulation','Measurements');

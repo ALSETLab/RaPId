@@ -88,6 +88,7 @@ fmincon_time = toc(startTime);
 
 
 %%
+time = simout.time;
 results = simout.signals.values;
 plot(time, results(:,1), dataMeasuredS(:,1), dataMeasuredS(:,2),'LineWidth',5);xlabel('Time(s)');ylabel('Active Power (p.u.)');legend('Simulation','Measurements');
 figure;

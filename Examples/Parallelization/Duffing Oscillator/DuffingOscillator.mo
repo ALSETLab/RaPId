@@ -158,7 +158,7 @@ package DuffingOscillator
           rotation=180,
           origin={-78,-60})));
     Modelica.Electrical.Analog.Basic.Ground ground4
-      annotation (Placement(transformation(extent={{-96,-102},{-76,-82}})));
+      annotation (Placement(transformation(extent={{-110,-98},{-90,-78}})));
     Modelica.Electrical.Analog.Basic.Inductor inductor(L(displayUnit="mH")=
         0.019) annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
@@ -198,19 +198,22 @@ package DuffingOscillator
       annotation (Line(points={{-12,-30},{-12,-34}}, color={0,0,255}));
     connect(signalVoltage.p, resistor1.p)
       annotation (Line(points={{-68,-60},{-58,-60}}, color={0,0,255}));
-    connect(signalVoltage.n, ground4.p) annotation (Line(points={{-88,-60},{-86,
-            -60},{-86,-82}}, color={0,0,255}));
+    connect(signalVoltage.n, ground4.p) annotation (Line(points={{-88,-60},{
+            -100,-60},{-100,-78}},
+                             color={0,0,255}));
     connect(resistor.n, inductor.p)
       annotation (Line(points={{28,12},{44,12}}, color={0,0,255}));
     connect(resistor3.n, capacitor.p)
       annotation (Line(points={{18,80},{70,80},{70,-4}}, color={0,0,255}));
     connect(inductor.n, capacitor.p)
       annotation (Line(points={{64,12},{70,12},{70,-4}}, color={0,0,255}));
-    connect(signalVoltage.v, v1) annotation (Line(points={{-78,-48},{-82,-48},{
-            -82,0},{-120,0}}, color={0,0,127}));
+    connect(signalVoltage.v, v1) annotation (Line(points={{-78,-48},{-78,0},{
+            -120,0}},         color={0,0,127}));
     annotation (
-      Icon(coordinateSystem(preserveAspectRatio=false)),
-      Diagram(coordinateSystem(preserveAspectRatio=false)),
+      Icon(coordinateSystem(preserveAspectRatio=false, extent={{-140,-100},{100,
+              100}})),
+      Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-140,-100},{
+              100,100}})),
       experiment(
         StopTime=0.05,
         __Dymola_NumberOfIntervals=10000,

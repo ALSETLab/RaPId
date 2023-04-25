@@ -35,13 +35,13 @@ rapidSettings.experimentSettings.scopeName = 'simout'; %Result sink name
 rapidSettings.experimentSettings.displayMode = 'Show';
 
 %Estimation parameter settings
-rapidSettings.experimentSettings.p_0 = [500 0.00225 4 0.055 0.595 0.055;
-                                        50 0.0025 6.5 0.01 0.595 0.056;
-                                        50 0.0025 9.01 0.055 0.595 0.055;
-                                        100 0.00186 9.01 0.05 0.595 0.055;
-                                        100,0.004,10,0.1,1,0.1;
-                                        250,0.0005,5,0.001,0.5,0.02;
-                                        300,0.00015,5.24,0.008,0.75,0.08];
+rapidSettings.experimentSettings.p_0 = [500 0.00225 4 0.055 0.595 0.055];
+%                                         50 0.0025 6.5 0.01 0.595 0.056;
+%                                         50 0.0025 9.01 0.055 0.595 0.055;
+%                                         100 0.00186 9.01 0.05 0.595 0.055;
+%                                         100,0.004,10,0.1,1,0.1;
+%                                         250,0.0005,5,0.001,0.5,0.02;
+%                                         300,0.00015,5.24,0.008,0.75,0.08];
 %rapidSettings.experimentSettings.p_0 = [500,0.004,10,0.1,1,0.1]; %Initial parameter guess
 rapidSettings.experimentSettings.p_min = [1,1e-4,1,1e-4,0.1,1e-4]; %Minimum values of parameters
 rapidSettings.experimentSettings.p_max = [1000,0.004,10,0.1,1,0.1]; %Maximum values of parameters
