@@ -3,4 +3,4 @@ Global Optimization Toolbox
 MATLAB
 Optimization Toolbox
 Simulink
-Statistics Toolbox
+Statistics and Machine Learning Toolbox
